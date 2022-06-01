@@ -12,5 +12,5 @@ RUN poetry export -f requirements.txt --without-hashes | pip install -r /dev/std
 # Creating folders, and files for a project:
 COPY . /app/
 USER 33:33
-EXPOSE 8000
-CMD uvicorn webserver:app 
+EXPOSE 80
+CMD uvicorn webserver:app --port 80
