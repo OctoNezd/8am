@@ -5,8 +5,11 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Ш А Р А Г А</title>
-        <script src="js/nice-select2.js"></script>
-        <link rel="stylesheet" href="css/nice-select2.css" />
+        <link
+            href="https://cdn.jsdelivr.net/npm/tom-select@2.0.2/dist/css/tom-select.css"
+            rel="stylesheet"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/tom-select@2.0.2/dist/js/tom-select.complete.min.js"></script>
         <style>
             .center {
                 text-align: center;
@@ -18,6 +21,7 @@
                 font-family: -apple-system, BlinkMacSystemFont, avenir next,
                     avenir, segoe ui, helvetica neue, helvetica, Cantarell,
                     Ubuntu, roboto, noto, arial, sans-serif;
+                --uisize: 400px;
             }
             .hidden {
                 display: none;
@@ -25,17 +29,105 @@
             #addbuttons {
                 padding-top: 10px;
             }
+            .button {
+                width: var(--uisize) !important;
+            }
+            .button-container {
+                display: block;
+                padding-top: 8px !important;
+            }
+            select {
+                padding-bottom: 4px;
+            }
+            body {
+                background-color: white;
+                min-height: 100vh;
+            }
+            .ts-wrapper {
+                padding-bottom: 4px;
+                width: var(--uisize);
+            }
+            .logos {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                justify-items: center;
+            }
+            .logos img {
+                max-width: 32px;
+                max-height: 32px;
+            }
+            a:visited {
+                color: inherit;
+            }
+            .mainflex {
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+            .put-to-end {
+                /* flex-grow: 1; */
+                margin-top: auto;
+            }
+            @media (prefers-color-scheme: dark) {
+                body {
+                    filter: invert();
+                    background-color: black;
+                }
+                img {
+                    filter: invert();
+                }
+            }
         </style>
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/knopf.css/knopf.min.css"
+        />
     </head>
     <body>
         <div class="center">
-            <h1 class="center">Ш А Р А Г А</h1>
-            <select name="group" id="group" placeholder="группа ебать">
-                <option value="NO" disabled selected>Выберите группу</option>
-            </select>
-            <div id="addbuttons" class="hidden">
-                <a id="webcal" href="">Добавить в календарь</a><br />
-                <a id="google" href="">Добавить в календарь Google</a>
+            <div class="mainflex">
+                <h1 class="center">Ш А Р А Г А</h1>
+                <div class="center">
+                    <select
+                        name="group"
+                        id="group"
+                        placeholder="Выберите группу"
+                    ></select>
+                </div>
+                <div id="addbuttons" class="hidden">
+                    <div class="button-container">
+                        <a id="webcal" class="button knopf" href="">
+                            <div>
+                                <div class="logos">
+                                    <img src="icons/iphonecal.svg" />
+                                    <img src="icons/maccal.png" />
+                                    <img src="icons/wincal.png" />
+                                    <img src="icons/outlook.svg" />
+                                </div>
+                                Добавить в календарь webcal <br />
+                                (iOS/macOS/Outlook)
+                            </div>
+                        </a>
+                    </div>
+                    <div class="button-container">
+                        <a id="google" class="button knopf" href="">
+                            <div>
+                                <div class="logos">
+                                    <img src="icons/gcal.svg" />
+                                </div>
+                                Добавить в календарь Google<br />
+                                (Android)
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <p class="put-to-end">
+                    <a href="https://t.me/mrvn4">
+                        Не загружается расписание? Расписание загружается
+                        криво?</a
+                    >
+                </p>
             </div>
         </div>
         <script>
@@ -43,8 +135,38 @@
             const buttons = document.getElementById("addbuttons");
             const webcal = document.getElementById("webcal");
             const google = document.getElementById("google");
+            const urlParams = new URLSearchParams(location.search);
+            const select = new TomSelect("#group", {
+                create: false,
+                sortField: {
+                    field: "text",
+                    direction: "asc",
+                },
+                valueField: "id",
+                labelField: "title",
+                searchField: "title",
 
-            const select = NiceSelect.bind(groupdom, { searchable: true });
+                onChange: function () {
+                    if (groupdom.value === "NO") {
+                        buttons.classList.add("hidden");
+                        return;
+                    }
+                    history.pushState(
+                        "",
+                        "",
+                        "?" + new URLSearchParams({ group: groupdom.value })
+                    );
+                    buttons.classList.remove("hidden");
+                    webcal[
+                        "href"
+                    ] = `webcal://${location.host}/group/${groupdom.value}.ics`;
+                    google["href"] =
+                        "https://calendar.google.com/calendar/r?" +
+                        new URLSearchParams({
+                            cid: `${location.origin}/group/${groupdom.value}.ics`,
+                        }).toString();
+                },
+            });
 
             fetch("/groups", {
                 method: "get",
@@ -53,29 +175,23 @@
                     return response.json();
                 })
                 .then(function (groups) {
+                    const urlgroup = urlParams.get("group");
                     for (const [group, gid] of Object.entries(groups)) {
-                        const opt = document.createElement("option");
-                        opt.innerText = group;
-                        opt.value = gid;
-                        groupdom.appendChild(opt);
+                        select.addOption({
+                            id: gid,
+                            title: group,
+                        });
+                        // const opt = document.createElement("option");
+                        // opt.innerText = group;
+                        // opt.value = gid;
+                        if (urlgroup === gid) {
+                            select.setValue(gid);
+                        }
+                        // groupdom.appendChild(opt);
+                        // groupdom.value = opt.value;
                     }
-                    select.update();
+                    // select.update();
                 });
-            groupdom.addEventListener("change", function (e) {
-                if (groupdom.value === "NO") {
-                    buttons.classList.add("hidden");
-                    return;
-                }
-                buttons.classList.remove("hidden");
-                webcal[
-                    "href"
-                ] = `webcal://${location.host}/group/${groupdom.value}.ics`;
-                google["href"] =
-                    "https://calendar.google.com/calendar/r?" +
-                    new URLSearchParams({
-                        cid: `${location.origin}/group/${groupdom.value}.ics`,
-                    }).toString();
-            });
         </script>
     </body>
 </html>
