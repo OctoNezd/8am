@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Ш А Р А Г А</title>
+        <script src="js/nice-select2.js"></script>
+        <link rel="stylesheet" href="css/nice-select2.css" />
+        <style>
+            .center {
+                text-align: center;
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+            }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, avenir next,
+                    avenir, segoe ui, helvetica neue, helvetica, Cantarell,
+                    Ubuntu, roboto, noto, arial, sans-serif;
+            }
+            .hidden {
+                display: none;
+            }
+            #addbuttons {
+                padding-top: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="center">
+            <h1 class="center">Ш А Р А Г А</h1>
+            <select name="group" id="group" placeholder="группа ебать">
+                <option value="NO" disabled selected>Выберите группу</option>
+            </select>
+            <div id="addbuttons" class="hidden">
+                <a id="webcal" href="">Добавить в календарь</a><br />
+                <a id="google" href="">Добавить в календарь Google</a>
+            </div>
+        </div>
+        <script>
+            const groupdom = document.getElementById("group");
+            const buttons = document.getElementById("addbuttons");
+            const webcal = document.getElementById("webcal");
+            const google = document.getElementById("google");
+
+            const select = NiceSelect.bind(groupdom, { searchable: true });
+
+            fetch("/groups", {
+                method: "get",
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (groups) {
+                    for (const [group, gid] of Object.entries(groups)) {
+                        const opt = document.createElement("option");
+                        opt.innerText = group;
+                        opt.value = gid;
+                        groupdom.appendChild(opt);
+                    }
+                    select.update();
+                });
+            groupdom.addEventListener("change", function (e) {
+                if (groupdom.value === "NO") {
+                    buttons.classList.add("hidden");
+                    return;
+                }
+                buttons.classList.remove("hidden");
+                webcal[
+                    "href"
+                ] = `webcal://${location.host}/group/${groupdom.value}.ics`;
+                google["href"] =
+                    "https://calendar.google.com/calendar/r?" +
+                    new URLSearchParams({
+                        cid: `${location.origin}/group/${groupdom.value}.ics`,
+                    }).toString();
+            });
+        </script>
+    </body>
+</html>
