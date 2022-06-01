@@ -13,4 +13,4 @@ RUN poetry export -f requirements.txt --without-hashes | pip install -r /dev/std
 COPY . /app/
 USER 33:33
 EXPOSE 80
-CMD gunicorn -b 0.0.0.0:8080 --access-logfile '-' --forwarded-allow-ips '*' webserver:app
+CMD gunicorn -b 0.0.0.0:80 --access-logfile '-' --forwarded-allow-ips '*' webserver:app --workers 4 --worker-class uvicorn.workers.UvicornWorker
