@@ -13,4 +13,4 @@ RUN poetry export -f requirements.txt --without-hashes | pip install -r /dev/std
 COPY . /app/
 USER 33:33
 EXPOSE 80
-CMD uvicorn webserver:app --port 80
+CMD uvicorn webserver:app --port 80 --bind 0.0.0.0
