@@ -1,3 +1,5 @@
+import os
+import aioredis
 from typing import OrderedDict
 import aiohttp
 from fastapi import FastAPI, HTTPException, Response
@@ -8,22 +10,33 @@ import dec_reader
 logger = logging.getLogger("main")
 app = FastAPI()
 GROUPS = {}
+GROUPS_INV = {}
+
 CACHE = {}
+redis = aioredis.from_url(os.environ.get(
+    "REDIS", "redis://localhost:6379/0"), decode_responses=True)
 
 
 async def get_new_ics(gid):
     async with aiohttp.ClientSession(base_url="https://dec.mgutm.ru/", raise_for_status=True) as session:
         async with session.get("/api/Rasp", params={"idGroup": gid}) as resp:
             tt = (await resp.json())["data"]
-    CACHE[gid] = {"tt": dec_reader.generate_ical(tt), "when": datetime.now()}
+    tt = dec_reader.generate_ical(tt)
+    await redis.hset(f"group:{gid}", "tt", tt)
+    await redis.hset(f"group:{gid}", "when", datetime.now().isoformat())
+    return tt
 
 
 @app.get("/group/{gid}.ics", response_class=Response(media_type="text/calendar"))
 async def get_group_ics(gid: int):
-    if gid not in CACHE or datetime.now() - CACHE[gid]["when"] > timedelta(days=1):
+    if str(gid) not in GROUPS_INV:
+        raise HTTPException(404, "Группа не существует")
+    cached = await redis.hgetall(f"group:{gid}")
+    if cached == {} or datetime.now() - datetime.fromisoformat(cached["when"]) > timedelta(days=1):
         logger.info("Timetable for %s is outdated. Updating.", gid)
         try:
-            await get_new_ics(gid)
+            tt = await get_new_ics(gid)
+            logger.info("Updated timetable for %s.", gid)
         except aiohttp.ClientError as e:
             logger.error("Failed to get new timetable for %s",
                          gid, exc_info=True)
@@ -31,13 +44,23 @@ async def get_group_ics(gid: int):
                 raise HTTPException(
                     503, "Шарага не отвечает")
     else:
+        tt = cached["tt"]
         logger.info("Timetable for %s is fresh enough", gid)
-    return Response(CACHE[gid]["tt"], media_type="text/calendar")
+    await redis.hincrby("stats", gid)
+    return Response(tt, media_type="text/calendar")
 
 
 @app.get("/groups")
 def get_groups():
     return GROUPS
+
+
+@app.get("/stats")
+async def get_stats():
+    a = {}
+    for key, value in list((await redis.hgetall("stats")).items())[:10]:
+        a[GROUPS_INV.get(key, key)] = value
+    return {k: v for k, v in sorted(a.items(), key=lambda item: int(item[1]), reverse=True)}
 
 
 @app.on_event("startup")
@@ -56,6 +79,7 @@ async def startup():
             groupdata = await resp.json()
             for group in groupdata["data"]["groups"]:
                 tmpgroups[group["groupName"]] = str(group["groupID"])
+                GROUPS_INV[str(group["groupID"])] = group["groupName"]
     GROUPS = OrderedDict(sorted(tmpgroups.items(), key=lambda x: x[0]))
     logger.info("Started.")
 app.mount("/", StaticFiles(directory="static", html=True), name="static")

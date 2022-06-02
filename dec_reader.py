@@ -1,6 +1,7 @@
-from datetime import datetime
-from ics import Calendar, Event, Organizer, Attendee
 import json
+from datetime import datetime
+
+from ics import Attendee, Calendar, Event, Organizer
 
 LOCATIONS = """
 1 	г. Москва, ул. Земляной Вал, д.73

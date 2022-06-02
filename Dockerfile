@@ -13,5 +13,5 @@ RUN poetry export -f requirements.txt --without-hashes | pip install -r /dev/std
 COPY . /app/
 USER 33:33
 EXPOSE 80
-ENV REDIS=redis://redis/0
+ENV REDIS=redis://redis:6379/0
 CMD gunicorn -b 0.0.0.0:80 --access-logfile '-' --forwarded-allow-ips '*' webserver:app --workers 4 --worker-class uvicorn.workers.UvicornWorker

@@ -120,6 +120,9 @@
                     </div>
                 </div>
                 <p class="put-to-end">
+                    <details>
+                        <summary>Топ групп по загрузке</summary>
+                    </details>
                     <a href="https://t.me/mrvn4">
                         Не загружается расписание? Расписание загружается
                         криво?</a
@@ -188,6 +191,20 @@
                         // groupdom.value = opt.value;
                     }
                     // select.update();
+                });
+            fetch("/stats", {
+                method: "get",
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (stats) {
+                    const spoiler = document.querySelector("details");
+                    for (const [group, downloads] of Object.entries(stats)) {
+                        const elem = document.createElement("p");
+                        elem.innerText = `${group}: ${downloads}`;
+                        spoiler.append(elem);
+                    }
                 });
         </script>
     </body>
