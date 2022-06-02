@@ -22,6 +22,7 @@
                     avenir, segoe ui, helvetica neue, helvetica, Cantarell,
                     Ubuntu, roboto, noto, arial, sans-serif;
                 --uisize: 400px;
+                overflow-x: hidden;
             }
             .hidden {
                 display: none;
@@ -75,6 +76,25 @@
                     color: white;
                 }
             }
+            .nologos .logos {
+                display: none;
+            }
+            .flex-last {
+                order: 5;
+            }
+            #addbuttons {
+                display: flex;
+                flex-direction: column;
+            }
+            p {
+                word-wrap: break-word;
+            }
+            details {
+                max-width: var(--uisize);
+            }
+            img {
+                max-width: var(--uisize);
+            }
         </style>
         <link
             rel="stylesheet"
@@ -117,20 +137,20 @@
                                 (Android)
                             </div>
                         </a>
-                        <details>
-                            <summary>
-                                Добавили в календарь Google, а ничего нет?
-                            </summary>
-                            <p>
-                                Иногда необходимо вручную включить синхронизацию
-                                календаря.
-                            </p>
-                            <img src="android_sync_guide/1.jpg" />
-                            <img src="android_sync_guide/2.jpg" />
-                            <img src="android_sync_guide/3.jpg" />
-                        </details>
                     </div>
                 </div>
+                <details>
+                    <summary>
+                        Добавили в календарь Google, а ничего нет?
+                    </summary>
+                    <p>
+                        Иногда необходимо вручную включить синхронизацию
+                        календаря.
+                    </p>
+                    <img src="android_sync_guide/1.jpg" />
+                    <img src="android_sync_guide/2.jpg" />
+                    <img src="android_sync_guide/3.jpg" />
+                </details>
                 <p class="put-to-end">
                     <details>
                         <summary>Топ групп по загрузке</summary>
@@ -143,10 +163,18 @@
             </div>
         </div>
         <script>
+            const ua = navigator.userAgent.toLowerCase();
+            const isAndroid = ua.indexOf("android") > -1;
             const groupdom = document.getElementById("group");
             const buttons = document.getElementById("addbuttons");
             const webcal = document.getElementById("webcal");
             const google = document.getElementById("google");
+            if (isAndroid) {
+                console.log("android");
+                webcal.classList.add("pale");
+                webcal.classList.add("nologos");
+                webcal.parentElement.classList.add("flex-last");
+            }
             const urlParams = new URLSearchParams(location.search);
             const select = new TomSelect("#group", {
                 create: false,
