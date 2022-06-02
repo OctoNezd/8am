@@ -161,7 +161,7 @@
                     </p>
                 </details>
                 <p class="put-to-end">
-                    <details>
+                    <details id="stats">
                         <summary>Топ групп по загрузке</summary>
                     </details>
                     <a href="https://t.me/mrvn4">
@@ -248,7 +248,7 @@
                     return response.json();
                 })
                 .then(function (stats) {
-                    const spoiler = document.querySelector("details");
+                    const spoiler = document.querySelector("details#stats");
                     for (const [group, downloads] of Object.entries(stats)) {
                         const elem = document.createElement("p");
                         elem.innerText = `${group}: ${downloads}`;
