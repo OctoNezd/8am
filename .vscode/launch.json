@@ -11,10 +11,12 @@
             "module": "uvicorn",
             "args": [
                 "webserver:app",
-                "--reload",
             ],
             "jinja": true,
             "justMyCode": true,
+            "linux": {
+                "args": ["--reload"]
+            }
         }
     ]
 }
