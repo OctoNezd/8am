@@ -213,11 +213,13 @@
                     google["href"] =
                         "https://calendar.google.com/calendar/r?" +
                         new URLSearchParams({
-                            cid: `${location.origin}/group/${
-                                groupdom.value
-                            }.ics#ignoreme=${(Math.random() + 1)
-                                .toString(36)
-                                .substring(7)}`,
+                            cid: encodeURIComponent(
+                                `${location.origin}/group/${
+                                    groupdom.value
+                                }.ics?ignoreme=${(Math.random() + 1)
+                                    .toString(36)
+                                    .substring(7)}`
+                            ),
                         }).toString();
                 },
             });
