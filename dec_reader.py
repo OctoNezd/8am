@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 import aiohttp
 from ics import Attendee, Calendar, Event, Organizer
+from ics.parse import ContentLine
 
 LOCATIONS = """
 1 	г. Москва, ул. Земляной Вал, д.73
@@ -32,6 +33,12 @@ async def get_teams_urls():
 def generate_ical(tt):
     print("downloaded timetable")
     cal = Calendar()
+    for name in ["NAME", "X-WR-CALNAME"]:
+        cal.extra.append(ContentLine(
+            name, value=f"Расписание {tt['info']['group']['name']} (sharaga.octonezd.me)"))
+    cal.extra.append(ContentLine("X-PUBLISHED-TTL", value="PT12H"))
+    cal.extra.append(ContentLine(
+        "URL", value=f"webcal://sharaga.octonezd.me/group/{tt['info']['group']['groupID']}.ics"))
     debug_info = Event(name="Отладочная информация",
                        begin=datetime(1970, 1, 1), end=datetime(1970, 1, 1))
     debug_info.description = f"Сгенерировано: {datetime.now()}\nВерсия генератора: {__version__}\ngid:{tt['info']['group']['groupID']}"
