@@ -165,9 +165,9 @@
                         <summary>Топ групп по загрузке</summary>
                     </details>
                     <a href="https://t.me/mrvn4">
-                        Не загружается расписание? Расписание загружается
-                        криво?</a
-                    >
+                        Не загружается расписание? Расписание загружается криво?
+                    </a>
+                    <a href="changelog.html" id="appver">v0</a>
                 </p>
             </div>
         </div>
@@ -209,10 +209,15 @@
                     webcal[
                         "href"
                     ] = `webcal://${location.host}/group/${groupdom.value}.ics`;
+                    // because google loves to cache stuff we force update by passing in random string
                     google["href"] =
                         "https://calendar.google.com/calendar/r?" +
                         new URLSearchParams({
-                            cid: `${location.origin}/group/${groupdom.value}.ics`,
+                            cid: `${location.origin}/group/${
+                                groupdom.value
+                            }.ics?ignoreme=${(Math.random() + 1)
+                                .toString(36)
+                                .substring(7)}`,
                         }).toString();
                 },
             });
@@ -249,11 +254,15 @@
                 })
                 .then(function (stats) {
                     const spoiler = document.querySelector("details#stats");
-                    for (const [group, downloads] of Object.entries(stats)) {
-                        const elem = document.createElement("p");
+                    for (const [group, downloads] of Object.entries(
+                        stats["groups"]
+                    )) {
+                        const elem = document.createElement("a");
                         elem.innerText = `${group}: ${downloads}`;
                         spoiler.append(elem);
                     }
+                    document.querySelector("#appver").innerText =
+                        "Парсер v" + stats["system"]["parser_ver"];
                 });
         </script>
     </body>

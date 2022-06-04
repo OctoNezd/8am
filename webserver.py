@@ -32,7 +32,7 @@ async def get_group_ics(gid: int):
     if str(gid) not in GROUPS_INV:
         raise HTTPException(404, "Группа не существует")
     cached = await redis.hgetall(f"group:{gid}")
-    if cached == {} or datetime.now() - datetime.fromisoformat(cached["when"]) > timedelta(days=1):
+    if cached == {} or datetime.now() - datetime.fromisoformat(cached["when"]) > timedelta(days=1) or cached.get("ver", "0.1") != dec_reader.__version__:
         logger.info("Timetable for %s is outdated. Updating.", gid)
         try:
             tt = await get_new_ics(gid)
@@ -60,7 +60,7 @@ async def get_stats():
     a = {}
     for key, value in list((await redis.hgetall("stats")).items())[:10]:
         a[GROUPS_INV.get(key, key)] = value
-    return {k: v for k, v in sorted(a.items(), key=lambda item: int(item[1]), reverse=True)}
+    return {"groups": {k: v for k, v in sorted(a.items(), key=lambda item: int(item[1]), reverse=True)}, "system": {"parser_ver": dec_reader.__version__}}
 
 
 @app.on_event("startup")
@@ -81,5 +81,7 @@ async def startup():
                 tmpgroups[group["groupName"]] = str(group["groupID"])
                 GROUPS_INV[str(group["groupID"])] = group["groupName"]
     GROUPS = OrderedDict(sorted(tmpgroups.items(), key=lambda x: x[0]))
+    logger.info("Downloading MSTeams URLs...")
+    await dec_reader.get_teams_urls()
     logger.info("Started.")
 app.mount("/", StaticFiles(directory="static", html=True), name="static")

@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-
+import aiohttp
 from ics import Attendee, Calendar, Event, Organizer
 
 LOCATIONS = """
@@ -17,21 +17,36 @@ LOCATIONS = """
 LOCATIONS = {placeId: address for placeId,
              address in [location.split(" \t") for location in LOCATIONS]}
 
+TEAMS_URLS = {}
+
+__version__ = "0.2"
+
+
+async def get_teams_urls():
+    global TEAMS_URLS
+    async with aiohttp.ClientSession(base_url="https://mgutm.ru/", raise_for_status=True) as session:
+        async with session.get("/wp-json/prepods/v1/info") as resp:
+            TEAMS_URLS = {link["name"]: link["url"] for link in await resp.json()}
+
 
 def generate_ical(tt):
     print("downloaded timetable")
     cal = Calendar()
+    debug_info = Event(name="Отладочная информация",
+                       begin=datetime(1970, 1, 1), end=datetime(1970, 1, 1))
+    debug_info.description = f"Сгенерировано: {datetime.now()}\nВерсия генератора: {__version__}\ngid:{tt['info']['group']['groupID']}"
+    cal.events.add(debug_info)
     for lesson in tt["rasp"]:
         event = Event(
             name=lesson["дисциплина"],
             begin=datetime.fromisoformat(lesson["датаНачала"] + "+03:00"),
             end=datetime.fromisoformat(lesson["датаОкончания"] + "+03:00"),
-            organizer=Organizer(
-                email="hell@home.arpa",
-                common_name=f'{lesson["преподаватель"]}'),
-            attendees=[Attendee(
-                email="hell@home.arpa",
-                common_name=f'{lesson["преподаватель"]}')]
+            # organizer=Organizer(
+            #     email="hell@home.arpa",
+            #     common_name=f'{lesson["преподаватель"]}'),
+            # attendees=[Attendee(
+            #     email="hell@home.arpa",
+            #     common_name=f'{lesson["преподаватель"]}')]
         )
         event.description = f'Препод: {lesson["должность"]} {lesson["преподаватель"]}'
         if "-" in lesson["аудитория"]:
@@ -41,7 +56,8 @@ def generate_ical(tt):
             else:
                 location = f"Хуй знает где, каб. {room}"
         else:
-            location = "Дистанционно"
+            location = TEAMS_URLS.get(
+                lesson["преподаватель"], "Дистанционно, ссылка не найдена.")
         event.location = location
         cal.events.add(event)
     return str(cal)
@@ -49,9 +65,10 @@ def generate_ical(tt):
 
 if __name__ == "__main__":
     import asyncio
+    asyncio.run(get_teams_urls())
     with open("rasp.json", encoding="utf-8") as f:
         tt = json.load(f)["data"]
-    ical = asyncio.run(generate_ical(tt))
+    ical = generate_ical(tt)
     with open("test.ics", "w", newline='', encoding="utf-8") as f:
         f.write(ical)
-    print(LOCATIONS)
+    print(LOCATIONS, TEAMS_URLS)
