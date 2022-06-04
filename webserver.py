@@ -41,7 +41,7 @@ async def get_group_ics(gid: int):
         except aiohttp.ClientError as e:
             logger.error("Failed to get new timetable for %s",
                          gid, exc_info=True)
-            if gid not in CACHE:
+            if cached == {}:
                 raise HTTPException(
                     503, "Шарага не отвечает")
     else:
