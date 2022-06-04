@@ -24,6 +24,7 @@ async def get_new_ics(gid):
     tt = dec_reader.generate_ical(tt)
     await redis.hset(f"group:{gid}", "tt", tt)
     await redis.hset(f"group:{gid}", "when", datetime.now().isoformat())
+    await redis.hset(f"group:{gid}", "ver", dec_reader.__version__)
     return tt
 
 
