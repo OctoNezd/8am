@@ -20,7 +20,7 @@ LOCATIONS = {placeId: address for placeId,
 
 TEAMS_URLS = {}
 
-__version__ = "0.2"
+__version__ = "0.2.1"
 
 
 async def get_teams_urls():
@@ -65,6 +65,9 @@ def generate_ical(tt):
         else:
             location = TEAMS_URLS.get(
                 lesson["преподаватель"], "Дистанционно, ссылка не найдена.")
+            if "Дистанционно" not in location:
+                event.extra.append(ContentLine(
+                    "X-GOOGLE-CONFERENCE", value=location))
         event.location = location
         cal.events.add(event)
     return str(cal)

@@ -5,13 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Test ics generation",
+            "type": "python",
+            "request": "launch",
+            "program": "dec_reader.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
             "name": "Python: FastAPI",
             "type": "python",
             "request": "launch",
             "module": "uvicorn",
-            "args": [
-                "webserver:app",
-            ],
+            "args": ["webserver:app"],
             "jinja": true,
             "justMyCode": true,
             "linux": {
@@ -20,3 +26,4 @@
         }
     ]
 }
+
