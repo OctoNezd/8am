@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 import aiohttp
 from ics import Attendee, Calendar, Event, Organizer
 from ics.parse import ContentLine
@@ -20,7 +20,36 @@ LOCATIONS = {placeId: address for placeId,
 
 TEAMS_URLS = {}
 
-__version__ = "0.2.1"
+
+def gen_days(year):
+    start_date = datetime(year, 1, 1)
+    end_date = datetime(year, 12, 31)
+    d = start_date
+    dates = [start_date]
+    while d < end_date:
+        d += timedelta(days=1)
+        dates.append(d)
+    return dates
+
+
+def generate_invalid_group_ical():
+    cal = Calendar()
+    for name in ["NAME", "X-WR-CALNAME"]:
+        cal.extra.append(ContentLine(
+            name, value=f"Устаревшее расписание (sharaga.octonezd.me)"))
+    cal.extra.append(ContentLine("X-PUBLISHED-TTL", value="PT12Y"))
+    for date in gen_days(datetime.now().year):
+        event = Event(
+            name="Неверный ID расписания. Переустановите календарь",
+            begin=date,
+        )
+        cal.events.add(event)
+    return str(cal)
+
+
+INVALID_GROUP = generate_invalid_group_ical()
+
+__version__ = "0.2.2"
 
 
 async def get_teams_urls():

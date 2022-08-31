@@ -31,7 +31,7 @@ async def get_new_ics(gid):
 @app.get("/group/{gid}.ics", response_class=Response(media_type="text/calendar"))
 async def get_group_ics(gid: int):
     if str(gid) not in GROUPS_INV:
-        raise HTTPException(404, "Группа не существует")
+        return Response(dec_reader.INVALID_GROUP, media_type="text/calendar")
     cached = await redis.hgetall(f"group:{gid}")
     if cached == {} or datetime.now() - datetime.fromisoformat(cached["when"]) > timedelta(days=1) or cached.get("ver", "0.1") != dec_reader.__version__:
         logger.info("Timetable for %s is outdated. Updating.", gid)
