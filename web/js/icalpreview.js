@@ -23,8 +23,15 @@ export default function setup_calendar_preview(gid) {
                 title.innerText = event.title;
                 var teacher = document.createElement("p");
                 teacher.innerText = "👩‍🏫" + event.extendedProps.description;
-                var location = document.createElement("p");
-                location.innerText = "📌" + event.extendedProps.location;
+                var location = document.createElement("a");
+                location.classList.add("link");
+                location.innerText = event.extendedProps.location;
+                location.style.textDecoration = "underline !important";
+                location.href =
+                    "https://maps.yandex.ru/?text=" +
+                    encodeURI(
+                        location.innerText.split(", ").slice(1).join(", ")
+                    );
                 return { domNodes: [title, teacher, location] };
             },
         });
