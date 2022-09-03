@@ -1,16 +1,28 @@
-FROM python:3.10-bullseye
-
+FROM python:3.10-bullseye AS buildtmp
+WORKDIR /build/
 RUN pip install poetry==1.1.13
+COPY poetry.lock pyproject.toml /build/
+RUN poetry export -f requirements.txt --without-hashes > requirements.txt
+RUN apt update && apt install nodejs npm -y
+COPY ./static/ ./static
+RUN ls && cd static && npm install && npm run build && ls
+
+FROM python:3.10-bullseye AS app
+
 
 # Copy only requirements to cache them in docker layer
 WORKDIR /app
-COPY poetry.lock pyproject.toml /app/
-
+COPY ./static/icons/ /app/static/icons
+COPY ./static/android_sync_guide/ /app/static/android_sync_guide
+COPY ./static/*.html /app/static/
+COPY --from=buildtmp /build/static/sharaga-bundle* /app/static/
 # Project initialization:
-RUN poetry export -f requirements.txt --without-hashes | pip install -r /dev/stdin
+COPY --from=buildtmp /build/requirements.txt /app/
+RUN pip install -r requirements.txt
 
 # Creating folders, and files for a project:
-COPY . /app/
+COPY webserver.py /app/
+COPY dec_reader.py /app/
 USER 33:33
 EXPOSE 80
 ENV REDIS=redis://redis:6379/0

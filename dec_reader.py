@@ -49,7 +49,7 @@ def generate_invalid_group_ical():
 
 INVALID_GROUP = generate_invalid_group_ical()
 
-__version__ = "0.2.2"
+__version__ = "0.2.3"
 
 
 async def get_teams_urls():
