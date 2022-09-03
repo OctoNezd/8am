@@ -125,6 +125,10 @@ img {
         flex-direction: column;
         /* width: auto; */
     }
+    .fc-toolbar {
+        flex-direction: column;
+        gap: 5px;
+    }
 }
 @media (prefers-color-scheme: dark) {
     body {
@@ -139,8 +143,7 @@ img {
 }
 @media (display-mode: standalone) {
     /* All installed PWAs */
-    #nogcal,
-    #addbuttons {
+    .pwa-hide {
         display: none !important;
     }
 }
