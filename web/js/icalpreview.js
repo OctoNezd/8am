@@ -8,6 +8,7 @@ export default function setup_calendar_preview(gid) {
         calendar = new Calendar(calendarEl, {
             plugins: [iCalendarPlugin, listPlugin],
             initialView: "listWeek",
+            contentHeight: "auto",
             headerToolbar: { end: "listWeek,listMonth today prev,next" },
             buttonText: {
                 listWeek: "неделя",
