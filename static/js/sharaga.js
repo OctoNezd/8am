@@ -78,10 +78,15 @@ document.addEventListener("DOMContentLoaded", function () {
             return response.json();
         })
         .then(function (stats) {
-            const spoiler = document.querySelector("details#stats");
+            const spoiler = document.querySelector("#stats");
             for (const [group, downloads] of Object.entries(stats["groups"])) {
-                const elem = document.createElement("a");
-                elem.innerText = `${group}: ${downloads}`;
+                const elem = document.createElement("tr");
+                const cell1 = document.createElement("td");
+                cell1.innerText = group;
+                const cell2 = document.createElement("td");
+                cell2.innerText = downloads;
+                elem.append(cell1);
+                elem.append(cell2);
                 spoiler.append(elem);
             }
             document.querySelector("#appver").innerText =
