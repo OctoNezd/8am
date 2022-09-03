@@ -1,6 +1,8 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 var WebpackPwaManifest = require("webpack-pwa-manifest");
+
+const TerserPlugin = require("terser-webpack-plugin");
 const path = require("path");
 module.exports = {
     entry: "./js/sharaga.js",
@@ -55,6 +57,19 @@ module.exports = {
             path.resolve(__dirname, "node_modules"),
             path.resolve(__dirname, "./"),
             path.resolve(__dirname, "./src"),
+        ],
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                extractComments: false,
+                terserOptions: {
+                    format: {
+                        comments: false,
+                    },
+                },
+            }),
         ],
     },
 };
