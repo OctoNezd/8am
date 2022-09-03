@@ -1,6 +1,11 @@
 import setup_calendar_preview from "./icalpreview";
 import TomSelect from "tom-select";
 import "tom-select/dist/css/tom-select.css";
+import indexhtml from "index.html";
+import "/css/index.css";
+console.log("idx:", indexhtml);
+document.innerHTML = indexhtml;
+document.body.innerHTML = indexhtml;
 const ua = navigator.userAgent.toLowerCase();
 const isAndroid = ua.indexOf("android") > -1;
 const groupdom = document.getElementById("group");

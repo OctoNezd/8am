@@ -1,0 +1,133 @@
+.bold {
+    font-weight: bold;
+}
+.fc-list-event-title p {
+    margin: 0;
+}
+.center {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+body {
+    font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir,
+        segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto,
+        arial, sans-serif;
+    --uisize: 80vw;
+    --textcolor: black;
+    --buttonsize: 20vw;
+
+    overflow-x: hidden;
+}
+.row-desktop {
+    flex-direction: row;
+    display: flex;
+    gap: 10px;
+    width: var(--uisize);
+    justify-content: space-around;
+}
+
+@media screen and (orientation: portrait) {
+    body {
+        --uisize: 400px;
+        --buttonsize: var(--uisize);
+    }
+    #addbuttons {
+        flex-direction: column !important;
+        gap: 0;
+    }
+    #icalpreview {
+        width: 100vw !important;
+    }
+    .row-desktop {
+        flex-direction: column;
+        /* width: auto; */
+    }
+}
+.hidden {
+    display: none !important;
+}
+#addbuttons {
+    padding-top: 10px;
+}
+.button {
+    width: var(--buttonsize) !important;
+}
+.button-container {
+    display: block;
+    padding-top: 8px !important;
+}
+select {
+    padding-bottom: 4px;
+}
+body {
+    background-color: white;
+    min-height: 100vh;
+}
+.ts-wrapper {
+    padding-bottom: 4px;
+    width: 100%;
+}
+.logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+}
+.logos img {
+    max-width: 32px;
+    max-height: 32px;
+}
+a:visited {
+    color: inherit;
+}
+.mainflex {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+}
+.put-to-end {
+    /* flex-grow: 1; */
+    margin-top: auto;
+}
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #303030;
+        color: white;
+        --textcolor: white;
+    }
+    .fc-list-day-cushion,
+    tr.fc-list-event:hover {
+        color: black !important;
+    }
+}
+.nologos .logos {
+    display: none;
+}
+.flex-last {
+    order: 5;
+}
+#addbuttons {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+p {
+    word-wrap: break-word;
+}
+details {
+    max-width: var(--uisize);
+}
+img {
+    max-width: var(--uisize);
+}
+.link {
+    display: block;
+    color: var(--textcolor);
+}
+#icalpreview {
+    width: 80vw;
+}

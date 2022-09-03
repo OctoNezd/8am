@@ -13,10 +13,19 @@ module.exports = {
                 test: /\.css$/i,
                 use: ["style-loader", "css-loader"],
             },
+            {
+                test: /\.html$/i,
+                loader: "html-loader",
+            },
         ],
     },
     devtool: "source-map",
-    plugins: [new HtmlWebpackPlugin({ template: "main.html" })],
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: "template.html",
+            title: "Ш А Р А Г А",
+        }),
+    ],
     resolve: {
         modules: [
             path.resolve(__dirname, "node_modules"),
