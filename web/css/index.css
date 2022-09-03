@@ -117,7 +117,6 @@ img {
     }
     #addbuttons {
         flex-direction: column !important;
-        gap: 0;
     }
     #icalpreview {
         width: 100% !important;
