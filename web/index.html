@@ -12,31 +12,58 @@
                     ></select>
                 </div>
                 <div id="addbuttons" class="hidden">
-                    <div class="button-container">
-                        <a id="webcal" class="button knopf" href="">
-                            <div>
-                                <div class="logos">
-                                    <img src="icons/iphonecal.svg" />
-                                    <img src="icons/maccal.png" />
-                                    <img src="icons/outlook.svg" />
-                                    <img src="icons/icsx5.svg" />
-                                </div>
-                                Подписаться в календаре webcal <br />
-                                (iOS/macOS/Outlook/ICSx<sup>5</sup>)
+                    <!-- <div class="button-container"> -->
+                    <a id="webcal" class="button knopf" href="">
+                        <div>
+                            <div class="logos">
+                                <img src="icons/iphonecal.svg" />
+                                <img src="icons/maccal.png" />
+                                <img src="icons/outlook.svg" />
+                                <img src="icons/icsx5.svg" />
                             </div>
-                        </a>
-                    </div>
-                    <div class="button-container">
-                        <a id="google" class="button knopf" href="">
-                            <div>
-                                <div class="logos">
-                                    <img src="icons/gcal.svg" />
-                                </div>
-                                Подписаться в календаре Google<br />
-                                (Android)
+                            Подписаться в календаре webcal <br />
+                            (iOS/macOS/Outlook/ICSx<sup>5</sup>)
+                        </div>
+                    </a>
+                    <!-- </div> -->
+                    <!-- <div class="button-container"> -->
+                    <a id="google" class="button knopf" href="">
+                        <div>
+                            <div class="logos">
+                                <img src="icons/gcal.svg" />
                             </div>
-                        </a>
-                    </div>
+                            Подписаться в календаре Google<br />
+                            (Android)
+                        </div>
+                    </a>
+                    <!-- </div> -->
+                    <!-- <div
+                        class="button-container hidden"
+                        id="installAppContainer"
+                    > -->
+                    <a id="installApp" class="button knopf hidden" href="#">
+                        <div>
+                            <div class="logos">
+                                <img
+                                    src="icons/pwa_win.png"
+                                    id="installAppIconWin"
+                                    class="hidden"
+                                />
+                                <img
+                                    src="icons/pwa_ios.png"
+                                    id="installAppIconIos"
+                                    class="hidden"
+                                />
+                                <img
+                                    src="icons/pwa_android.png"
+                                    id="installAppIconAnd"
+                                    class="hidden"
+                                />
+                            </div>
+                            Добавить приложение на рабочий стол
+                        </div>
+                    </a>
+                    <!-- </div> -->
                 </div>
                 <a id="nogcal" class="link" href="/static/gcal.html">
                     Добавили в календарь Google, а ничего нет?

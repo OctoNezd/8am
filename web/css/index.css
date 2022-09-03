@@ -103,6 +103,13 @@ img {
 #icalpreview {
     width: 80vw;
 }
+.logos img {
+    max-width: 32px;
+    max-height: 32px;
+}
+.button-container .button {
+    height: 100%;
+}
 @media screen and (orientation: portrait) {
     body {
         --uisize: 400px;

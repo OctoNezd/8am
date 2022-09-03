@@ -1,9 +1,12 @@
+import indexhtml from "index.html";
+document.body.innerHTML = indexhtml;
 import setup_calendar_preview from "./icalpreview";
+import setup_pwa_add_button from "./pwa_add";
 import TomSelect from "tom-select";
 import "tom-select/dist/css/tom-select.css";
 import "/css/index.css";
-import indexhtml from "index.html";
-document.body.innerHTML = indexhtml;
+setup_pwa_add_button();
+
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
         navigator.serviceWorker
