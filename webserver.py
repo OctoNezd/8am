@@ -2,7 +2,7 @@ import os
 import aioredis
 from typing import OrderedDict
 import aiohttp
-from fastapi import FastAPI, HTTPException, Response
+from fastapi import FastAPI, HTTPException, Response, Request
 from fastapi.staticfiles import StaticFiles
 from datetime import datetime, timedelta
 import logging
@@ -63,6 +63,13 @@ async def get_stats():
         if key in GROUPS_INV:
             a[GROUPS_INV[key]] = value
     return {"groups": {k: v for k, v in sorted(a.items(), key=lambda item: int(item[1]), reverse=True)}, "system": {"parser_ver": dec_reader.__version__}}
+
+
+@app.middleware("http")
+async def add_my_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["Cache-Control"] = "max-age=43200, stale-if-error=43200"
+    return response
 
 
 @app.on_event("startup")

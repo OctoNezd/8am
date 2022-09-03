@@ -3,9 +3,8 @@ import TomSelect from "tom-select";
 import "tom-select/dist/css/tom-select.css";
 import indexhtml from "index.html";
 import "/css/index.css";
-console.log("idx:", indexhtml);
-document.innerHTML = indexhtml;
 document.body.innerHTML = indexhtml;
+const icalpreview = document.getElementById("icalpreview");
 const ua = navigator.userAgent.toLowerCase();
 const isAndroid = ua.indexOf("android") > -1;
 const groupdom = document.getElementById("group");
@@ -30,8 +29,11 @@ const select = new TomSelect("#group", {
     searchField: "title",
 
     onChange: function () {
-        if (groupdom.value === "NO") {
+        console.log("selected", groupdom.value);
+        if (["NO", ""].includes(groupdom.value)) {
+            console.log("hiding everything");
             buttons.classList.add("hidden");
+            icalpreview.classList.add("hidden");
             return;
         }
         history.pushState(
@@ -39,7 +41,9 @@ const select = new TomSelect("#group", {
             "",
             "?" + new URLSearchParams({ group: groupdom.value })
         );
+        localStorage.setItem("last_gid", groupdom.value);
         buttons.classList.remove("hidden");
+        icalpreview.classList.remove("hidden");
         webcal[
             "href"
         ] = `webcal://${location.host}/group/${groupdom.value}.ics`;
@@ -65,6 +69,7 @@ fetch("/groups", {
     })
     .then(function (groups) {
         const urlgroup = urlParams.get("group");
+        var gidSelected = false;
         for (const [group, gid] of Object.entries(groups)) {
             select.addOption({
                 id: gid,
@@ -72,6 +77,14 @@ fetch("/groups", {
             });
             if (urlgroup === gid) {
                 select.setValue(gid);
+                gidSelected = true;
+            }
+        }
+        if (!gidSelected) {
+            const lastgid = localStorage.getItem("last_gid");
+            if (lastgid !== undefined) {
+                console.log("set gid to last gid:", lastgid);
+                select.setValue(lastgid);
             }
         }
     });

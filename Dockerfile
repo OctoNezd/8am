@@ -18,8 +18,7 @@ WORKDIR /app
 COPY --from=requirements /build/requirements.txt /app/
 RUN pip install -r requirements.txt
 # Copy only requirements to cache them in docker layer
-COPY ./static/android_sync_guide/ /app/static/android_sync_guide
-COPY ./static/*.html /app/static/
+COPY ./static/ /app/static/
 COPY --from=webpack /build/dist /app/web/dist
 # Creating folders, and files for a project:
 COPY webserver.py /app/
