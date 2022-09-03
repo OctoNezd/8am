@@ -60,7 +60,8 @@ def get_groups():
 async def get_stats():
     a = {}
     for key, value in list((await redis.hgetall("stats")).items())[:10]:
-        a[GROUPS_INV.get(key, key)] = value
+        if key in GROUPS_INV:
+            a[GROUPS_INV[key]] = value
     return {"groups": {k: v for k, v in sorted(a.items(), key=lambda item: int(item[1]), reverse=True)}, "system": {"parser_ver": dec_reader.__version__}}
 
 
