@@ -10,11 +10,11 @@ COPY ./static/ ./
 RUN npm install && npm run build && ls
 
 FROM python:3.10-bullseye AS app
+WORKDIR /app
 # Project initialization:
 COPY --from=requirements /build/requirements.txt /app/
 RUN pip install -r requirements.txt
 # Copy only requirements to cache them in docker layer
-WORKDIR /app
 COPY ./static/icons/ /app/static/icons
 COPY ./static/android_sync_guide/ /app/static/android_sync_guide
 COPY ./static/*.html /app/static/
