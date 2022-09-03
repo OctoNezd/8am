@@ -10,16 +10,15 @@ COPY ./static/ ./
 RUN npm install && npm run build && ls
 
 FROM python:3.10-bullseye AS app
+# Project initialization:
+COPY --from=requirements /build/requirements.txt /app/
+RUN pip install -r requirements.txt
 # Copy only requirements to cache them in docker layer
 WORKDIR /app
 COPY ./static/icons/ /app/static/icons
 COPY ./static/android_sync_guide/ /app/static/android_sync_guide
 COPY ./static/*.html /app/static/
 COPY --from=webpack /build/sharaga-bundle* /app/static/
-# Project initialization:
-COPY --from=requirements /build/requirements.txt /app/
-RUN pip install -r requirements.txt
-
 # Creating folders, and files for a project:
 COPY webserver.py /app/
 COPY dec_reader.py /app/
