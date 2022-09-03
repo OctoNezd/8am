@@ -1,6 +1,5 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
-var WebpackPwaManifest = require("webpack-pwa-manifest");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const path = require("path");
@@ -29,28 +28,21 @@ module.exports = {
             template: "template.html",
             title: "Ш А Р А Г А",
         }),
-        new FaviconsWebpackPlugin("./icons/favicon.png"),
+        new FaviconsWebpackPlugin({
+            logo: "./icons/favicon.png",
+            favicons: {
+                appName: "Ш А Р А Г А",
+                appDescription: "Ш А Р А Г А",
+                developerURL: null, // prevent retrieving from the nearest package.json
+                background: "#fff",
+                theme_color: "#303",
+            },
+        }),
         new WorkboxPlugin.GenerateSW({
             // these options encourage the ServiceWorkers to get in there fast
             // and not allow any straggling "old" SWs to hang around
             clientsClaim: true,
             skipWaiting: true,
-        }),
-        new WebpackPwaManifest({
-            publicPath: "/",
-            name: "Ш А Р А Г А",
-            short_name: "Ш А Р А Г А",
-            description:
-                "Генератор ICS файлов и альтернативный интерфейс расписания",
-            background_color: "#ffffff",
-            crossorigin: "use-credentials", //can be null, use-credentials or anonymous
-            ios: true,
-            icons: [
-                {
-                    src: path.resolve("icons/favicon.png"),
-                    sizes: [96, 128, 192, 256, 384, 512], // multiple sizes
-                },
-            ],
         }),
     ],
     resolve: {

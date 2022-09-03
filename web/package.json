@@ -4,8 +4,7 @@
         "@fullcalendar/icalendar": "^5.11.3",
         "@fullcalendar/list": "^5.11.3",
         "fullcalendar": "^5.11.3",
-        "tom-select": "^2.1.0",
-        "webpack-pwa-manifest": "^4.3.0"
+        "tom-select": "^2.1.0"
     },
     "scripts": {
         "build": "webpack --config webpack.config.js",
