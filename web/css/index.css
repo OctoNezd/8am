@@ -100,6 +100,9 @@ img {
     display: block;
     color: var(--textcolor);
 }
+.location_link {
+    text-decoration: underline !important;
+}
 #icalpreview {
     width: 80vw;
     min-height: 70vh;

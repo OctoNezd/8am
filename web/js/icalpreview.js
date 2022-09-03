@@ -25,8 +25,9 @@ export default function setup_calendar_preview(gid) {
                 teacher.innerText = "👩‍🏫" + event.extendedProps.description;
                 var location = document.createElement("a");
                 location.classList.add("link");
+                location.classList.add("location_link");
                 location.innerText = event.extendedProps.location;
-                location.style.textDecoration = "underline !important";
+                location.target = "sharaga_location";
                 location.href =
                     "https://maps.yandex.ru/?text=" +
                     encodeURI(
