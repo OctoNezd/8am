@@ -1,7 +1,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 var WebpackPwaManifest = require("webpack-pwa-manifest");
-
+const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const path = require("path");
 module.exports = {
@@ -28,8 +28,8 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: "template.html",
             title: "Ш А Р А Г А",
-            favicon: "./icons/favicon.png",
         }),
+        new FaviconsWebpackPlugin("./icons/favicon.png"),
         new WorkboxPlugin.GenerateSW({
             // these options encourage the ServiceWorkers to get in there fast
             // and not allow any straggling "old" SWs to hang around
