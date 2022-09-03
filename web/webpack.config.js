@@ -44,6 +44,7 @@ module.exports = {
                 "Генератор ICS файлов и альтернативный интерфейс расписания",
             background_color: "#ffffff",
             crossorigin: "use-credentials", //can be null, use-credentials or anonymous
+            ios: true,
             icons: [
                 {
                     src: path.resolve("icons/favicon.png"),
