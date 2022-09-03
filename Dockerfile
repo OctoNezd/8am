@@ -15,7 +15,7 @@ WORKDIR /app
 COPY ./static/icons/ /app/static/icons
 COPY ./static/android_sync_guide/ /app/static/android_sync_guide
 COPY ./static/*.html /app/static/
-COPY --from=webpack /build/static/sharaga-bundle* /app/static/
+COPY --from=webpack /build/sharaga-bundle* /app/static/
 # Project initialization:
 COPY --from=requirements /build/requirements.txt /app/
 RUN pip install -r requirements.txt
