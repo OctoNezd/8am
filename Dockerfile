@@ -1,23 +1,23 @@
-FROM python:3.10-bullseye AS buildtmp
+FROM python:3.10-bullseye AS requirements
 WORKDIR /build/
 RUN pip install poetry==1.1.13
 COPY poetry.lock pyproject.toml /build/
 RUN poetry export -f requirements.txt --without-hashes > requirements.txt
-RUN apt update && apt install nodejs npm -y
-COPY ./static/ ./static
-RUN ls && cd static && npm install && npm run build && ls
+
+FROM node:18-alpine AS webpack
+WORKDIR /build/
+COPY ./static/ ./
+RUN npm install && npm run build && ls
 
 FROM python:3.10-bullseye AS app
-
-
 # Copy only requirements to cache them in docker layer
 WORKDIR /app
 COPY ./static/icons/ /app/static/icons
 COPY ./static/android_sync_guide/ /app/static/android_sync_guide
 COPY ./static/*.html /app/static/
-COPY --from=buildtmp /build/static/sharaga-bundle* /app/static/
+COPY --from=webpack /build/static/sharaga-bundle* /app/static/
 # Project initialization:
-COPY --from=buildtmp /build/requirements.txt /app/
+COPY --from=requirements /build/requirements.txt /app/
 RUN pip install -r requirements.txt
 
 # Creating folders, and files for a project:
