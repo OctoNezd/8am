@@ -29,23 +29,6 @@ body {
     justify-content: space-around;
 }
 
-@media screen and (orientation: portrait) {
-    body {
-        --uisize: 400px;
-        --buttonsize: var(--uisize);
-    }
-    #addbuttons {
-        flex-direction: column !important;
-        gap: 0;
-    }
-    #icalpreview {
-        width: 100vw !important;
-    }
-    .row-desktop {
-        flex-direction: column;
-        /* width: auto; */
-    }
-}
 .hidden {
     display: none !important;
 }
@@ -93,17 +76,6 @@ a:visited {
     /* flex-grow: 1; */
     margin-top: auto;
 }
-@media (prefers-color-scheme: dark) {
-    body {
-        background-color: #303030;
-        color: white;
-        --textcolor: white;
-    }
-    .fc-list-day-cushion,
-    tr.fc-list-event:hover {
-        color: black !important;
-    }
-}
 .nologos .logos {
     display: none;
 }
@@ -130,4 +102,39 @@ img {
 }
 #icalpreview {
     width: 80vw;
+}
+@media screen and (orientation: portrait) {
+    body {
+        --uisize: 400px;
+        --buttonsize: var(--uisize);
+    }
+    #addbuttons {
+        flex-direction: column !important;
+        gap: 0;
+    }
+    #icalpreview {
+        width: 100% !important;
+    }
+    .row-desktop {
+        flex-direction: column;
+        /* width: auto; */
+    }
+}
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #303030;
+        color: white;
+        --textcolor: white;
+    }
+    .fc-list-day-cushion,
+    tr.fc-list-event:hover {
+        color: black !important;
+    }
+}
+@media (display-mode: standalone) {
+    /* All installed PWAs */
+    #nogcal,
+    #addbuttons {
+        display: none !important;
+    }
 }

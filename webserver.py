@@ -7,6 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from datetime import datetime, timedelta
 import logging
 import dec_reader
+from urllib.parse import urlparse
 logger = logging.getLogger("main")
 app = FastAPI()
 GROUPS = {}
@@ -69,6 +70,10 @@ async def get_stats():
 async def add_my_headers(request: Request, call_next):
     response = await call_next(request)
     response.headers["Cache-Control"] = "max-age=43200, stale-if-error=43200"
+    if response.status_code in range(200, 400) and urlparse(str(request.url)).path.endswith(".js"):
+        response.media_type = "text/javascript"
+        response.headers["Content-Type"] = "application/javascript"
+        logger.info("set text/javascript for %s", request.url)
     return response
 
 

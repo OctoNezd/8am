@@ -17,13 +17,9 @@
             "type": "python",
             "request": "launch",
             "module": "uvicorn",
-            "args": ["webserver:app"],
+            "args": ["webserver:app", "--reload", "--host", "0.0.0.0"],
             "jinja": true,
-            "justMyCode": true,
-            "linux": {
-                "args": ["--reload"]
-            }
+            "justMyCode": true
         }
     ]
 }
-

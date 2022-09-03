@@ -1,8 +1,8 @@
 import setup_calendar_preview from "./icalpreview";
 import TomSelect from "tom-select";
 import "tom-select/dist/css/tom-select.css";
-import indexhtml from "index.html";
 import "/css/index.css";
+import indexhtml from "index.html";
 document.body.innerHTML = indexhtml;
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
