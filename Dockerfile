@@ -6,10 +6,10 @@ RUN poetry export -f requirements.txt --without-hashes > requirements.txt
 
 FROM node:18-alpine AS webpack
 WORKDIR /build/
-COPY ./static/package* ./
-COPY ./static/webpack.config.js ./
+COPY ./web/package* ./
+COPY ./web/webpack.config.js ./
 RUN npm install 
-COPY ./static/js ./js
+COPY ./web/ ./
 RUN npm run build && ls
 
 FROM python:3.10-bullseye AS app
@@ -18,10 +18,9 @@ WORKDIR /app
 COPY --from=requirements /build/requirements.txt /app/
 RUN pip install -r requirements.txt
 # Copy only requirements to cache them in docker layer
-COPY ./static/icons/ /app/static/icons
 COPY ./static/android_sync_guide/ /app/static/android_sync_guide
 COPY ./static/*.html /app/static/
-COPY --from=webpack /build/sharaga-bundle* /app/static/
+COPY --from=webpack /build/dist /app/web/dist
 # Creating folders, and files for a project:
 COPY webserver.py /app/
 COPY dec_reader.py /app/

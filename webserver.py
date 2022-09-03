@@ -86,4 +86,5 @@ async def startup():
     logger.info("Downloading MSTeams URLs...")
     await dec_reader.get_teams_urls()
     logger.info("Started.")
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+app.mount("/static", StaticFiles(directory="static", html=True), name="static")
+app.mount("/", StaticFiles(directory="web/dist", html=True), name="web")
