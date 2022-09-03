@@ -6,8 +6,11 @@ RUN poetry export -f requirements.txt --without-hashes > requirements.txt
 
 FROM node:18-alpine AS webpack
 WORKDIR /build/
-COPY ./static/ ./
-RUN npm install && npm run build && ls
+COPY ./static/package* ./
+COPY ./static/webpack.config.js ./
+RUN npm install 
+COPY ./static/js ./js
+RUN npm run build && ls
 
 FROM python:3.10-bullseye AS app
 WORKDIR /app
