@@ -121,6 +121,17 @@ img {
     --knopf-luminosity: 28%;
 }
 /* mobile */
+body {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-text-size-adjust: 100%;
+}
+
 @media screen and (orientation: portrait) {
     body {
         --uisize: min(100vw, 400px);
@@ -268,14 +279,4 @@ body.pwa {
 }
 .fc-list-event-title .fa-fw {
     margin-right: 0.2em;
-}
-
-body {
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
 }
