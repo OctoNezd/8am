@@ -1,7 +1,12 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
+const webpack = require("webpack");
 const path = require("path");
+let commitHash = require("child_process")
+    .execSync("git rev-parse --short HEAD")
+    .toString()
+    .trim();
 module.exports = {
     entry: "./js/sharaga.js",
     output: {
@@ -44,6 +49,9 @@ module.exports = {
             // and not allow any straggling "old" SWs to hang around
             clientsClaim: true,
             skipWaiting: true,
+        }),
+        new webpack.DefinePlugin({
+            __COMMIT_HASH__: JSON.stringify(commitHash),
         }),
     ],
     resolve: {

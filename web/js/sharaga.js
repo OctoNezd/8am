@@ -121,6 +121,7 @@ fetch("/stats", {
             elem.append(cell2);
             spoiler.append(elem);
         }
-        document.querySelector("#appver").innerText =
-            "Парсер v" + stats["system"]["parser_ver"] + "\n" + pwaDetectType;
+        document.querySelector(
+            "#appver"
+        ).innerText = `Парсер v ${stats["system"]["parser_ver"]} (${__COMMIT_HASH__})\n${pwaDetectType}`;
     });

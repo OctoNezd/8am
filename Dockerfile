@@ -7,6 +7,7 @@ RUN poetry export -f requirements.txt --without-hashes > requirements.txt
 FROM node:18-alpine AS webpack
 WORKDIR /build/
 COPY ./web/package* ./
+COPY ./.git ./.git
 RUN npm install 
 COPY ./web/ ./
 RUN npm run build && ls
