@@ -1,5 +1,4 @@
 import os
-import aioredis
 from typing import OrderedDict
 import aiohttp
 from fastapi import FastAPI, HTTPException, Response, Request
@@ -14,8 +13,13 @@ GROUPS = {}
 GROUPS_INV = {}
 
 CACHE = {}
-redis = aioredis.from_url(os.environ.get(
-    "REDIS", "redis://localhost:6379/0"), decode_responses=True)
+if "REDIS" in os.environ:
+    import aioredis
+    redis = aioredis.from_url(os.environ.get["REDIS"], decode_responses=True)
+else:
+    from fakeredis import aioredis
+    logger.critical("ERROR: Redis is not available, using fakeredis")
+    redis = aioredis.FakeRedis()
 
 
 async def get_new_ics(gid):

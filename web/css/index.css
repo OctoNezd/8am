@@ -115,6 +115,11 @@ img {
 .button-container .button {
     height: 100%;
 }
+.fc-list-day > th {
+    z-index: 1
+}
+
+
 @media screen and (orientation: portrait) {
     body {
         --uisize: min(100vw, 400px);
