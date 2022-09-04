@@ -15,7 +15,7 @@ GROUPS_INV = {}
 CACHE = {}
 if "REDIS" in os.environ:
     import aioredis
-    redis = aioredis.from_url(os.environ.get["REDIS"], decode_responses=True)
+    redis = aioredis.from_url(os.environ["REDIS"], decode_responses=True)
 else:
     from fakeredis import aioredis
     logger.critical("ERROR: Redis is not available, using fakeredis")
