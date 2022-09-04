@@ -168,4 +168,4 @@ window
     .matchMedia("(prefers-color-scheme: dark)")
     .addEventListener("change", updateThemeColor);
 updateThemeColor();
-document.addEventListener("visibilitychange", updateThemeColor);
+document.onvisibilitychange = updateThemeColor;
