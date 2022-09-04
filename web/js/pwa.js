@@ -12,8 +12,21 @@ const isIphone =
     ].includes(navigator.platform) ||
     // iPad on iOS 13 detection
     (ua.includes("mac") && "ontouchend" in document);
-const isPwa = window.matchMedia("(display-mode: standalone)").matches;
-export { isPwa };
+const pwaMediaDetect = window.matchMedia("(display-mode: standalone)").matches;
+const urlParams = new URLSearchParams(location.search);
+const pwaUrlDetect = urlParams.get("homescreen") === "1";
+const isPwa = pwaMediaDetect || pwaUrlDetect;
+let pwaDetectType = "Режим страницы";
+if (pwaMediaDetect) {
+    pwaDetectType = "Режим PWA (display-mode: standalone)";
+} else if (pwaUrlDetect) {
+    pwaDetectType = "Режим PWA (URLSearchParams)";
+}
+if (isPwa) {
+    pwaDetectType += ` (${location.search})`;
+}
+console.log(isPwa, pwaDetectType);
+export { isPwa, pwaDetectType };
 export default function () {
     addEventListener("beforeinstallprompt", (e) => {
         installApp.classList.remove("hidden");
@@ -21,6 +34,7 @@ export default function () {
     });
 
     if (isPwa) {
+        document.body.classList.add("pwa");
         setup_pwa_modal();
     } else {
         const installApp = document.getElementById("installApp");

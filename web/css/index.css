@@ -190,17 +190,15 @@ img {
 #pwa-header > .title {
     font-weight: bold;
 }
-@media (display-mode: standalone) {
-    /* All installed PWAs */
-    .pwa-hide {
-        display: none !important;
-    }
-    .pwa-show {
-        display: block !important;
-    }
-    body {
-        margin: 0;
-    }
+/* All installed PWAs */
+body.pwa .pwa-hide {
+    display: none !important;
+}
+body.pwa .pwa-show {
+    display: block !important;
+}
+body.pwa {
+    margin: 0;
 }
 
 /* offline */

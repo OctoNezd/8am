@@ -1,7 +1,6 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
-const WebpackBar = require("webpackbar");
 const path = require("path");
 module.exports = {
     entry: "./js/sharaga.js",
@@ -46,7 +45,6 @@ module.exports = {
             clientsClaim: true,
             skipWaiting: true,
         }),
-        new WebpackBar(),
     ],
     resolve: {
         modules: [

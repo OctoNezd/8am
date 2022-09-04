@@ -19,7 +19,7 @@ if "REDIS" in os.environ:
 else:
     from fakeredis import aioredis
     logger.critical("ERROR: Redis is not available, using fakeredis")
-    redis = aioredis.FakeRedis()
+    redis = aioredis.FakeRedis(decode_responses=True)
 
 
 async def get_new_ics(gid):

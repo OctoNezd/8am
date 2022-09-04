@@ -1,12 +1,12 @@
 import indexhtml from "index.html";
 document.body.innerHTML = indexhtml;
 import setup_calendar_preview from "./icalpreview";
-import setup_pwa, { isPwa } from "./pwa";
+import setup_pwa, { pwaDetectType } from "./pwa";
 import setup_icons from "./icons.js";
 import TomSelect from "tom-select";
 import "tom-select/dist/css/tom-select.css";
 import "/css/index.css";
-console.log("PWA:", isPwa);
+console.log("PWA:", pwaDetectType);
 setup_icons();
 setup_pwa();
 if ("serviceWorker" in navigator) {
@@ -32,9 +32,10 @@ if (isAndroid) {
     console.log("android");
     webcal.classList.add("pale");
     webcal.classList.add("nologos");
-    webcal.parentElement.classList.add("flex-last");
+    webcal.classList.add("flex-last");
 }
-const urlParams = new URLSearchParams(location.search);
+let urlParams = new URLSearchParams(location.search);
+console.log("urlParams: " + urlParams);
 const select = new TomSelect("#group", {
     create: false,
     sortField: {
@@ -53,11 +54,8 @@ const select = new TomSelect("#group", {
             icalpreview.classList.add("hidden");
             return;
         }
-        history.pushState(
-            "",
-            "",
-            "?" + new URLSearchParams({ group: groupdom.value })
-        );
+        urlParams.set("group", groupdom.value);
+        history.pushState("", "", "?" + urlParams);
         localStorage.setItem("last_gid", groupdom.value);
         buttons.classList.remove("hidden");
         icalpreview.classList.remove("hidden");
@@ -124,8 +122,5 @@ fetch("/stats", {
             spoiler.append(elem);
         }
         document.querySelector("#appver").innerText =
-            "Парсер v" +
-            stats["system"]["parser_ver"] +
-            "\n" +
-            (isPwa ? "Режим PWA" : "Режим страницы");
+            "Парсер v" + stats["system"]["parser_ver"] + "\n" + pwaDetectType;
     });
