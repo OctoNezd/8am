@@ -1,12 +1,14 @@
 import indexhtml from "index.html";
 document.body.innerHTML = indexhtml;
 import setup_calendar_preview from "./icalpreview";
-import setup_pwa_add_button from "./pwa_add";
+import setup_pwa, { isPwa } from "./pwa";
+import setup_icons from "./icons.js";
 import TomSelect from "tom-select";
 import "tom-select/dist/css/tom-select.css";
 import "/css/index.css";
-setup_pwa_add_button();
-
+console.log("PWA:", isPwa);
+setup_icons();
+setup_pwa();
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
         navigator.serviceWorker
@@ -122,5 +124,8 @@ fetch("/stats", {
             spoiler.append(elem);
         }
         document.querySelector("#appver").innerText =
-            "Парсер v" + stats["system"]["parser_ver"];
+            "Парсер v" +
+            stats["system"]["parser_ver"] +
+            "\n" +
+            (isPwa ? "Режим PWA" : "Режим страницы");
     });

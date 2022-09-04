@@ -1,9 +1,6 @@
 .bold {
     font-weight: bold;
 }
-.fc-list-event-title p {
-    margin: 0;
-}
 .center {
     text-align: center;
     display: flex;
@@ -16,9 +13,11 @@ body {
         segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto,
         arial, sans-serif;
     --uisize: 80vw;
-    --textcolor: black;
+    --text: black;
     --buttonsize: 20vw;
-
+    --background: white;
+    background-color: var(--background);
+    color: var(--text);
     overflow-x: hidden;
 }
 .row-desktop {
@@ -45,10 +44,6 @@ body {
 select {
     padding-bottom: 4px;
 }
-body {
-    background-color: white;
-    min-height: 100vh;
-}
 .ts-wrapper {
     padding-bottom: 4px;
     width: 100%;
@@ -69,7 +64,6 @@ a:visited {
 .mainflex {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
     align-items: center;
 }
 .put-to-end {
@@ -98,7 +92,7 @@ img {
 }
 .link {
     display: block;
-    color: var(--textcolor);
+    color: var(--text);
 }
 .location_link {
     text-decoration: underline !important;
@@ -115,15 +109,22 @@ img {
 .button-container .button {
     height: 100%;
 }
-.fc-list-day > th {
-    z-index: 1
+
+.negative {
+    --knopf-hue: 356;
+    --knopf-saturation: 57%;
+    --knopf-luminosity: 51%;
 }
-
-
+.positive {
+    --knopf-hue: 164;
+    --knopf-saturation: 88%;
+    --knopf-luminosity: 28%;
+}
+/* mobile */
 @media screen and (orientation: portrait) {
     body {
         --uisize: min(100vw, 400px);
-        --buttonsize: var(--uisize);
+        --buttonsize: 80vw;
     }
     #addbuttons {
         flex-direction: column !important;
@@ -133,27 +134,140 @@ img {
     }
     .row-desktop {
         flex-direction: column;
-        /* width: auto; */
     }
     .fc-toolbar {
         flex-direction: column;
         gap: 5px;
     }
+    .ts-wrapper {
+        width: var(--buttonsize);
+    }
+    #appheader h1 {
+        margin-bottom: 0;
+    }
+    .fc-list {
+        border: 0 !important;
+        border-left: 0 !important;
+        border-right: 0 !important;
+    }
 }
 @media (prefers-color-scheme: dark) {
     body {
-        background-color: #303030;
-        color: white;
-        --textcolor: white;
+        --background: #303030;
+        --text: white;
     }
     .fc-list-day-cushion,
     tr.fc-list-event:hover {
         color: black !important;
     }
+    .knopf.pale {
+        color: rgba(255, 255, 255, 0.8) !important;
+        -webkit-text-fill-color: unset !important;
+    }
+}
+/* pwa */
+.pwa-show {
+    display: none !important;
+}
+#pwa-header {
+    width: 100vw;
+    max-height: 56px;
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    align-items: center;
+    font-size: 20pt;
+    margin-bottom: 8px;
+}
+#pwa-header > h6 {
+    margin: 0;
+}
+#pwa-settings-button {
+    margin-left: 16px;
+    margin-right: 32px;
+    font-size: 24px;
+}
+#pwa-header > .title {
+    font-weight: bold;
 }
 @media (display-mode: standalone) {
     /* All installed PWAs */
     .pwa-hide {
         display: none !important;
     }
+    .pwa-show {
+        display: block !important;
+    }
+    body {
+        margin: 0;
+    }
+}
+
+/* offline */
+#offline-notice {
+    color: red;
+    display: none;
+}
+.offline #controls {
+    display: none;
+}
+.offline #offline-notice {
+    display: block;
+}
+
+.modal-open {
+    overflow: hidden;
+}
+/* !!! DIFFERENT THINGS !!!! */
+.modal.open {
+    pointer-events: auto;
+    opacity: 1;
+}
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    background-color: rgba(0, 0, 0, 0.16);
+    display: flex;
+    z-index: 100;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(1);
+
+    transition: transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946),
+        opacity 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+}
+.modal-body {
+    max-width: 80vw;
+    z-index: 101;
+    background-color: var(--background);
+    padding: 15px;
+    border-radius: 8px;
+}
+#pwa-settings-modal > h3 {
+    margin-top: 0;
+}
+#pwa-settings-apply {
+    margin-top: 1.2em;
+}
+
+/* fullcalendar customizations */
+.fc-list-day > th {
+    z-index: 1;
+}
+.fc-list-event > :nth-child(2),
+.fc-list-table > thead > tr > :nth-child(2) {
+    display: none;
+}
+.fc-list-event-title p {
+    margin: 0;
+}
+.fc-list-event-title .fa-fw {
+    margin-right: 0.2em;
 }
