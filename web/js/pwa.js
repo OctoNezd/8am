@@ -168,8 +168,4 @@ window
     .matchMedia("(prefers-color-scheme: dark)")
     .addEventListener("change", updateThemeColor);
 updateThemeColor();
-window.addEventListener("visibilitychange", function () {
-    if (document.visibilityState === "visible") {
-        updateThemeColor();
-    }
-});
+window.addEventListener("visibilitychange", updateThemeColor);
