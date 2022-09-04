@@ -280,3 +280,7 @@ body.pwa {
 .fc-list-event-title .fa-fw {
     margin-right: 0.2em;
 }
+
+.fa-train-subway {
+    color: white !important;
+}
