@@ -137,7 +137,7 @@ function getBgColor() {
     }
     if (document.querySelector(".modal.open") !== null) {
         var base = hexToRGB(bgcolor);
-        var added = [0, 0, 0, 0.3];
+        var added = [0, 0, 0, 0.4];
 
         var mix = [];
         mix[3] = 1 - (1 - added[3]) * (1 - base[3]); // alpha
