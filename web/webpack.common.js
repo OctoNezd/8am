@@ -35,8 +35,8 @@ module.exports = {
                 appName: "Ш А Р А Г А",
                 appDescription: "Ш А Р А Г А",
                 developerURL: null, // prevent retrieving from the nearest package.json
-                background: "#fff",
-                theme_color: "#303",
+                background: "#ffffff",
+                theme_color: "#303030",
             },
         }),
         new WorkboxPlugin.GenerateSW({
