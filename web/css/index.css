@@ -291,12 +291,9 @@ body.pwa {
     color: white !important;
 }
 .iosModalMessageContainer {
-    height: 100vh;
     display: flex;
     flex-direction: column;
-
 }
-
 .iosModalMessage {
     min-width:80vw !important;
     display: flex;
@@ -310,13 +307,17 @@ body.ipad .iosModalMessageContainer {
     padding-left: 20vh;
 }
 .iosModalMessage > svg {
-    /* min-width: 64px; */
+    min-width: 48px;
     padding-right: 5px;
 }
 .iosModalMessageContainer > .iosModalMessage {
     position:relative;
     background-color:var(--background);
     min-height:20px !important;
+}
+body.iphone .iosModalMessageContainer {
+    bottom: 0;
+    position: fixed;
 }
 body.iphone .iosModalMessageContainer > .iosModalMessage:after {
     content:'';
@@ -330,10 +331,14 @@ body.iphone .iosModalMessageContainer > .iosModalMessage:after {
     border-top: solid 20px var(--background);
     border-left: solid 20px transparent;
     border-right: solid 20px transparent;
+    padding-bottom: env(safe-area-inset-bottom);
+
 }
 body.iphone .iosModalMessageContainer {
     justify-content: flex-end;
-    padding-bottom: calc(env(safe-area-inset-bottom));
+}
+body.ipad .iosModalMessageContainer {
+    height: 100vh;
 }
 body.ipad .iosModalMessage {
     justify-content: flex-start;
