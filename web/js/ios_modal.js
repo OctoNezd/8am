@@ -12,6 +12,19 @@ if (iphone) {
 } else if (ipad) {
     document.body.classList.add("ipad");
 }
-export default async function () {
-    openModal(document.querySelector("#iosModal"));
+
+if (iphone || ipad) {
+    import("/html/ios_modal.html").then((html) => {
+        console.log("ios html:", html.default, typeof html.default);
+        document.body.insertAdjacentHTML("beforeend", html.default);
+        // document.body.appendChild();
+        console.log("[iOS Modal] - loaded HTML in");
+        import("/css/ios.css");
+        document.querySelector("#installApp").addEventListener("click", () => {
+            console.log("ios modal requested");
+            const modal = document.querySelector("#iosModal");
+            console.log("ios modal already loaded");
+            openModal(modal);
+        });
+    });
 }

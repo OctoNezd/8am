@@ -8,7 +8,7 @@ let commitHash = require("child_process")
     .toString()
     .trim();
 module.exports = {
-    entry: "./js/sharaga.js",
+    entry: "./js/entry.js",
     output: {
         filename: "[name].[contenthash].js",
         path: path.resolve(__dirname, "dist"),
@@ -29,7 +29,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: "template.html",
+            template: "html/template.html",
             title: "Ш А Р А Г А",
         }),
         new FaviconsWebpackPlugin({

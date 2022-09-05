@@ -1,15 +1,11 @@
-import indexhtml from "html/index.html";
-document.body.innerHTML = indexhtml;
 import setup_calendar_preview, { boot_calendar } from "./icalpreview";
-import setup_pwa, { pwaDetectType } from "./pwa";
+import { pwaDetectType } from "./pwa_add";
 import { iphone, ipad } from "./ios_modal";
 import setup_icons from "./icons.js";
 import TomSelect from "tom-select";
 import "tom-select/dist/css/tom-select.css";
-import "/css/index.css";
 console.log("PWA:", pwaDetectType);
 setup_icons();
-setup_pwa();
 boot_calendar();
 
 const ua = navigator.userAgent.toLowerCase();
