@@ -138,7 +138,7 @@ html {
 }
 @media screen and (orientation: portrait) {
     body {
-        --uisize: min(100vw, 400px);
+        --uisize: 100vw;
         --buttonsize: 80vw;
     }
     #addbuttons {
