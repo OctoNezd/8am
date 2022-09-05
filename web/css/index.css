@@ -16,6 +16,7 @@ body {
     --text: black;
     --buttonsize: 20vw;
     --background: white;
+    --iosaccent: #007AFF ;
     background-color: var(--background);
     color: var(--text);
     overflow-x: hidden;
@@ -170,6 +171,7 @@ html {
     body {
         --background: #303030;
         --text: white;
+        --iosaccent: white;
     }
     .fc-list-day-cushion,
     tr.fc-list-event:hover {
@@ -287,4 +289,66 @@ body.pwa {
 
 .fa-train-subway {
     color: white !important;
+}
+.iosModalMessageContainer {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.iosModalMessage {
+    min-width:80vw !important;
+    display: flex;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    padding: 5px;
+    align-items: center;
+    justify-content: center;
+}
+body.ipad .iosModalMessageContainer {
+    padding-left: 20vh;
+}
+.iosModalMessage > svg {
+    /* min-width: 64px; */
+    padding-right: 5px;
+}
+.iosModalMessageContainer > .iosModalMessage {
+    position:relative;
+    background-color:var(--background);
+    min-height:20px !important;
+}
+body.iphone .iosModalMessageContainer > .iosModalMessage:after {
+    content:'';
+    min-height: 20px;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -20px;
+    width: 0;
+    height: 0;
+    border-top: solid 20px var(--background);
+    border-left: solid 20px transparent;
+    border-right: solid 20px transparent;
+}
+body.iphone .iosModalMessageContainer {
+    justify-content: flex-end;
+    padding-bottom: calc(env(safe-area-inset-bottom));
+}
+body.ipad .iosModalMessage {
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+body.ipad .iosModalMessageContainer > .iosModalMessage:before {
+    content:'';
+    min-height: 20px;
+    position: absolute;
+    top: -40px;
+    left: 86%;
+    margin-left: -20px;
+    width: 0;
+    height: 0;
+    border-bottom: solid 20px var(--background);
+    border-left: solid 20px transparent;
+    border-right: solid 20px transparent;
 }

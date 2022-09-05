@@ -1,18 +1,8 @@
 import updateThemeColor from "./theming";
+import showiOSModal, { iphone, ipad } from "./ios_modal";
 let deferredPrompt;
 const ua = navigator.userAgent.toLowerCase();
 const isAndroid = ua.indexOf("android") > -1;
-const isIphone =
-    [
-        "iPad Simulator",
-        "iPhone Simulator",
-        "iPod Simulator",
-        "iPad",
-        "iPhone",
-        "iPod",
-    ].includes(navigator.platform) ||
-    // iPad on iOS 13 detection
-    (ua.includes("mac") && "ontouchend" in document);
 const pwaMediaDetect = window.matchMedia("(display-mode: standalone)").matches;
 const urlParams = new URLSearchParams(location.search);
 const pwaUrlDetect = urlParams.get("homescreen") === "1";
@@ -56,21 +46,26 @@ export default function () {
         const installAppIconA = document.getElementById("installAppIconAnd");
         if (isAndroid) {
             installAppIconA.classList.remove("hidden");
-        } else if (isIphone) {
+        } else if (iphone || ipad) {
             installAppIconI.classList.remove("hidden");
         } else {
             installAppIconW.classList.remove("hidden");
         }
         console.log("install app button:", installApp);
-        installApp.addEventListener("click", async () => {
-            if (deferredPrompt !== null) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === "accepted") {
-                    deferredPrompt = null;
+        if (!(iphone || ipad)) {
+            installApp.addEventListener("click", async () => {
+                if (deferredPrompt !== null) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === "accepted") {
+                        deferredPrompt = null;
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            installApp.classList.remove("hidden");
+            installApp.addEventListener("click", showiOSModal);
+        }
     }
 }
 
@@ -96,12 +91,7 @@ function setup_pwa_modal() {
         updateThemeColor();
     };
     button.addEventListener("click", open_settings_modal);
-    const closeModal = function () {
-        modal.classList.remove("open");
-        document.body.classList.remove("modal-open");
-        updateThemeColor();
-    };
-    modal.addEventListener("click", closeModal);
+    modal.addEventListener("click", discardModal);
     const controls = document.querySelector("#controls");
     controls.querySelectorAll(".knopf").forEach((control) => {
         control.classList.add("pale", "nologos");
@@ -113,7 +103,7 @@ function setup_pwa_modal() {
     settingsApplyButton.id = "pwa-settings-apply";
     settingsApplyButton.href = "#";
     settingsApplyButton.text = "Сохранить настройки";
-    settingsApplyButton.addEventListener("click", closeModal);
+    settingsApplyButton.addEventListener("click", discardModal);
     settingsHeaderText.innerText = "Настройки PWA";
     const modalBody = document.createElement("div");
     modalBody.id = "pwa-settings-modal";

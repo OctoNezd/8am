@@ -2,6 +2,7 @@ import indexhtml from "index.html";
 document.body.innerHTML = indexhtml;
 import setup_calendar_preview, { boot_calendar } from "./icalpreview";
 import setup_pwa, { pwaDetectType } from "./pwa";
+import { iphone, ipad } from "./ios_modal";
 import setup_icons from "./icons.js";
 import TomSelect from "tom-select";
 import "tom-select/dist/css/tom-select.css";
@@ -110,7 +111,9 @@ fetch("/stats", {
             elem.append(cell2);
             spoiler.append(elem);
         }
-        document.querySelector(
-            "#appver"
-        ).innerText = `Парсер v ${stats["system"]["parser_ver"]} (${__COMMIT_HASH__})\n${pwaDetectType}`;
+        const appver = document.querySelector("#appver");
+        appver.innerText = `Парсер v ${stats["system"]["parser_ver"]} (${__COMMIT_HASH__})\n${pwaDetectType}`;
+        if (__IS_DEV__ !== undefined) {
+            appver.innerText += `\niphone:${iphone},ipad:${ipad}`;
+        }
     });
