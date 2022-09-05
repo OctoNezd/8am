@@ -3,7 +3,7 @@ const { merge } = require("webpack-merge");
 const common = require("./webpack.common.js");
 const WebpackBar = require("webpackbar");
 
-const devapi = "http://localhost:8000";
+const devapi = "http://127.0.0.1:8000";
 
 module.exports = merge(common, {
     mode: "development",
