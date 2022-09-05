@@ -39,8 +39,9 @@ module.exports = {
             logo: "./icons/favicon.png",
             devMode: "webapp",
             mode: "webapp",
-            orientation: "portrait",
             favicons: {
+                orientation: "portrait",
+                maskable: true,
                 appName: "Ш А Р А Г А",
                 appDescription: "Ш А Р А Г А",
                 developerURL: null, // prevent retrieving from the nearest package.json
