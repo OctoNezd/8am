@@ -108,7 +108,7 @@ fetch("/stats", {
         }
         const appver = document.querySelector("#appver");
         appver.innerText = `Парсер v ${stats["system"]["parser_ver"]} (${__COMMIT_HASH__})\n${pwaDetectType}`;
-        if (__IS_DEV__ !== undefined) {
+        if (__IS_DEV__) {
             appver.innerText += `\niphone:${iphone},ipad:${ipad}`;
         }
     });
