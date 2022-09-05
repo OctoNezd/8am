@@ -1,5 +1,9 @@
 import updateThemeColor from "./theming";
-
+import "/css/pwa.css";
+import htmlHeader from "/html/pwa_header.html";
+document.body.insertAdjacentHTML("afterbegin", htmlHeader);
+console.log("PWA Elements loaded");
+document.body.classList.add("pwa");
 function handleConnection() {
     console.log("online?", navigator.onLine);
     if (navigator.onLine) {

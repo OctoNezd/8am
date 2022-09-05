@@ -1,0 +1,49 @@
+#pwa-header {
+    width: 100vw;
+    max-height: 56px;
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    align-items: center;
+    font-size: 20pt;
+    margin-bottom: 8px;
+}
+#pwa-header > h6 {
+    margin: 0;
+}
+#pwa-settings-button {
+    margin-left: 16px;
+    margin-right: 32px;
+    font-size: 24px;
+}
+#pwa-header > .title {
+    font-weight: bold;
+}
+/* All installed PWAs */
+body.pwa .pwa-hide {
+    display: none !important;
+}
+body.pwa .pwa-show {
+    display: block !important;
+}
+body.pwa {
+    margin: 0;
+}
+
+/* offline */
+#offline-notice {
+    color: red;
+    display: none;
+}
+.offline #controls {
+    display: none;
+}
+.offline #offline-notice {
+    display: block;
+}
+#pwa-settings-modal > h3 {
+    margin-top: 0;
+}
+#pwa-settings-apply {
+    margin-top: 1.2em;
+}
