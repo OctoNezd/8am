@@ -6,6 +6,7 @@
         "@fullcalendar/icalendar": "^5.11.3",
         "@fullcalendar/list": "^5.11.3",
         "fullcalendar": "^5.11.3",
+        "knopf.css": "^1.1.2",
         "tom-select": "^2.1.0"
     },
     "scripts": {
