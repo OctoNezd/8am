@@ -131,7 +131,11 @@ body {
     user-select: none;
     -webkit-text-size-adjust: 100%;
 }
-
+html {
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
 @media screen and (orientation: portrait) {
     body {
         --uisize: min(100vw, 400px);
