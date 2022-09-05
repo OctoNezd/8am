@@ -4,8 +4,8 @@ RUN pip install poetry==1.1.13
 COPY poetry.lock pyproject.toml /build/
 RUN poetry export -f requirements.txt --without-hashes > requirements.txt
 
-FROM node:18-alpine AS webpack
-RUN apk add --no-cache git
+FROM node:18-bullseye AS webpack
+RUN apt update && apt install git automake build-essential autoconf nasm -y
 WORKDIR /build/
 COPY ./web/package* ./
 RUN npm install 
