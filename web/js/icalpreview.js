@@ -9,7 +9,7 @@ const metro_color_map = {
     "🟠": "orange",
     "🟢": "green",
 };
-function create_calendar() {
+function boot_calendar() {
     const calendarEl = document.getElementById("icalpreview");
     calendar = new Calendar(calendarEl, {
         plugins: [iCalendarPlugin, listPlugin],
@@ -67,14 +67,26 @@ function create_calendar() {
                 encodeURI(location.innerText.split(", ").slice(1).join(", "));
             return { domNodes: [title, teacherLine, location] };
         },
-        noEventsContent: "Нет занятий.",
+        noEventsContent: function (e) {
+            console.log("no events:", e);
+            if (calendar.getEventSourceById("sharaga") === null) {
+                const node = document.importNode(
+                    document.body.querySelector("template#no_calendar_selected")
+                        .content,
+                    true
+                );
+                console.log(node);
+                return {
+                    domNodes: [node],
+                };
+            }
+            return "Нет занятий.";
+        },
     });
+    calendar.render();
+    console.log("Calendar rendered");
 }
-
 export default function setup_calendar_preview(gid) {
-    if (calendar === undefined) {
-        create_calendar();
-    }
     const current_es = calendar.getEventSourceById("sharaga");
     if (current_es !== null) {
         current_es.remove();
@@ -85,5 +97,5 @@ export default function setup_calendar_preview(gid) {
         format: "ics",
     });
     calendar.render();
-    calendar.events;
 }
+export { boot_calendar };

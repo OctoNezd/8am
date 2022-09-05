@@ -29,6 +29,18 @@ if (isPwa) {
 console.log(isPwa, pwaDetectType);
 export { isPwa, pwaDetectType };
 export default function () {
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+            navigator.serviceWorker
+                .register("/service-worker.js")
+                .then((registration) => {
+                    console.log("SW registered: ", registration);
+                })
+                .catch((registrationError) => {
+                    console.log("SW registration failed: ", registrationError);
+                });
+        });
+    }
     addEventListener("beforeinstallprompt", (e) => {
         installApp.classList.remove("hidden");
         deferredPrompt = e;
@@ -78,11 +90,12 @@ function setup_pwa_modal() {
     const modal = document.createElement("div");
     modal.classList.add("modal");
     const button = document.querySelector("#pwa-settings-button");
-    button.addEventListener("click", () => {
+    window.open_settings_modal = () => {
         modal.classList.add("open");
         document.body.classList.add("modal-open");
         updateThemeColor();
-    });
+    };
+    button.addEventListener("click", open_settings_modal);
     const closeModal = function () {
         modal.classList.remove("open");
         document.body.classList.remove("modal-open");

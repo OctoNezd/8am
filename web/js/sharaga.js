@@ -1,6 +1,6 @@
 import indexhtml from "index.html";
 document.body.innerHTML = indexhtml;
-import setup_calendar_preview from "./icalpreview";
+import setup_calendar_preview, { boot_calendar } from "./icalpreview";
 import setup_pwa, { pwaDetectType } from "./pwa";
 import setup_icons from "./icons.js";
 import TomSelect from "tom-select";
@@ -9,18 +9,8 @@ import "/css/index.css";
 console.log("PWA:", pwaDetectType);
 setup_icons();
 setup_pwa();
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker
-            .register("/service-worker.js")
-            .then((registration) => {
-                console.log("SW registered: ", registration);
-            })
-            .catch((registrationError) => {
-                console.log("SW registration failed: ", registrationError);
-            });
-    });
-}
+boot_calendar();
+
 const icalpreview = document.getElementById("icalpreview");
 const ua = navigator.userAgent.toLowerCase();
 const isAndroid = ua.indexOf("android") > -1;
@@ -58,7 +48,6 @@ const select = new TomSelect("#group", {
         history.pushState("", "", "?" + urlParams);
         localStorage.setItem("last_gid", groupdom.value);
         buttons.classList.remove("hidden");
-        icalpreview.classList.remove("hidden");
         webcal[
             "href"
         ] = `webcal://${location.host}/group/${groupdom.value}.ics`;
