@@ -3,6 +3,8 @@ const WorkboxPlugin = require("workbox-webpack-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const webpack = require("webpack");
 const path = require("path");
+const WebpackBar = require("webpackbar");
+
 let commitHash = require("child_process")
     .execSync("git rev-parse --short HEAD")
     .toString()
@@ -28,6 +30,7 @@ module.exports = {
         ],
     },
     plugins: [
+        new WebpackBar(),
         new HtmlWebpackPlugin({
             template: "html/template.html",
             title: "Ш А Р А Г А",
