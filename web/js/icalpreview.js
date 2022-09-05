@@ -2,6 +2,7 @@ import { Calendar } from "@fullcalendar/core";
 import listPlugin from "@fullcalendar/list";
 import iCalendarPlugin from "@fullcalendar/icalendar";
 import { teacherIcon, metroIcon, circleIcon } from "./icons";
+import noCalendar from "html/no_cal.html";
 let calendar;
 const metro_color_map = {
     "🟤": "brown",
@@ -70,14 +71,8 @@ function boot_calendar() {
         noEventsContent: function (e) {
             console.log("no events:", e);
             if (calendar.getEventSourceById("sharaga") === null) {
-                const node = document.importNode(
-                    document.body.querySelector("template#no_calendar_selected")
-                        .content,
-                    true
-                );
-                console.log(node);
                 return {
-                    domNodes: [node],
+                    html: noCalendar,
                 };
             }
             return "Нет занятий.";
@@ -91,11 +86,13 @@ export default function setup_calendar_preview(gid) {
     if (current_es !== null) {
         current_es.remove();
     }
-    calendar.addEventSource({
-        id: "sharaga",
-        url: `${location.protocol}//${location.host}/group/${gid}.ics`,
-        format: "ics",
-    });
+    if (gid !== undefined) {
+        calendar.addEventSource({
+            id: "sharaga",
+            url: `${location.protocol}//${location.host}/group/${gid}.ics`,
+            format: "ics",
+        });
+    }
     calendar.render();
 }
 export { boot_calendar };

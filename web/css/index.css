@@ -286,6 +286,9 @@ body.pwa {
 .fc-list-event-title .fa-fw {
     margin-right: 0.2em;
 }
+.fc-list-empty {
+    background-color: transparent;
+}
 
 .fa-train-subway {
     color: white !important;

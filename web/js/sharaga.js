@@ -1,4 +1,4 @@
-import indexhtml from "index.html";
+import indexhtml from "html/index.html";
 document.body.innerHTML = indexhtml;
 import setup_calendar_preview, { boot_calendar } from "./icalpreview";
 import setup_pwa, { pwaDetectType } from "./pwa";
@@ -12,7 +12,6 @@ setup_icons();
 setup_pwa();
 boot_calendar();
 
-const icalpreview = document.getElementById("icalpreview");
 const ua = navigator.userAgent.toLowerCase();
 const isAndroid = ua.indexOf("android") > -1;
 const groupdom = document.getElementById("group");
@@ -42,7 +41,7 @@ const select = new TomSelect("#group", {
         if (["NO", ""].includes(groupdom.value)) {
             console.log("hiding everything");
             buttons.classList.add("hidden");
-            icalpreview.classList.add("hidden");
+            setup_calendar_preview();
             return;
         }
         urlParams.set("group", groupdom.value);
