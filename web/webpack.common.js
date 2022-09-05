@@ -39,6 +39,7 @@ module.exports = {
             logo: "./icons/favicon.png",
             devMode: "webapp",
             mode: "webapp",
+            orientation: "portrait",
             favicons: {
                 appName: "Ш А Р А Г А",
                 appDescription: "Ш А Р А Г А",
