@@ -121,6 +121,24 @@ img {
     --knopf-saturation: 88%;
     --knopf-luminosity: 28%;
 }
+
+#webnavbar {
+    width: 100%;
+}
+
+img {
+    vertical-align: top; /* to get rid of default bottom padding in images */
+}
+
+#webnavbar > div:not(.dynamic-max-height-column) {
+    position: relative;
+}
+
+#webnavbar > div:not(.dynamic-max-height-column) > img {
+    position: absolute;
+    max-height: 100%;
+}
+
 /* mobile */
 body {
     -webkit-tap-highlight-color: transparent;
@@ -165,6 +183,15 @@ html {
         border: 0 !important;
         border-left: 0 !important;
         border-right: 0 !important;
+    }
+
+    #webnavbar > div:not(.dynamic-max-height-column) {
+        position: unset !important;
+    }
+
+    #webnavbar > div:not(.dynamic-max-height-column) > img {
+        position: unset !important;
+        max-height: 20vh !important;
     }
 }
 @media (prefers-color-scheme: dark) {
@@ -243,21 +270,4 @@ html {
 
 .fa-train-subway {
     color: white !important;
-}
-
-#webnavbar {
-    width: 100%;
-}
-
-img {
-    vertical-align: top; /* to get rid of default bottom padding in images */
-}
-
-#webnavbar > div:not(.dynamic-max-height-column) {
-    position: relative;
-}
-
-#webnavbar > div:not(.dynamic-max-height-column) > img {
-    position: absolute;
-    max-height: 100%;
 }
