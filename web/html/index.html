@@ -1,95 +1,93 @@
 <div class="center">
-    <div class="mainflex">
-        <div class="row-desktop pwa-hide" id="webnavbar">
-            <h1 class="center">Ш А Р А Г А</h1>
-            <div id="controls" class="center">
-                <div class="center" style="width: 100%">
-                    <select
-                        name="group"
-                        id="group"
-                        placeholder="Выберите группу"
-                    ></select>
-                </div>
-                <div id="addbuttons" class="hidden">
-                    <a id="webcal" class="button knopf" href="">
-                        <div>
-                            <div class="logos">
-                                <img
-                                    src="/icons/iphonecal.svg"
-                                    width="32"
-                                    height="32"
-                                />
-                                <img
-                                    src="/icons/maccal.png"
-                                    width="32"
-                                    height="32"
-                                />
-                                <img
-                                    src="/icons/outlook.svg"
-                                    width="32"
-                                    height="32"
-                                />
-                                <img
-                                    src="/icons/icsx5.svg"
-                                    width="32"
-                                    height="32"
-                                />
-                            </div>
-                            Подписаться в календаре webcal <br />
-                            (iOS/macOS/Outlook/ICSx<sup>5</sup>)
+    <div class="row-desktop pwa-hide" id="webnavbar">
+        <div>
+            <img src="/icons/favicon.png" alt="Ш А Р А Г А" />
+        </div>
+        <div id="controls" class="center dynamic-max-height-column">
+            <div class="center" style="width: 100%">
+                <select
+                    name="group"
+                    id="group"
+                    placeholder="Выберите группу"
+                ></select>
+            </div>
+            <div id="addbuttons" class="hidden">
+                <a id="webcal" class="button knopf" href="">
+                    <div>
+                        <div class="logos">
+                            <img
+                                src="/icons/iphonecal.svg"
+                                width="32"
+                                height="32"
+                            />
+                            <img
+                                src="/icons/maccal.png"
+                                width="32"
+                                height="32"
+                            />
+                            <img
+                                src="/icons/outlook.svg"
+                                width="32"
+                                height="32"
+                            />
+                            <img
+                                src="/icons/icsx5.svg"
+                                width="32"
+                                height="32"
+                            />
                         </div>
-                    </a>
-                    <a id="google" class="button knopf" href="">
-                        <div>
-                            <div class="logos">
-                                <img
-                                    src="/icons/gcal.svg"
-                                    width="32"
-                                    height="32"
-                                />
-                            </div>
-                            Подписаться в календаре Google<br />
-                            (Android)
+                        Подписаться в календаре webcal <br />
+                        (iOS/macOS/Outlook/ICSx<sup>5</sup>)
+                    </div>
+                </a>
+                <a id="google" class="button knopf" href="">
+                    <div>
+                        <div class="logos">
+                            <img src="/icons/gcal.svg" width="32" height="32" />
                         </div>
-                    </a>
-                    <a
-                        id="installApp"
-                        class="button knopf hidden pwa-hide"
-                        href="#"
-                    >
-                        <div>
-                            <div class="logos">
-                                <img
-                                    src="/icons/pwa_win.png"
-                                    id="installAppIconWin"
-                                    class="hidden"
-                                    width="32"
-                                    height="32"
-                                />
-                                <img
-                                    src="/icons/pwa_ios.png"
-                                    id="installAppIconIos"
-                                    class="hidden"
-                                    width="32"
-                                    height="32"
-                                />
-                                <img
-                                    src="/icons/pwa_android.png"
-                                    id="installAppIconAnd"
-                                    class="hidden"
-                                    width="32"
-                                    height="32"
-                                />
-                            </div>
-                            Добавить приложение на рабочий стол
+                        Подписаться в календаре Google<br />
+                        (Android)
+                    </div>
+                </a>
+                <a
+                    id="installApp"
+                    class="button knopf hidden pwa-hide"
+                    href="#"
+                >
+                    <div>
+                        <div class="logos">
+                            <img
+                                src="/icons/pwa_win.png"
+                                id="installAppIconWin"
+                                class="hidden"
+                                width="32"
+                                height="32"
+                            />
+                            <img
+                                src="/icons/pwa_ios.png"
+                                id="installAppIconIos"
+                                class="hidden"
+                                width="32"
+                                height="32"
+                            />
+                            <img
+                                src="/icons/pwa_android.png"
+                                id="installAppIconAnd"
+                                class="hidden"
+                                width="32"
+                                height="32"
+                            />
                         </div>
-                    </a>
-                </div>
-                <a id="nogcal" class="link pwa-hide" href="/static/gcal.html">
-                    Добавили в календарь Google, а ничего нет?
+                        Добавить приложение на рабочий стол
+                    </div>
                 </a>
             </div>
+            <a id="nogcal" class="link pwa-hide" href="/static/gcal.html">
+                Добавили в календарь Google, а ничего нет?
+            </a>
         </div>
+    </div>
+    <div class="mainflex">
         <div id="icalpreview"></div>
         <div class="put-to-end pwa-hide">
             <div id="about">

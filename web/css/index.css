@@ -16,7 +16,7 @@ body {
     --text: black;
     --buttonsize: 20vw;
     --background: white;
-    --iosaccent: #007AFF ;
+    --iosaccent: #007aff;
     background-color: var(--background);
     color: var(--text);
     overflow-x: hidden;
@@ -133,9 +133,9 @@ body {
     -webkit-text-size-adjust: 100%;
 }
 html {
-  -moz-text-size-adjust: none;
-  -webkit-text-size-adjust: none;
-  text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
 }
 @media only screen and (hover: none) and (pointer: coarse) {
     body {
@@ -238,9 +238,26 @@ html {
     margin-right: 0.2em;
 }
 .fc-list-empty {
-    background-color: transparent;
+    background-color: transparent !important;
 }
 
 .fa-train-subway {
     color: white !important;
+}
+
+#webnavbar {
+    width: 100%;
+}
+
+img {
+    vertical-align: top; /* to get rid of default bottom padding in images */
+}
+
+#webnavbar > div:not(.dynamic-max-height-column) {
+    position: relative;
+}
+
+#webnavbar > div:not(.dynamic-max-height-column) > img {
+    position: absolute;
+    max-height: 100%;
 }
