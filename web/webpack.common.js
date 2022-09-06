@@ -36,7 +36,7 @@ module.exports = {
             title: "Ш А Р А Г А",
         }),
         new FaviconsWebpackPlugin({
-            logo: "./icons/favicon.png",
+            logo: "./icons/main_icon.png",
             devMode: "webapp",
             mode: "webapp",
             favicons: {
@@ -47,6 +47,25 @@ module.exports = {
                 developerURL: null, // prevent retrieving from the nearest package.json
                 background: "#ffffff",
                 theme_color: "#303030",
+                manifestMaskable: "./icons/maskable.png",
+                icons: {
+                    favicons: false,
+                },
+            },
+        }),
+        new FaviconsWebpackPlugin({
+            logo: "./icons/favicon.png",
+            devMode: "light",
+            mode: "light",
+            favicons: {
+                icons: {
+                    android: false,
+                    appleIcon: false,
+                    appleStartup: false,
+                    favicons: true,
+                    windows: false,
+                    yandex: false,
+                },
             },
         }),
         new WorkboxPlugin.GenerateSW({
