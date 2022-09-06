@@ -63,6 +63,13 @@ module.exports = {
                         platform: "narrow",
                         label: "2pacaliveinserbia",
                     },
+                    {
+                        src: "pc.jpg",
+                        sizes: "480x360",
+                        type: "image/jpeg",
+                        platform: "wide",
+                        label: "2pacaliveinserbia",
+                    },
                 ],
             },
             favicons: {
