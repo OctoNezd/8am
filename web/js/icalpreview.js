@@ -10,6 +10,7 @@ const metro_color_map = {
     "🟠": "orange",
     "🟢": "green",
 };
+const cabRE = new RegExp(/, каб. \d*/);
 function boot_calendar() {
     const calendarEl = document.getElementById("icalpreview");
     calendar = new Calendar(calendarEl, {
@@ -62,10 +63,16 @@ function boot_calendar() {
             metroCircle.style.color = metro_color_map[emojiMetroStation];
 
             locationText.innerText += event.extendedProps.location.slice(2);
+            const cab = locationText.innerText.match(cabRE)[0];
+
+            locationText.innerText = locationText.innerText.replace(cabRE, "");
             location.target = "sharaga_location";
             location.href =
                 "https://maps.yandex.ru/?text=" +
                 encodeURI(location.innerText.split(", ").slice(1).join(", "));
+            const cabTag = document.createElement("b");
+            cabTag.innerText = cab;
+            location.insertAdjacentElement("beforeend", cabTag);
             return { domNodes: [title, teacherLine, location] };
         },
         noEventsContent: function (e) {
