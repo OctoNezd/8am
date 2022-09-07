@@ -266,3 +266,6 @@ html {
 .fa-train-subway {
     color: white !important;
 }
+.presentDay th {
+    box-shadow: 3px 0px 0px #f87f43 inset;
+}

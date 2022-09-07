@@ -72,6 +72,11 @@ function boot_calendar() {
         locale: "ru",
         firstDay: 1,
         eventDidMount: checkEventVisiblity,
+        dayHeaderClassNames: function ({ isToday }) {
+            if (isToday) {
+                return "presentDay";
+            }
+        },
         datesSet: function ({ start, view }) {
             if (
                 dayjs(start).endOf("week").isAfter(dayjs().endOf("week")) &&
