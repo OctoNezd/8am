@@ -3,30 +3,102 @@ import listPlugin from "@fullcalendar/list";
 import iCalendarPlugin from "@fullcalendar/icalendar";
 import { teacherIcon, metroIcon, circleIcon } from "./icons";
 import noCalendar from "html/no_cal.html";
-let calendar;
+import * as dayjs from "dayjs";
+import * as isToday from "dayjs/plugin/isToday";
+dayjs.extend(isToday);
+let calendar, actualViewType;
 const metro_color_map = {
     "🟤": "brown",
     "🟣": "purple",
     "🟠": "orange",
     "🟢": "green",
 };
+function makeid(length) {
+    var result = "";
+    var characters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+        result += characters.charAt(
+            Math.floor(Math.random() * charactersLength)
+        );
+    }
+    console.log("rand id:", result);
+    return result;
+}
+function checkEventVisiblity({ event, view }) {
+    const eventStart = dayjs(event.start);
+    const sameWeek =
+        dayjs().endOf("week").toISOString() ===
+        dayjs(event.end).endOf("week").toISOString();
+    console.log("Current view:", view.type);
+    if (
+        view.type == "listWeekNow" &&
+        !eventStart.isToday() &&
+        eventStart.isBefore(dayjs()) &&
+        sameWeek
+    ) {
+        console.log("hiding", event);
+        event.setProp("display", "none");
+    } else {
+        console.log("showing", event);
+        event.setProp("display", undefined);
+    }
+    console.log(event);
+}
 const cabRE = new RegExp(/, каб. \d*/);
 function boot_calendar() {
     const calendarEl = document.getElementById("icalpreview");
     calendar = new Calendar(calendarEl, {
         plugins: [iCalendarPlugin, listPlugin],
-        initialView: "listWeek",
+        initialView: "listWeekNow",
         contentHeight: "auto",
-        headerToolbar: { end: "listWeek,listMonth today prev,next" },
+        headerToolbar: {
+            end: "listWeekNow,listWeek,listMonth today prev,next",
+        },
         buttonText: {
-            listWeek: "неделя",
+            listWeekNow: "неделя",
+            listWeek: "вся неделя",
             listMonth: "месяц",
             today: "сегодня",
         },
+        views: {
+            listWeekNow: {
+                type: "listWeek",
+                buttonText: "неделя",
+                duration: { weeks: 1 },
+            },
+        },
         locale: "ru",
         firstDay: 1,
-        eventContent: function ({ event }) {
-            console.log("setting event contents", event);
+        eventDidMount: checkEventVisiblity,
+        datesSet: function ({ start, view }) {
+            if (
+                dayjs(start).endOf("week").isAfter(dayjs().endOf("week")) &&
+                view.type === "listWeekNow"
+            ) {
+                console.log(
+                    end,
+                    "is different week and listWeekNow, switching to listWeek"
+                );
+                calendar.changeView("listWeek");
+            }
+            console.log("datesSet");
+            for (const event of calendar.getEvents()) {
+                console.log("datesset evt:", event);
+                checkEventVisiblity({ event, view });
+            }
+        },
+        eventContent: function ({ event, view }) {
+            if (view.type === "listWeekNow") {
+                if (
+                    dayjs().endOf("week").toISOString() !==
+                    dayjs(event.end).endOf("week").toISOString()
+                ) {
+                    console.log("End is before today, switching to listWeek");
+                    calendar.changeView("listWeek");
+                }
+            }
             const title = document.createElement("p");
             title.classList.add("bold");
             title.innerText = event.title;
@@ -54,12 +126,6 @@ function boot_calendar() {
                 undefined,
                 2
             );
-            console.log(
-                "metro:",
-                emojiMetroStation,
-                "color:",
-                metro_color_map[emojiMetroStation]
-            );
             metroCircle.style.color = metro_color_map[emojiMetroStation];
 
             locationText.innerText += event.extendedProps.location.slice(2);
@@ -86,6 +152,7 @@ function boot_calendar() {
         },
     });
     calendar.render();
+    window.calendar = calendar;
     console.log("Calendar rendered");
 }
 export default function setup_calendar_preview(gid) {
