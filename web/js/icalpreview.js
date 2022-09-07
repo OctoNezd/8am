@@ -6,26 +6,14 @@ import noCalendar from "html/no_cal.html";
 import * as dayjs from "dayjs";
 import * as isToday from "dayjs/plugin/isToday";
 dayjs.extend(isToday);
-let calendar, actualViewType;
+let calendar;
 const metro_color_map = {
     "🟤": "brown",
     "🟣": "purple",
     "🟠": "orange",
     "🟢": "green",
 };
-function makeid(length) {
-    var result = "";
-    var characters =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
-        result += characters.charAt(
-            Math.floor(Math.random() * charactersLength)
-        );
-    }
-    console.log("rand id:", result);
-    return result;
-}
+
 function checkEventVisiblity({ event, view }) {
     const eventStart = dayjs(event.start);
     const sameWeek =
@@ -54,7 +42,8 @@ function boot_calendar() {
         initialView: "listWeekNow",
         contentHeight: "auto",
         headerToolbar: {
-            end: "listWeekNow,listWeek,listMonth today prev,next",
+            center: "listWeekNow,listWeek,listMonth",
+            right: "today prev,next",
         },
         buttonText: {
             listWeekNow: "неделя",
