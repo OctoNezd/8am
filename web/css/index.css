@@ -262,10 +262,18 @@ html {
 .fc-list-empty {
     background-color: transparent !important;
 }
+.fc-day-today th,
+.fc-day-today {
+    box-shadow: 3px 0px 0px #f87f43 inset;
+    border-bottom: 0 !important;
+    border: 0 !important;
+    border-top: 0 !important;
+}
+.fc-day-today + .fc-list-event * {
+    border: 0 !important;
+    border-top: 0 !important;
+}
 
 .fa-train-subway {
     color: white !important;
-}
-.presentDay th {
-    box-shadow: 3px 0px 0px #f87f43 inset;
 }
