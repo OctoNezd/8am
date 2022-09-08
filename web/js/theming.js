@@ -16,7 +16,7 @@ function rgbToHex(r, g, b) {
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 function getBgColor() {
-    const bgcolor = getComputedStyle(document.body).getPropertyValue(
+    var bgcolor = getComputedStyle(document.body).getPropertyValue(
         "background-color"
     );
     if (
