@@ -18,6 +18,16 @@ body {
     --background: white;
     --iosaccent: #007aff;
     --app-accent: #f87f43;
+    --fc-button-bg-color: #b25526;
+    --fc-button-border-color: transparent;
+    --fc-button-active-bg-color: var(--app-accent);
+    --fc-button-active-border-color: var(--app-accent);
+    --fc-button-hover-border-color: transparent;
+    --fc-button-hover-bg-color: #cf6d3c;
+    /* hsl(20, 93%, 62%) */
+    --knopf-hue: 20;
+    --knopf-saturation: 93%;
+    --knopf-luminosity: 62%;
     background-color: var(--background);
     color: var(--text);
     overflow-x: hidden;
@@ -282,4 +292,7 @@ html {
 }
 .presentTime {
     border-right: 3px var(--app-accent) !important;
+}
+.fc .fc-button-primary:focus {
+    box-shadow: none !important;
 }
