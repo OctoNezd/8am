@@ -17,6 +17,7 @@ body {
     --buttonsize: 20vw;
     --background: white;
     --iosaccent: #007aff;
+    --app-accent: #f87f43;
     background-color: var(--background);
     color: var(--text);
     overflow-x: hidden;
@@ -264,8 +265,9 @@ html {
     background-color: transparent !important;
 }
 .fc-day-today th,
-.fc-day-today {
-    box-shadow: 3px 0px 0px #f87f43 inset;
+.fc-day-today,
+.presentTime {
+    box-shadow: 3px 0px 0px var(--app-accent) inset;
     border-bottom: 0 !important;
     border: 0 !important;
     border-top: 0 !important;
@@ -277,4 +279,7 @@ html {
 
 .fa-train-subway {
     color: white !important;
+}
+.presentTime {
+    border-right: 3px var(--app-accent) !important;
 }

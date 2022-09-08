@@ -5,7 +5,9 @@ import { teacherIcon, metroIcon, circleIcon } from "./icons";
 import noCalendar from "html/no_cal.html";
 import * as dayjs from "dayjs";
 import * as isToday from "dayjs/plugin/isToday";
+import * as isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isToday);
+dayjs.extend(isBetween);
 let calendar;
 const metro_color_map = {
     "🟤": "brown",
@@ -61,6 +63,11 @@ function boot_calendar() {
         locale: "ru",
         firstDay: 1,
         eventDidMount: checkEventVisiblity,
+        eventClassNames: function ({ event }) {
+            if (dayjs().isBetween(event.start, event.end)) {
+                return ["presentTime"];
+            }
+        },
         datesSet: function ({ start, view }) {
             if (
                 dayjs(start).endOf("week").isAfter(dayjs().endOf("week")) &&
