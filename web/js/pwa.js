@@ -34,7 +34,12 @@ function setup_pwa_modal() {
     const about = document.querySelector("#about");
     const settingsHeaderText = document.createElement("h3");
     const settingsApplyButton = document.createElement("a");
-    settingsApplyButton.classList.add("button", "knopf", "positive");
+    settingsApplyButton.classList.add(
+        "button",
+        "knopf",
+        "primary-container",
+        "block"
+    );
     settingsApplyButton.id = "pwa-settings-apply";
     settingsApplyButton.href = "#";
     settingsApplyButton.text = "Сохранить настройки";

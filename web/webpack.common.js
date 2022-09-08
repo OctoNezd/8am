@@ -28,6 +28,10 @@ module.exports = {
                 test: /\.html$/i,
                 loader: "html-loader",
             },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/i,
+                type: "asset/resource",
+            },
         ],
     },
     plugins: [
@@ -126,5 +130,8 @@ module.exports = {
             path.resolve(__dirname, "./"),
             path.resolve(__dirname, "./src"),
         ],
+        alias: {
+            "~": path.resolve(__dirname, "node_modules"),
+        },
     },
 };

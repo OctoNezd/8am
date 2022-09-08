@@ -17,8 +17,12 @@ if (isPwa) {
 }
 console.log(isPwa, pwaDetectType);
 export { isPwa, pwaDetectType };
-if (isPwa) {
+function bootPWA() {
     require("./pwa");
+}
+window.bootPWA = bootPWA;
+if (isPwa) {
+    bootPWA();
 } else {
     if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {

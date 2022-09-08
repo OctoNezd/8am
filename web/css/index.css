@@ -1,3 +1,5 @@
+@import url("@fontsource/roboto");
+@import url("./md3/theme.css");
 .bold {
     font-weight: bold;
 }
@@ -9,27 +11,7 @@
     justify-content: center;
 }
 body {
-    font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir,
-        segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto,
-        arial, sans-serif;
     --uisize: 80vw;
-    --text: black;
-    --buttonsize: 20vw;
-    --background: white;
-    --iosaccent: #007aff;
-    --app-accent: #f87f43;
-    --fc-button-bg-color: #b25526;
-    --fc-button-border-color: transparent;
-    --fc-button-active-bg-color: var(--app-accent);
-    --fc-button-active-border-color: var(--app-accent);
-    --fc-button-hover-border-color: transparent;
-    --fc-button-hover-bg-color: #cf6d3c;
-    /* hsl(20, 93%, 62%) */
-    --knopf-hue: 20;
-    --knopf-saturation: 93%;
-    --knopf-luminosity: 62%;
-    background-color: var(--background);
-    color: var(--text);
     overflow-x: hidden;
 }
 .row-desktop {
@@ -202,15 +184,6 @@ html {
     }
 }
 @media (prefers-color-scheme: dark) {
-    body {
-        --background: #303030;
-        --text: white;
-        --iosaccent: white;
-    }
-    .fc-list-day-cushion,
-    tr.fc-list-event:hover {
-        color: black !important;
-    }
     .knopf.pale {
         color: rgba(255, 255, 255, 0.8) !important;
         -webkit-text-fill-color: unset !important;
@@ -253,7 +226,7 @@ html {
 .modal-body {
     max-width: 80vw;
     z-index: 101;
-    background-color: var(--background);
+    background-color: var(--md-sys-color-background);
     padding: 15px;
     border-radius: 8px;
 }
@@ -295,4 +268,31 @@ html {
 }
 .fc .fc-button-primary:focus {
     box-shadow: none !important;
+}
+* {
+    --fc-page-bg-color: var(--md-sys-color-on-primary-container);
+    --fc-button-border-color: transparent;
+    --fc-button-bg-color: var(--md-sys-color-secondary-container);
+    --fc-button-text-color: var(--md-sys-color-on-primary-container);
+    --fc-button-active-bg-color: var(--md-sys-color-on-primary-container);
+    --fc-button-active-border-color: var(--md-sys-color-on-primary-container);
+    --fc-button-hover-border-color: transparent;
+    --fc-button-hover-bg-color: var(--md-sys-color-surface-variant);
+    --fc-list-event-hover-bg-color: transparent;
+    --knopf-named-background-color: var(--md-sys-color-secondary-container);
+}
+.fc-button-active {
+    color: var(--md-sys-color-primary-container) !important;
+}
+.fc-list-day-cushion {
+    color: var(--md-sys-color-primary-container) !important;
+}
+
+.knopf *,
+.knopf,
+.test {
+    color: var(--md-sys-color-on-primary-container) !important;
+    -webkit-text-fill-color: var(
+        --md-sys-color-on-primary-container
+    ) !important;
 }
