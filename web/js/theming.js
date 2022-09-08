@@ -16,15 +16,15 @@ function rgbToHex(r, g, b) {
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 function getBgColor() {
-    let bgcolor;
+    const bgcolor = getComputedStyle(document.body).getPropertyValue(
+        "background-color"
+    );
     if (
         window.matchMedia &&
         window.matchMedia("(prefers-color-scheme: dark)").matches
     ) {
-        bgcolor = "#303030";
         metaAppleStatusBarColor.setAttribute("content", "black-translucent");
     } else {
-        bgcolor = "#ffffff";
         metaAppleStatusBarColor.setAttribute("content", "default");
     }
     if (document.querySelector(".modal.open") !== null) {
