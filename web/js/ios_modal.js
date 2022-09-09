@@ -24,11 +24,11 @@ if (iphone || ipad) {
         }
         import("/css/ios.css");
         const install_button = document.querySelector("#installApp");
-        install_button.addEventListener("click", () => {
+        install_button.addEventListener("click", (e) => {
             console.log("ios modal requested");
             const modal = document.querySelector("#iosModal");
             console.log("ios modal already loaded");
-            openModal(modal);
+            openModal(modal, e);
         });
         install_button.classList.remove("hidden");
     });

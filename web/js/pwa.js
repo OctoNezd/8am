@@ -8,10 +8,32 @@ import {
     sourceColorFromImage,
 } from "@material/material-color-utilities";
 import iro from "@jaames/iro";
+import { openModal } from "./modal";
+let cpicker_modal, colorpicker;
 
-document.body.insertAdjacentHTML("afterbegin", htmlHeader);
-console.log("PWA Elements loaded");
-document.body.classList.add("pwa");
+function pwa_init() {
+    document.body.insertAdjacentHTML("afterbegin", htmlHeader);
+    document.body.classList.add("pwa");
+
+    setup_pwa_modal();
+    setup_cpicker_modal();
+    loadLSTheme();
+    window.addEventListener("online", handleConnection);
+    window.addEventListener("offline", handleConnection);
+    window.addEventListener("popstate", function (e) {
+        console.log("New history state:", e);
+        if (e.state.currentState !== "modal") {
+            window.history.pushState({}, "");
+            const currentlyOpenModal = document.querySelector(".modal.open");
+            if (currentlyOpenModal !== null) {
+                discardModalForce();
+                this.history.back();
+            }
+        }
+    });
+    console.log("PWA - booted");
+}
+pwa_init();
 function handleConnection() {
     console.log("online?", navigator.onLine);
     if (navigator.onLine) {
@@ -20,9 +42,6 @@ function handleConnection() {
         document.body.classList.add("offline");
     }
 }
-
-window.addEventListener("online", handleConnection);
-window.addEventListener("offline", handleConnection);
 
 function loadLSTheme() {
     let userThemeColor = localStorage.getItem("userTheme");
@@ -82,13 +101,6 @@ function makeThemeFromImg() {
     input.click();
 }
 
-function pickColor() {
-    discardModalForce();
-    cpicker_modal.classList.add("open");
-    document.body.classList.add("modal-open");
-    updateThemeColor();
-}
-
 function createSettingsButton(title) {
     const button = document.createElement("a");
     button.classList.add("button", "knopf", "primary-container", "block");
@@ -101,11 +113,7 @@ function setup_pwa_modal() {
     const modal = document.createElement("div");
     modal.classList.add("modal");
     const button = document.querySelector("#pwa-settings-button");
-    window.open_settings_modal = () => {
-        modal.classList.add("open");
-        document.body.classList.add("modal-open");
-        updateThemeColor();
-    };
+    window.open_settings_modal = (e) => openModal(modal, e);
     button.addEventListener("click", open_settings_modal);
     modal.addEventListener("click", discardModal);
     const controls = document.querySelector("#controls");
@@ -126,7 +134,9 @@ function setup_pwa_modal() {
     const selectThemeColor = createSettingsButton(
         "Выбрать цвет для темы вручную"
     );
-    selectThemeColor.addEventListener("click", pickColor);
+    selectThemeColor.addEventListener("click", (e) =>
+        openModal(cpicker_modal, e)
+    );
     const settingsApplyButton = createSettingsButton("ОК");
     settingsApplyButton.id = "pwa-settings-apply";
     settingsApplyButton.addEventListener("click", discardModalForce);
@@ -177,7 +187,6 @@ function testmd3() {
     }, 500);
 }
 
-let cpicker_modal, colorpicker;
 function setup_cpicker_modal() {
     cpicker_modal = document.createElement("div");
     cpicker_modal.classList.add("modal");
@@ -227,7 +236,3 @@ function setup_cpicker_modal() {
     document.body.appendChild(cpicker_modal);
 }
 window.testmd3 = testmd3;
-
-setup_pwa_modal();
-setup_cpicker_modal();
-loadLSTheme();

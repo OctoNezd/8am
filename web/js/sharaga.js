@@ -1,5 +1,5 @@
 import setup_calendar_preview, { boot_calendar } from "./icalpreview";
-import { pwaDetectType } from "./pwa_add";
+import { pwaDetectType, isPwa } from "./pwa_add";
 import { iphone, ipad } from "./ios_modal";
 import setup_icons from "./icons.js";
 import TomSelect from "tom-select";
@@ -41,7 +41,9 @@ const select = new TomSelect("#group", {
             return;
         }
         urlParams.set("group", groupdom.value);
-        history.pushState("", "", "?" + urlParams);
+        if (!isPwa) {
+            history.pushState("", "", "?" + urlParams);
+        }
         localStorage.setItem("last_gid", groupdom.value);
         buttons.classList.remove("hidden");
         webcal[
