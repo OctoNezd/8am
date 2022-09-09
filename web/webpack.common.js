@@ -32,6 +32,16 @@ module.exports = {
                 test: /\.(woff|woff2|eot|ttf|otf)$/i,
                 type: "asset/resource",
             },
+            {
+                test: /\.m?js/,
+                type: "javascript/auto",
+            },
+            {
+                test: /\.m?js/,
+                resolve: {
+                    fullySpecified: false,
+                },
+            },
         ],
     },
     plugins: [

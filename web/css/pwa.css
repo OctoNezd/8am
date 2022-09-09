@@ -47,3 +47,13 @@ body.pwa {
 #pwa-settings-apply {
     margin-top: 1.2em;
 }
+#pwa-settings-modal > details,
+summary {
+    display: none;
+}
+.modal .knopf {
+    margin-bottom: 5px;
+}
+.colorpicker {
+    margin-bottom: 24px;
+}

@@ -6,6 +6,8 @@
         "@fullcalendar/core": "^5.11.3",
         "@fullcalendar/icalendar": "^5.11.3",
         "@fullcalendar/list": "^5.11.3",
+        "@jaames/iro": "^5.5.2",
+        "@material/material-color-utilities": "^0.2.0",
         "dayjs": "^1.11.5",
         "fullcalendar": "^5.11.3",
         "knopf.css": "^1.1.2",

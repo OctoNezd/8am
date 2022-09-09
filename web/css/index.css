@@ -224,11 +224,14 @@ html {
         opacity 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
 }
 .modal-body {
-    max-width: 80vw;
+    max-width: 560px;
     z-index: 101;
-    background-color: var(--md-sys-color-background);
-    padding: 15px;
-    border-radius: 8px;
+    background-color: var(--md-sys-color-surface);
+    padding: 24px;
+    border-radius: 28px;
+}
+.dialog-title {
+    padding-bottom: 16px;
 }
 /* fullcalendar customizations */
 .fc-list-day > th {
@@ -270,22 +273,28 @@ html {
     box-shadow: none !important;
 }
 * {
-    --fc-page-bg-color: var(--md-sys-color-on-primary-container);
+    --fc-page-bg-color: var(--md-sys-color-primary-container);
     --fc-button-border-color: transparent;
     --fc-button-bg-color: var(--md-sys-color-secondary-container);
     --fc-button-text-color: var(--md-sys-color-on-primary-container);
-    --fc-button-active-bg-color: var(--md-sys-color-on-primary-container);
-    --fc-button-active-border-color: var(--md-sys-color-on-primary-container);
+    --fc-button-active-bg-color: var(--md-sys-color-primary-container);
+    --fc-button-active-border-color: var(--md-sys-color-primary-container);
     --fc-button-hover-border-color: transparent;
     --fc-button-hover-bg-color: var(--md-sys-color-surface-variant);
     --fc-list-event-hover-bg-color: transparent;
     --knopf-named-background-color: var(--md-sys-color-secondary-container);
+    --fc-border-color: var(--md-sys-color-outline);
 }
+
+.booted *:not(.modal) {
+    transition: background-color 0.25s ease;
+}
+
 .fc-button-active {
-    color: var(--md-sys-color-primary-container) !important;
+    color: var(--md-sys-color-on-background) !important;
 }
 .fc-list-day-cushion {
-    color: var(--md-sys-color-primary-container) !important;
+    color: var(--md-sys-color-on-primary-container) !important;
 }
 
 .knopf *,

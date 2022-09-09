@@ -5,7 +5,7 @@ export function openModal(modal) {
     document.body.classList.add("modal-open");
 }
 window.discardModal = function (e) {
-    console.log("discardModal", e, e.target);
+    console.log("discardModal", e);
     if (e !== undefined && !e.target.classList.contains("modal")) {
         console.log("ignoring discardmodal cause inside of modal");
         return;
@@ -16,3 +16,4 @@ window.discardModal = function (e) {
         .forEach((modal) => modal.classList.remove("open"));
     updateThemeColor();
 };
+window.discardModalForce = () => discardModal();
