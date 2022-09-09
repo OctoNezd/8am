@@ -24,7 +24,6 @@ function pwa_init() {
         console.log("New history state:", e);
         const currentlyOpenModal = document.querySelector(".modal.open");
         if (currentlyOpenModal !== null) {
-            window.history.pushState({}, "");
             discardModalForce();
             this.history.back();
         }
