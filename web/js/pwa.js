@@ -194,7 +194,13 @@ function setup_cpicker_modal() {
     );
     const cpicker_el = document.createElement("div");
     cpicker_el.classList.add("colorpicker");
-    colorpicker = new iro.ColorPicker(cpicker_el);
+    colorpicker = new iro.ColorPicker(cpicker_el, {
+        layout: [
+            {
+                component: iro.ui.Wheel,
+            },
+        ],
+    });
     const ok = createSettingsButton("OK");
     ok.addEventListener("click", () => {
         discardModalForce();
