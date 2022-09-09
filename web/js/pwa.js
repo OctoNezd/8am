@@ -22,13 +22,11 @@ function pwa_init() {
     window.addEventListener("offline", handleConnection);
     window.addEventListener("popstate", function (e) {
         console.log("New history state:", e);
-        if (e.state.currentState !== "modal") {
+        const currentlyOpenModal = document.querySelector(".modal.open");
+        if (currentlyOpenModal !== null) {
             window.history.pushState({}, "");
-            const currentlyOpenModal = document.querySelector(".modal.open");
-            if (currentlyOpenModal !== null) {
-                discardModalForce();
-                this.history.back();
-            }
+            discardModalForce();
+            this.history.back();
         }
     });
     console.log("PWA - booted");
