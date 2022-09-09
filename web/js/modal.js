@@ -11,7 +11,9 @@ function discardModal(e) {
         .querySelectorAll(".modal.open")
         .forEach((modal) => modal.classList.remove("open"));
     updateThemeColor();
-    history.back();
+    if (location.hash === "#modal") {
+        history.back();
+    }
 }
 
 window.discardModal = discardModal;
