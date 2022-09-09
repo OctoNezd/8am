@@ -63,6 +63,7 @@ const select = new TomSelect("#group", {
 
 fetch("/groups", {
     method: "get",
+    cache: "force-cache",
 })
     .then(function (response) {
         return response.json();

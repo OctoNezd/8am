@@ -83,7 +83,7 @@ module.exports = {
                 appDescription:
                     "Веб-Приложение для просмотра расписания шараги",
                 developerURL: null, // prevent retrieving from the nearest package.json
-                background: "#ffffff",
+                background: "#201a18",
                 theme_color: "#201a18",
                 manifestMaskable: "./icons/maskable.png",
                 icons: {

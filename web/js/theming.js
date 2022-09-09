@@ -61,7 +61,6 @@ function getBgColor() {
 
 function updateThemeColor() {
     const new_color = getBgColor();
-    console.log("new color", new_color);
     metaThemeColor.setAttribute("content", new_color);
 }
 export default updateThemeColor;
