@@ -256,7 +256,7 @@ html {
 .fc-day-today th,
 .fc-day-today,
 .presentTime {
-    box-shadow: 3px 0px 0px var(--md-sys-color-primary) inset;
+    box-shadow: 8px 0px 0px var(--md-sys-color-primary) inset;
     border-bottom: 0 !important;
     border: 0 !important;
     border-top: 0 !important;
