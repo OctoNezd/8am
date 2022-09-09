@@ -28,7 +28,14 @@ function getBgColor() {
         metaAppleStatusBarColor.setAttribute("content", "default");
     }
     if (document.querySelector(".modal.open") !== null) {
-        var base = hexToRGB(bgcolor);
+        var base = bgcolor
+            .slice(4, -1)
+            .split(", ")
+            .map((val) => {
+                console.log("value:", val, JSON.stringify(val));
+                return parseInt(val);
+            });
+        base.push(1);
         var added = [0, 0, 0, 0.4];
 
         var mix = [];
@@ -53,7 +60,9 @@ function getBgColor() {
 }
 
 function updateThemeColor() {
-    metaThemeColor.setAttribute("content", getBgColor());
+    const new_color = getBgColor();
+    console.log("new color", new_color);
+    metaThemeColor.setAttribute("content", new_color);
 }
 export default updateThemeColor;
 window
@@ -61,3 +70,4 @@ window
     .addEventListener("change", updateThemeColor);
 updateThemeColor();
 document.onvisibilitychange = updateThemeColor;
+window.updateThemeColor = updateThemeColor;
