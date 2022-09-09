@@ -25,7 +25,6 @@ function pwa_init() {
         const currentlyOpenModal = document.querySelector(".modal.open");
         if (currentlyOpenModal !== null) {
             discardModalForce();
-            this.history.back();
         }
     });
     console.log("PWA - booted");
