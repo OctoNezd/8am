@@ -107,10 +107,6 @@ function boot_calendar() {
         firstDay: 1,
         eventSourceSuccess: function () {
             loadingError = false;
-            if (!loading && userRequestedUpdate) {
-                showToast("Обновлено");
-                userRequestedUpdate = false;
-            }
         },
         eventSourceFailure: function (error) {
             console.log("error during load:", error);
@@ -128,6 +124,10 @@ function boot_calendar() {
             if (forceUpdButton !== null) {
                 console.log("force upd button disabled:", loading);
                 forceUpdButton.disabled = loading;
+            }
+            if (!loading && userRequestedUpdate && !loadingError) {
+                showToast("Обновлено");
+                userRequestedUpdate = false;
             }
         },
         eventDidMount: checkEventVisiblity,
