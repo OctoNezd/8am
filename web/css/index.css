@@ -270,3 +270,7 @@ html {
 }
 @import "toast.css";
 @import "modal.css";
+
+#stash {
+    display: none;
+}
