@@ -109,8 +109,22 @@
     </div>
 </div>
 <div id="stash">
+    <div id="calendarErr" class="center error-text">
+        <div class="errAnim lottie"></div>
+        <h3>
+            Произошла ошибка при загрузке:
+            <span id="errdesc">не указано</span>
+        </h3>
+        <button
+            class="button knopf"
+            id="forceUpdateButton"
+            onclick="force_update_calendar()"
+        >
+            Попробовать ещё раз?
+        </button>
+    </div>
     <div id="calendarWait" class="center">
-        <div class="loadingAnim"></div>
+        <div class="loadingAnim lottie"></div>
         <h3>Идёт загрузка...</h3>
     </div>
     <div class="center" id="noTasks">

@@ -65,7 +65,6 @@ const select = new TomSelect("#group", {
 
 fetch("/groups", {
     method: "get",
-    cache: "force-cache",
 })
     .then(async function (response) {
         return response.json();
@@ -93,7 +92,6 @@ fetch("/groups", {
     });
 fetch("/stats", {
     method: "get",
-    cache: "force-cache",
 })
     .then(async function (response) {
         return response.json();

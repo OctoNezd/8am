@@ -6,6 +6,7 @@ import showToast from "./toast";
 import noCalendar from "html/no_cal.html";
 import { loadAnimation } from "lottie-web";
 import * as calLoadingAnimation from "/lottie/cal_load.json";
+import * as errorAnimation from "/lottie/error.json";
 import * as dayjs from "dayjs";
 import * as isToday from "dayjs/plugin/isToday";
 import * as isBetween from "dayjs/plugin/isBetween";
@@ -21,7 +22,15 @@ const metro_color_map = {
 };
 const noTasks = document.getElementById("noTasks");
 const loadingIndicator = document.getElementById("calendarWait");
-function setup_lottie() {
+const errorIndicator = document.getElementById("calendarErr");
+const taskErrAnim = loadAnimation({
+    container: errorIndicator.querySelector(".errAnim"),
+    rendered: "svg",
+    loop: false,
+    autoplay: true,
+    animationData: errorAnimation,
+});
+function setup_loading_lottie() {
     const taskLoadAnim = loadAnimation({
         container: loadingIndicator.querySelector(".loadingAnim"),
         rendered: "svg",
@@ -38,6 +47,7 @@ function setup_lottie() {
             true
         );
     });
+
     console.log("lottie set up ok");
 }
 function checkEventVisiblity({ event, view }) {
@@ -66,10 +76,11 @@ window.force_update_calendar = function (e) {
         console.log("refetch:", calendar.refetchEvents());
     });
 };
-let loading = false;
+let loading = false,
+    loadingError = false;
 const cabRE = new RegExp(/, каб. \d*/);
 function boot_calendar() {
-    setup_lottie();
+    setup_loading_lottie();
     const calendarEl = document.getElementById("icalpreview");
     calendar = new Calendar(calendarEl, {
         plugins: [iCalendarPlugin, listPlugin],
@@ -94,15 +105,29 @@ function boot_calendar() {
         },
         locale: "ru",
         firstDay: 1,
+        eventSourceSuccess: function () {
+            loadingError = false;
+            if (!loading && userRequestedUpdate) {
+                showToast("Обновлено");
+                userRequestedUpdate = false;
+            }
+        },
+        eventSourceFailure: function (error) {
+            console.log("error during load:", error);
+            // const cushion = document.querySelector(".fc-list-empty-cushion");
+            // cushion.innerHTML = "";
+            // cushion.innerText = "пиздец";
+            loadingError = error.message;
+            document.getElementById("errdesc").innerText = loadingError;
+            calendar.render();
+            taskErrAnim.goToAndPlay(0, true);
+        },
         loading: function (isLoading) {
             loading = isLoading;
             const forceUpdButton = document.querySelector("#forceUpdateButton");
             if (forceUpdButton !== null) {
                 console.log("force upd button disabled:", loading);
                 forceUpdButton.disabled = loading;
-            }
-            if (!isLoading && userRequestedUpdate) {
-                showToast("Обновлено");
             }
         },
         eventDidMount: checkEventVisiblity,
@@ -181,7 +206,15 @@ function boot_calendar() {
                 };
             }
             console.log(noTasks);
-            return { domNodes: [loading ? loadingIndicator : noTasks] };
+            let finalElem = noTasks;
+            if (loading) {
+                finalElem = loadingIndicator;
+            }
+            if (loadingError !== false) {
+                finalElem = errorIndicator;
+            }
+            console.log("final element:", finalElem);
+            return { domNodes: [finalElem] };
         },
     });
     calendar.render();
