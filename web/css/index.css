@@ -20,6 +20,7 @@ body {
     gap: 10px;
     width: var(--uisize);
     justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 .hidden {
