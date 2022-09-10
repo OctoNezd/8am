@@ -21,20 +21,16 @@ function checkEventVisiblity({ event, view }) {
     const sameWeek =
         dayjs().endOf("week").toISOString() ===
         dayjs(event.end).endOf("week").toISOString();
-    console.log("Current view:", view.type);
     if (
         view.type == "listWeekNow" &&
         !eventStart.isToday() &&
         eventStart.isBefore(dayjs()) &&
         sameWeek
     ) {
-        console.log("hiding", event);
         event.setProp("display", "none");
     } else {
-        console.log("showing", event);
         event.setProp("display", undefined);
     }
-    console.log(event);
 }
 const cabRE = new RegExp(/, каб. \d*/);
 function boot_calendar() {
@@ -75,9 +71,7 @@ function boot_calendar() {
             ) {
                 calendar.changeView("listWeek");
             }
-            console.log("datesSet");
             for (const event of calendar.getEvents()) {
-                console.log("datesset evt:", event);
                 checkEventVisiblity({ event, view });
             }
         },
@@ -87,7 +81,6 @@ function boot_calendar() {
                     dayjs().endOf("week").toISOString() !==
                     dayjs(event.end).endOf("week").toISOString()
                 ) {
-                    console.log("End is before today, switching to listWeek");
                     calendar.changeView("listWeek");
                 }
             }
@@ -134,7 +127,6 @@ function boot_calendar() {
             return { domNodes: [title, teacherLine, location] };
         },
         noEventsContent: function (e) {
-            console.log("no events:", e);
             if (calendar.getEventSourceById("sharaga") === null) {
                 return {
                     html: noCalendar,

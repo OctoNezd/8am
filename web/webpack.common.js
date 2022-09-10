@@ -130,6 +130,7 @@ module.exports = {
             clientsClaim: true,
             skipWaiting: true,
             ignoreURLParametersMatching: [/\/((?:\?|&|;)([^=]+)=([^&|;]+))?$/],
+            exclude: ["assets"],
         }),
         new webpack.DefinePlugin({
             __COMMIT_HASH__: JSON.stringify(commitHash),
