@@ -27,17 +27,29 @@ module.exports = {
             {
                 test: /\.html$/i,
                 loader: "html-loader",
+                options: {
+                    sources: {
+                        list: [
+                            "...",
+                            {
+                                tag: "lottie-player",
+                                attribute: "src",
+                                type: "src",
+                            },
+                        ],
+                    },
+                },
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/i,
                 type: "asset/resource",
             },
             {
-                test: /\.m?js/,
+                test: /\.m?js$/,
                 type: "javascript/auto",
             },
             {
-                test: /\.m?js/,
+                test: /\.m?js$/,
                 resolve: {
                     fullySpecified: false,
                 },
@@ -131,6 +143,18 @@ module.exports = {
             skipWaiting: true,
             ignoreURLParametersMatching: [/\/((?:\?|&|;)([^=]+)=([^&|;]+))?$/],
             exclude: ["assets"],
+            runtimeCaching: [
+                {
+                    urlPattern: /\/group\/\d*\.ics/,
+                    handler: "StaleWhileRevalidate",
+                    options: {
+                        cacheName: "ics-cache",
+                        expiration: {
+                            maxAgeSeconds: 60 * 60 * 24 * 7,
+                        },
+                    },
+                },
+            ],
         }),
         new webpack.DefinePlugin({
             __COMMIT_HASH__: JSON.stringify(commitHash),

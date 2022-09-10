@@ -1,0 +1,37 @@
+:root {
+    --toast-padding: 12px;
+    --toast-mw: 100px;
+}
+.toast {
+    position: fixed;
+    bottom: 5vh;
+    left: 50%;
+    text-align: center;
+    background-color: var(--md-sys-color-on-surface);
+    color: var(--md-sys-color-surface);
+    padding: var(--toast-padding);
+    width: var(--toast-mw);
+    border-radius: calc(var(--toast-padding) + 4px);
+    margin-left: calc(0px - var(--toast-padding) - var(--toast-mw) / 2);
+    transition: opacity;
+    animation: fadein 0.4s;
+}
+.toast.timeToDie {
+    animation: fadeout 0.4s;
+}
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes fadeout {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

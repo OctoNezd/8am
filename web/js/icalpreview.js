@@ -2,20 +2,44 @@ import { Calendar } from "@fullcalendar/core";
 import listPlugin from "@fullcalendar/list";
 import iCalendarPlugin from "@fullcalendar/icalendar";
 import { teacherIcon, metroIcon, circleIcon } from "./icons";
+import showToast from "./toast";
 import noCalendar from "html/no_cal.html";
+import { loadAnimation } from "lottie-web";
+import * as calLoadingAnimation from "/lottie/cal_load.json";
 import * as dayjs from "dayjs";
 import * as isToday from "dayjs/plugin/isToday";
 import * as isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isToday);
 dayjs.extend(isBetween);
 let calendar;
+let userRequestedUpdate = false;
 const metro_color_map = {
     "🟤": "brown",
     "🟣": "purple",
     "🟠": "orange",
     "🟢": "green",
 };
-
+const noTasks = document.getElementById("noTasks");
+const loadingIndicator = document.getElementById("calendarWait");
+function setup_lottie() {
+    const taskLoadAnim = loadAnimation({
+        container: loadingIndicator.querySelector(".loadingAnim"),
+        rendered: "svg",
+        loop: true,
+        autoplay: true,
+        animationData: calLoadingAnimation,
+    });
+    var currentAnimLoop = 1;
+    taskLoadAnim.addEventListener("loopComplete", () => {
+        currentAnimLoop = -currentAnimLoop;
+        taskLoadAnim.setDirection(currentAnimLoop);
+        taskLoadAnim.goToAndPlay(
+            currentAnimLoop < 0 ? taskLoadAnim.getDuration(true) : 0,
+            true
+        );
+    });
+    console.log("lottie set up ok");
+}
 function checkEventVisiblity({ event, view }) {
     const eventStart = dayjs(event.start);
     const sameWeek =
@@ -32,8 +56,20 @@ function checkEventVisiblity({ event, view }) {
         event.setProp("display", undefined);
     }
 }
+
+window.force_update_calendar = function (e) {
+    if (e) e.preventDefault();
+    userRequestedUpdate = true;
+    console.log("Force updating calendar");
+    caches.delete("ics-cache").then(() => {
+        console.log("deleted cache:");
+        console.log("refetch:", calendar.refetchEvents());
+    });
+};
+let loading = false;
 const cabRE = new RegExp(/, каб. \d*/);
 function boot_calendar() {
+    setup_lottie();
     const calendarEl = document.getElementById("icalpreview");
     calendar = new Calendar(calendarEl, {
         plugins: [iCalendarPlugin, listPlugin],
@@ -58,6 +94,17 @@ function boot_calendar() {
         },
         locale: "ru",
         firstDay: 1,
+        loading: function (isLoading) {
+            loading = isLoading;
+            const forceUpdButton = document.querySelector("#forceUpdateButton");
+            if (forceUpdButton !== null) {
+                console.log("force upd button disabled:", loading);
+                forceUpdButton.disabled = loading;
+            }
+            if (!isLoading && userRequestedUpdate) {
+                showToast("Обновлено");
+            }
+        },
         eventDidMount: checkEventVisiblity,
         eventClassNames: function ({ event }) {
             if (dayjs().isBetween(event.start, event.end)) {
@@ -127,12 +174,14 @@ function boot_calendar() {
             return { domNodes: [title, teacherLine, location] };
         },
         noEventsContent: function (e) {
+            console.log("no events content called", e, loading);
             if (calendar.getEventSourceById("sharaga") === null) {
                 return {
                     html: noCalendar,
                 };
             }
-            return "Нет занятий.";
+            console.log(noTasks);
+            return { domNodes: [loading ? loadingIndicator : noTasks] };
         },
     });
     calendar.render();
@@ -153,4 +202,5 @@ export default function setup_calendar_preview(gid) {
     }
     calendar.render();
 }
+
 export { boot_calendar };

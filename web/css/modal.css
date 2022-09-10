@@ -1,0 +1,45 @@
+/* modal */
+.modal-open {
+    overflow: hidden;
+}
+/* !!! DIFFERENT THINGS !!!! */
+.modal.open {
+    pointer-events: auto;
+    opacity: 1;
+}
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    z-index: 100;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(1);
+
+    transition: transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946),
+        opacity 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+}
+.modal-body {
+    max-width: 560px;
+    z-index: 101;
+    background-color: var(--md-sys-color-surface);
+    padding: 24px;
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.dialog-title {
+    padding-bottom: 16px;
+}
+.booted *:not(.modal) {
+    transition: background-color 0.25s ease;
+}
