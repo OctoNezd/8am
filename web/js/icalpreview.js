@@ -73,10 +73,6 @@ function boot_calendar() {
                 dayjs(start).endOf("week").isAfter(dayjs().endOf("week")) &&
                 view.type === "listWeekNow"
             ) {
-                console.log(
-                    end,
-                    "is different week and listWeekNow, switching to listWeek"
-                );
                 calendar.changeView("listWeek");
             }
             console.log("datesSet");
