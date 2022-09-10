@@ -32,7 +32,7 @@ const select = new TomSelect("#group", {
     labelField: "title",
     searchField: "title",
 
-    onChange: function () {
+    onChange: async function () {
         console.log("selected", groupdom.value);
         if (["NO", ""].includes(groupdom.value)) {
             console.log("hiding everything");
@@ -67,10 +67,10 @@ fetch("/groups", {
     method: "get",
     cache: "force-cache",
 })
-    .then(function (response) {
+    .then(async function (response) {
         return response.json();
     })
-    .then(function (groups) {
+    .then(async function (groups) {
         const urlgroup = urlParams.get("group");
         var gidSelected = false;
         for (const [group, gid] of Object.entries(groups)) {
@@ -93,11 +93,12 @@ fetch("/groups", {
     });
 fetch("/stats", {
     method: "get",
+    cache: "force-cache",
 })
-    .then(function (response) {
+    .then(async function (response) {
         return response.json();
     })
-    .then(function (stats) {
+    .then(async function (stats) {
         const spoiler = document.querySelector("#stats");
         for (const [group, downloads] of Object.entries(stats["groups"])) {
             const elem = document.createElement("tr");
