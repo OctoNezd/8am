@@ -20,13 +20,7 @@ function pwa_init() {
     loadLSTheme();
     window.addEventListener("online", handleConnection);
     window.addEventListener("offline", handleConnection);
-    window.addEventListener("popstate", function (e) {
-        console.log("New history state:", e);
-        const currentlyOpenModal = document.querySelector(".modal.open");
-        if (currentlyOpenModal !== null) {
-            discardModalForce();
-        }
-    });
+
     console.log("PWA - booted");
 }
 pwa_init();
@@ -98,7 +92,7 @@ function makeThemeFromImg() {
 }
 
 function createSettingsButton(title) {
-    const button = document.createElement("a");
+    const button = document.createElement("button");
     button.classList.add("button", "knopf", "primary-container", "block");
     button.innerText = title;
     button.href = "#";
@@ -107,6 +101,7 @@ function createSettingsButton(title) {
 
 function setup_pwa_modal() {
     const modal = document.createElement("div");
+    modal.id = "pwaSettings";
     modal.classList.add("modal");
     const button = document.querySelector("#pwa-settings-button");
     window.open_settings_modal = (e) => openModal(modal, e);
@@ -185,6 +180,7 @@ function testmd3() {
 
 function setup_cpicker_modal() {
     cpicker_modal = document.createElement("div");
+    cpicker_modal.id = "colorPickerModal";
     cpicker_modal.classList.add("modal");
     const modalBody = document.createElement("div");
     cpicker_modal.appendChild(modalBody);

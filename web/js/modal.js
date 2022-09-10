@@ -1,17 +1,28 @@
 import updateThemeColor from "./theming";
-
+window.addEventListener("popstate", function (e) {
+    console.log("New history state:", e);
+    const currentlyOpenModal = document.querySelector(".modal.open");
+    if (currentlyOpenModal !== null) {
+        console.log("have modal open and navigating away - discarding modal");
+        discardModalForce();
+    }
+});
+let lastModalZIndex = 100;
 function discardModal(e) {
     console.log("discardModal", e);
     if (e !== undefined && !e.target.classList.contains("modal")) {
         console.log("ignoring discardmodal cause inside of modal");
         return;
     }
-    document.body.classList.remove("modal-open");
-    document
-        .querySelectorAll(".modal.open")
-        .forEach((modal) => modal.classList.remove("open"));
+    var openModals = [...document.querySelectorAll(".modal.open")].sort(
+        (a, b) => parseInt(a.style.zIndex) > parseInt(b.style.zIndex)
+    );
+    openModals[openModals.length - 1].classList.remove("open");
+    console.log("discarding", openModals[openModals.length - 1]);
     updateThemeColor();
-    if (location.hash === "#modal") {
+    if (location.hash === "#modal" && openModals.length === 1) {
+        console.log("only have one modal open - navigating back");
+        document.body.classList.remove("modal-open");
         history.back();
     }
 }
@@ -21,21 +32,26 @@ const discardModalForce = () => discardModal();
 window.discardModalForce = discardModalForce;
 
 function openModal(modal, event) {
-    discardModalForce();
-    modal.classList.add("open");
-    document.body.classList.add("modal-open");
-    console.log("this:", this);
     if (event !== undefined) {
         console.log("prevented default");
         event.preventDefault();
     }
-    history.pushState(
-        {
-            currentState: "modal",
-        },
-        "",
-        window.location.pathname + window.location.search + "#modal"
-    );
+    modal.style.zIndex = lastModalZIndex;
+    lastModalZIndex++;
+    if (!location.hash === "#modal") {
+        history.pushState(
+            {
+                currentState: "modal",
+            },
+            "",
+            window.location.pathname + window.location.search + "#modal"
+        );
+    }
+    console.log("opening modal", modal);
+    modal.classList.add("open");
+    document.body.classList.add("modal-open");
+    console.log("this:", this);
+
     updateThemeColor();
 }
 
