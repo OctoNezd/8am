@@ -1,17 +1,16 @@
 import { iphone, ipad } from "./ios_modal";
 import { openModal } from "./modal";
 import { pwaDetectType, isPwa } from "./pwa_add";
-import showToast from "./toast";
 function generate_system_report() {
-    const report = document.getElementById("sysInfo");
-    report.innerText = pwaDetectType;
-    if (__IS_DEV__) {
-        report.innerText += `\niphone:${iphone},ipad:${ipad}`;
-    }
-    report.addEventListener("click", (e) => {
+    const openDevMenu = document.getElementById("openDevMenu");
+    openDevMenu.addEventListener("click", (e) => {
         e.preventDefault();
         openModal(document.getElementById("devMenu"), e);
     });
+    const report = document.getElementById("systemReport");
+    report.innerText += `\nPWA:${isPwa}:${pwaDetectType}`;
+    report.innerText += `\niphone:${iphone},ipad:${ipad}`;
+    report.innerText += `\nlocation:${location}`;
     document.getElementById("allReset").addEventListener("click", allReset);
 }
 generate_system_report();

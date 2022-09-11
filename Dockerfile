@@ -11,7 +11,7 @@ COPY ./web/package.json ./web/package-lock.json ./
 RUN npm install 
 COPY ./.git ./.git
 COPY ./web/ ./
-RUN npm run build && ls
+RUN npm run build
 
 FROM python:3.10-bullseye AS app
 WORKDIR /app
