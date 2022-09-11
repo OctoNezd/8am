@@ -40,7 +40,8 @@ function openModal(modal, event) {
     }
     modal.style.zIndex = lastModalZIndex;
     lastModalZIndex++;
-    if (!location.hash === "#modal") {
+    if (location.hash !== "#modal") {
+        console.log("pushing new location.hash");
         history.pushState(
             {
                 currentState: "modal",
@@ -48,6 +49,8 @@ function openModal(modal, event) {
             "",
             window.location.pathname + window.location.search + "#modal"
         );
+    } else {
+        console.log("already have #modal:", location.hash);
     }
     console.log("opening modal", modal);
     modal.classList.add("open");
