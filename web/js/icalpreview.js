@@ -3,15 +3,22 @@ import listPlugin from "@fullcalendar/list";
 import iCalendarPlugin from "@fullcalendar/icalendar";
 import { teacherIcon, metroIcon, circleIcon } from "./icons";
 import showToast from "./toast";
-import noCalendar from "html/no_cal.html";
+
+import noCalendar from "html/calEmpty/noCalendar.html";
+import noTasks from "./calEmpty/noTasks.js";
+import calLoading from "./calEmpty/calLoading.js";
+import calError from "./calEmpty/calError.js";
+
 import { loadAnimation } from "lottie-web";
 import * as calLoadingAnimation from "/lottie/cal_load.json";
 import * as errorAnimation from "/lottie/error.json";
 import * as dayjs from "dayjs";
 import * as isToday from "dayjs/plugin/isToday";
 import * as isBetween from "dayjs/plugin/isBetween";
+import * as isoWeek from "dayjs/plugin/isoWeek";
 dayjs.extend(isToday);
 dayjs.extend(isBetween);
+dayjs.extend(isoWeek);
 let calendar;
 let userRequestedUpdate = false;
 const metro_color_map = {
@@ -20,41 +27,12 @@ const metro_color_map = {
     "🟠": "orange",
     "🟢": "green",
 };
-const noTasks = document.getElementById("noTasks");
-const loadingIndicator = document.getElementById("calendarWait");
-const errorIndicator = document.getElementById("calendarErr");
-const taskErrAnim = loadAnimation({
-    container: errorIndicator.querySelector(".errAnim"),
-    rendered: "svg",
-    loop: false,
-    autoplay: true,
-    animationData: errorAnimation,
-});
-function setup_loading_lottie() {
-    const taskLoadAnim = loadAnimation({
-        container: loadingIndicator.querySelector(".loadingAnim"),
-        rendered: "svg",
-        loop: true,
-        autoplay: true,
-        animationData: calLoadingAnimation,
-    });
-    var currentAnimLoop = 1;
-    taskLoadAnim.addEventListener("loopComplete", () => {
-        currentAnimLoop = -currentAnimLoop;
-        taskLoadAnim.setDirection(currentAnimLoop);
-        taskLoadAnim.goToAndPlay(
-            currentAnimLoop < 0 ? taskLoadAnim.getDuration(true) : 0,
-            true
-        );
-    });
 
-    console.log("lottie set up ok");
-}
 function checkEventVisiblity({ event, view }) {
     const eventStart = dayjs(event.start);
     const sameWeek =
-        dayjs().endOf("week").toISOString() ===
-        dayjs(event.end).endOf("week").toISOString();
+        dayjs().endOf("isoWeek").toISOString() ===
+        dayjs(event.end).endOf("isoWeek").toISOString();
     if (
         view.type == "listWeekNow" &&
         !eventStart.isToday() &&
@@ -74,13 +52,14 @@ window.force_update_calendar = function (e) {
     caches.delete("ics-cache").then(() => {
         console.log("deleted cache:");
         console.log("refetch:", calendar.refetchEvents());
+        calendar.render();
     });
 };
 let loading = false,
     loadingError = false;
 const cabRE = new RegExp(/, каб. \d*/);
+
 function boot_calendar() {
-    setup_loading_lottie();
     const calendarEl = document.getElementById("icalpreview");
     calendar = new Calendar(calendarEl, {
         plugins: [iCalendarPlugin, listPlugin],
@@ -110,11 +89,7 @@ function boot_calendar() {
         },
         eventSourceFailure: function (error) {
             console.log("error during load:", error);
-            // const cushion = document.querySelector(".fc-list-empty-cushion");
-            // cushion.innerHTML = "";
-            // cushion.innerText = "пиздец";
             loadingError = error.message;
-            document.getElementById("errdesc").innerText = loadingError;
             calendar.render();
             taskErrAnim.goToAndPlay(0, true);
         },
@@ -137,10 +112,14 @@ function boot_calendar() {
             }
         },
         datesSet: function ({ start, view }) {
+            console.log("endof isoweek:", dayjs(start).endOf("isoWeek"));
             if (
-                dayjs(start).endOf("week").isAfter(dayjs().endOf("week")) &&
+                dayjs(start)
+                    .endOf("isoWeek")
+                    .isAfter(dayjs().endOf("isoWeek")) &&
                 view.type === "listWeekNow"
             ) {
+                console.log("flipping back to listWeek");
                 calendar.changeView("listWeek");
             }
             for (const event of calendar.getEvents()) {
@@ -150,9 +129,10 @@ function boot_calendar() {
         eventContent: function ({ event, view }) {
             if (view.type === "listWeekNow") {
                 if (
-                    dayjs().endOf("week").toISOString() !==
-                    dayjs(event.end).endOf("week").toISOString()
+                    dayjs().endOf("isoWeek").toISOString() !==
+                    dayjs(event.end).endOf("isoWeek").toISOString()
                 ) {
+                    console.log("flipping back to listWeek");
                     calendar.changeView("listWeek");
                 }
             }
@@ -198,20 +178,18 @@ function boot_calendar() {
             location.insertAdjacentElement("beforeend", cabTag);
             return { domNodes: [title, teacherLine, location] };
         },
-        noEventsContent: function (e) {
-            console.log("no events content called", e, loading);
+        noEventsContent: function ({ view }) {
             if (calendar.getEventSourceById("sharaga") === null) {
                 return {
                     html: noCalendar,
                 };
             }
-            console.log(noTasks);
-            let finalElem = noTasks;
+            let finalElem = noTasks(view.type);
             if (loading) {
-                finalElem = loadingIndicator;
+                finalElem = calLoading();
             }
             if (loadingError !== false) {
-                finalElem = errorIndicator;
+                finalElem = calError(loadingError);
             }
             console.log("final element:", finalElem);
             return { domNodes: [finalElem] };

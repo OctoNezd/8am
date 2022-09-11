@@ -2,7 +2,7 @@
 @import "./md3/theme.css";
 @import "toast.css";
 @import "modal.css";
-@import "knopf.css";
+@import "buttons.css";
 .bold {
     font-weight: bold;
 }
@@ -107,16 +107,6 @@ img {
 .button-container .button {
     height: 100%;
 }
-.negative {
-    --knopf-hue: 356;
-    --knopf-saturation: 57%;
-    --knopf-luminosity: 51%;
-}
-.positive {
-    --knopf-hue: 164;
-    --knopf-saturation: 88%;
-    --knopf-luminosity: 28%;
-}
 
 #webnavbar {
     width: 100%;
@@ -186,12 +176,7 @@ html {
         max-height: 20vh !important;
     }
 }
-@media (prefers-color-scheme: dark) {
-    .knopf.pale {
-        color: rgba(255, 255, 255, 0.8) !important;
-        -webkit-text-fill-color: unset !important;
-    }
-}
+
 /* pwa */
 .pwa-show {
     display: none;
@@ -246,7 +231,6 @@ html {
     --fc-button-hover-border-color: transparent;
     --fc-button-hover-bg-color: var(--md-sys-color-surface-variant);
     --fc-list-event-hover-bg-color: transparent;
-    --knopf-named-background-color: var(--md-sys-color-secondary-container);
     --fc-border-color: var(--md-sys-color-outline);
 }
 
@@ -257,26 +241,21 @@ html {
     color: var(--md-sys-color-on-primary-container) !important;
 }
 
-.knopf *,
-.knopf,
-.test {
-    color: var(--md-sys-color-on-primary-container) !important;
-    -webkit-text-fill-color: var(
-        --md-sys-color-on-primary-container
-    ) !important;
+.animation * {
+    max-height: 200px;
 }
-.loadingAnim * {
+
+#loadingAnim * {
     fill: var(--md-sys-color-on-background);
     stroke: var(--md-sys-color-on-background);
-    max-height: 300px;
 }
 
-.errAnim * {
+#errAnim * {
     fill: var(--md-sys-color-error);
     stroke: var(--md-sys-color-on-error);
-    max-height: 300px;
 }
 
-#stash {
-    display: none;
+#noTasksAnim * {
+    fill: var(--md-sys-color-tertiary);
+    stroke: var(--md-sys-color-on-tertiary);
 }
