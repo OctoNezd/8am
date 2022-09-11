@@ -130,6 +130,7 @@ function setup_pwa_modal() {
     const settingsApplyButton = createSettingsButton("ОК");
     settingsApplyButton.id = "pwa-settings-apply";
     settingsApplyButton.addEventListener("click", discardModalForce);
+    settingsApplyButton.classList.add("tertiary");
     const modalBody = document.createElement("div");
     modalBody.id = "pwa-settings-modal";
     modal.appendChild(modalBody);
@@ -202,6 +203,7 @@ function setup_cpicker_modal() {
         ],
     });
     const ok = createSettingsButton("OK");
+    ok.classList.add("tertiary");
     ok.addEventListener("click", () => {
         discardModalForce();
         localStorage.setItem("userTheme", colorpicker.color.hexString);
@@ -212,6 +214,7 @@ function setup_cpicker_modal() {
         discardModalForce();
         loadLSTheme();
     });
+    cancel.classList.add("error");
     colorpicker.on("color:change", function (color) {
         // log the current color as a HEX string
         console.log(color.hexString);

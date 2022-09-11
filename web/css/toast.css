@@ -3,6 +3,7 @@
     --toast-width: 100px;
 }
 .toast {
+    z-index: 1000;
     position: fixed;
     bottom: 5vh;
     left: 50%;

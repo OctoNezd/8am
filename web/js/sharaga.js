@@ -1,12 +1,11 @@
 import setup_calendar_preview, { boot_calendar } from "./icalpreview";
-import { pwaDetectType, isPwa } from "./pwa_add";
-import { iphone, ipad } from "./ios_modal";
+import { isPwa } from "./pwa_add";
+import "./devmenu";
 import setup_icons from "./icons.js";
 import TomSelect from "tom-select";
 import "tom-select/dist/css/tom-select.css";
 import localForage from "localForage";
 
-console.log("PWA:", pwaDetectType);
 setup_icons();
 boot_calendar();
 
@@ -110,9 +109,6 @@ fetch("/stats", {
             elem.append(cell2);
             spoiler.append(elem);
         }
-        const appver = document.querySelector("#appver");
-        appver.innerText = `Парсер v ${stats["system"]["parser_ver"]} (${__COMMIT_HASH__})\n${pwaDetectType}`;
-        if (__IS_DEV__) {
-            appver.innerText += `\niphone:${iphone},ipad:${ipad}`;
-        }
+        const appver = document.getElementById("appver");
+        appver.innerText = `Парсер v ${stats["system"]["parser_ver"]} (${__COMMIT_HASH__})`;
     });

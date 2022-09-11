@@ -104,7 +104,30 @@
                     Не загружается расписание? Расписание загружается криво?
                 </a>
                 <a class="link" href="/static/changelog.html" id="appver">v0</a>
+                <a class="link" href="#" id="sysInfo"></a>
             </div>
+        </div>
+    </div>
+</div>
+<div id="devMenu" class="modal">
+    <div class="modal-body">
+        <h3 class="headline-small center on-surface-text dialog-title">
+            Devmenu
+        </h3>
+        <div class="buttonColumn">
+            <button type="button" class="knopf error button" id="allReset">
+                Сбросить все кэши и настройки
+            </button>
+            <button type="button" class="knopf button" onclick="testmd3()">
+                Тест MD3
+            </button>
+            <button
+                type="button"
+                class="knopf button tertiary"
+                onclick="discardModalForce()"
+            >
+                ОК
+            </button>
         </div>
     </div>
 </div>

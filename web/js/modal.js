@@ -15,7 +15,7 @@ function discardModal(e) {
         return;
     }
     var openModals = [...document.querySelectorAll(".modal.open")].sort(
-        (a, b) => parseInt(a.style.zIndex) > parseInt(b.style.zIndex)
+        (a, b) => (parseInt(a.style.zIndex) > parseInt(b.style.zIndex) ? 1 : -1)
     );
     openModals[openModals.length - 1].classList.remove("open");
     console.log("discarding", openModals[openModals.length - 1]);

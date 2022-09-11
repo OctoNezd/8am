@@ -42,7 +42,12 @@ if ("serviceWorker" in navigator) {
                 name: "periodic-background-sync",
             });
 
-            console.log("Registration status:", status);
+            console.log(
+                "Periodic sync status:",
+                status,
+                "Worker status:",
+                registration
+            );
             if (status.state === "granted") {
                 try {
                     await registration.periodicSync.register("update-ics", {
