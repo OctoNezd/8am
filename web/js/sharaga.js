@@ -4,7 +4,7 @@ import "./devmenu";
 import setup_icons from "./icons.js";
 import TomSelect from "tom-select";
 import "tom-select/dist/css/tom-select.css";
-import localForage from "localForage";
+import localForage from "localforage";
 
 setup_icons();
 boot_calendar();

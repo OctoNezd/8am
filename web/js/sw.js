@@ -1,4 +1,4 @@
-import localForage from "localForage";
+import localForage from "localforage";
 import { precacheAndRoute } from "workbox-precaching";
 import { clientsClaim } from "workbox-core";
 import { registerRoute } from "workbox-routing/registerRoute";
