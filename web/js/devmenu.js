@@ -11,10 +11,15 @@ function generate_system_report() {
     report.innerText += `\nPWA:${isPwa}:${pwaDetectType}`;
     report.innerText += `\niphone:${iphone},ipad:${ipad}`;
     report.innerText += `\nlocation:${location}`;
-    document.getElementById("allReset").addEventListener("click", allReset);
+    document
+        .getElementById("allReset")
+        .addEventListener("click", () => allReset(true));
+    document
+        .getElementById("cleanCaches")
+        .addEventListener("click", () => allReset(false));
 }
 generate_system_report();
-async function allReset() {
+async function allReset(nukeAll) {
     const modal = document.createElement("div");
     document.body.appendChild(modal);
     modal.classList.add("modal");
@@ -45,20 +50,22 @@ async function allReset() {
     reloadPageButton.disabled = true;
     reloadPageButton.addEventListener("click", () => location.reload());
     modalBody.append(resetHeader, resetLog, reloadPageButton);
-    const workers = await navigator.serviceWorker.getRegistrations();
-    for (const worker of workers) {
-        worker.unregister();
-        resetLog.innerText += `Удалён воркер: ${worker.active.scriptURL}\n`;
-    }
     const cacheKeys = await caches.keys();
     for (const key of cacheKeys) {
         await caches.delete(key);
         resetLog.innerText += `Удалён кэш: ${key}\n`;
     }
-    const idb = await indexedDB.databases();
-    for (const db of idb) {
-        await window.indexedDB.deleteDatabase(db.name);
-        resetLog.innerText += `Удалена БД: ${db.name}\n`;
+    if (nukeAll) {
+        const workers = await navigator.serviceWorker.getRegistrations();
+        for (const worker of workers) {
+            worker.unregister();
+            resetLog.innerText += `Удалён воркер: ${worker.active.scriptURL}\n`;
+        }
+        const idb = await indexedDB.databases();
+        for (const db of idb) {
+            await window.indexedDB.deleteDatabase(db.name);
+            resetLog.innerText += `Удалена БД: ${db.name}\n`;
+        }
     }
     resetLog.innerText += "Сброс завершён. Перезагрузите страницу.";
     reloadPageButton.disabled = false;
