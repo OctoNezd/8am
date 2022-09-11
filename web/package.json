@@ -11,6 +11,7 @@
         "dayjs": "^1.11.5",
         "fullcalendar": "^5.11.3",
         "knopf.css": "^1.1.2",
+        "localforage": "^1.10.0",
         "lottie-web": "^5.9.6",
         "tom-select": "^2.1.0"
     },

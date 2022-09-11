@@ -20,9 +20,11 @@ function discardModal(e) {
     openModals[openModals.length - 1].classList.remove("open");
     console.log("discarding", openModals[openModals.length - 1]);
     updateThemeColor();
-    if (location.hash === "#modal" && openModals.length === 1) {
-        console.log("only have one modal open - navigating back");
+    if (document.querySelectorAll(".modal.open").length === 0) {
         document.body.classList.remove("modal-open");
+    }
+    if (location.hash === "#modal") {
+        console.log("only have one modal open - navigating back");
         history.back();
     }
 }

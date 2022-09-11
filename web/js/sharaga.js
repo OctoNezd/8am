@@ -4,6 +4,8 @@ import { iphone, ipad } from "./ios_modal";
 import setup_icons from "./icons.js";
 import TomSelect from "tom-select";
 import "tom-select/dist/css/tom-select.css";
+import localForage from "localForage";
+
 console.log("PWA:", pwaDetectType);
 setup_icons();
 boot_calendar();
@@ -44,7 +46,7 @@ const select = new TomSelect("#group", {
         if (!isPwa) {
             history.pushState("", "", "?" + urlParams);
         }
-        localStorage.setItem("last_gid", groupdom.value);
+        await localForage.setItem("last_gid", groupdom.value);
         buttons.classList.remove("hidden");
         webcal[
             "href"
@@ -77,13 +79,13 @@ fetch("/groups", {
                 id: gid,
                 title: `${group} (ID: ${gid})`,
             });
-            if (urlgroup === gid) {
+            if (urlgroup === gid && !isPwa) {
                 select.setValue(gid);
                 gidSelected = true;
             }
         }
         if (!gidSelected) {
-            const lastgid = localStorage.getItem("last_gid");
+            const lastgid = await localForage.getItem("last_gid");
             if (lastgid !== undefined) {
                 console.log("set gid to last gid:", lastgid);
                 select.setValue(lastgid);

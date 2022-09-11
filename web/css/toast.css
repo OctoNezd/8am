@@ -1,23 +1,33 @@
 :root {
     --toast-padding: 12px;
-    --toast-mw: 100px;
+    --toast-width: 100px;
 }
 .toast {
     position: fixed;
     bottom: 5vh;
     left: 50%;
-    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
     background-color: var(--md-sys-color-on-surface);
     color: var(--md-sys-color-surface);
     padding: var(--toast-padding);
-    width: var(--toast-mw);
+    width: var(--toast-width);
     border-radius: calc(var(--toast-padding) + 4px);
-    margin-left: calc(0px - var(--toast-padding) - var(--toast-mw) / 2);
+    margin-left: calc(0px - var(--toast-padding) - var(--toast-width) / 2);
     transition: opacity;
     animation: fadein 0.4s;
 }
 .toast.timeToDie {
     animation: fadeout 0.4s;
+}
+.toast button {
+    background-color: transparent;
+    border: 0;
+    color: var(--md-sys-color-on-primary);
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: bolder;
 }
 @keyframes fadein {
     from {

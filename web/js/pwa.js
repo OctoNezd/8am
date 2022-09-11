@@ -20,7 +20,6 @@ function pwa_init() {
     loadLSTheme();
     window.addEventListener("online", handleConnection);
     window.addEventListener("offline", handleConnection);
-
     console.log("PWA - booted");
 }
 pwa_init();
@@ -109,7 +108,7 @@ function setup_pwa_modal() {
     modal.addEventListener("click", discardModal);
     const controls = document.querySelector("#controls");
     controls.querySelectorAll(".knopf").forEach((control) => {
-        control.classList.add("pale", "nologos");
+        control.classList.add("nologos");
     });
     const about = document.querySelector("#about");
     const settingsHeaderText = document.createElement("h3");

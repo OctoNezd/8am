@@ -11,7 +11,7 @@ let commitHash = require("child_process")
     .toString()
     .trim();
 module.exports = {
-    entry: "./js/entry.js",
+    entry: { main: "./js/entry.js" },
     output: {
         filename: "[name].[contenthash].js",
         path: path.resolve(__dirname, "dist"),
@@ -136,25 +136,14 @@ module.exports = {
         new CopyPlugin({
             patterns: [{ from: "assets", to: "assets" }],
         }),
-        new WorkboxPlugin.GenerateSW({
+        new WorkboxPlugin.InjectManifest({
             // these options encourage the ServiceWorkers to get in there fast
             // and not allow any straggling "old" SWs to hang around
-            clientsClaim: true,
-            skipWaiting: true,
-            ignoreURLParametersMatching: [/\/((?:\?|&|;)([^=]+)=([^&|;]+))?$/],
+            // clientsClaim: true,
+            // skipWaiting: true,
+            // ignoreURLParametersMatching: [/\/((?:\?|&|;)([^=]+)=([^&|;]+))?$/],
             exclude: ["assets"],
-            runtimeCaching: [
-                {
-                    urlPattern: /\/group\/\d*\.ics/,
-                    handler: "StaleWhileRevalidate",
-                    options: {
-                        cacheName: "ics-cache",
-                        expiration: {
-                            maxAgeSeconds: 60 * 60 * 24 * 7,
-                        },
-                    },
-                },
-            ],
+            swSrc: "./js/sw.js",
         }),
         new webpack.DefinePlugin({
             __COMMIT_HASH__: JSON.stringify(commitHash),

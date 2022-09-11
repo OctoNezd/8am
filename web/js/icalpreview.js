@@ -112,7 +112,6 @@ function boot_calendar() {
             }
         },
         datesSet: function ({ start, view }) {
-            console.log("endof isoweek:", dayjs(start).endOf("isoWeek"));
             if (
                 dayjs(start)
                     .endOf("isoWeek")
@@ -191,7 +190,6 @@ function boot_calendar() {
             if (loadingError !== false) {
                 finalElem = calError(loadingError);
             }
-            console.log("final element:", finalElem);
             return { domNodes: [finalElem] };
         },
     });
