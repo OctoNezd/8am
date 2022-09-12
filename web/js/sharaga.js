@@ -1,4 +1,4 @@
-import setup_calendar_preview, { boot_calendar } from "./icalpreview";
+import setup_calendar_preview, { boot_calendar } from "./calendar/icalpreview";
 import { isPwa } from "./pwa_add";
 import "./devmenu";
 import setup_icons from "./icons.js";

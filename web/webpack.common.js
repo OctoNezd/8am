@@ -25,6 +25,10 @@ module.exports = {
                 use: ["style-loader", "css-loader"],
             },
             {
+                test: /\.svg$/i,
+                type: "asset/inline",
+            },
+            {
                 test: /\.html$/i,
                 loader: "html-loader",
                 options: {
