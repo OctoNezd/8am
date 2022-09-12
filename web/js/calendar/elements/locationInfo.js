@@ -15,40 +15,47 @@ export default class LocationLine extends HTMLElement {
         const wrapper = document.createElement("a");
         console.log("Update location info", this.attributes, wrapper);
         wrapper.innerHTML = "";
+        const textSpan = document.createElement("span");
+        textSpan.classList.add("textSpan");
+        wrapper.appendChild(textSpan);
         const station = this.getAttribute("metro-station");
         const line = this.getAttribute("metro-line");
         if (station) {
+            const metroIconSpan = document.createElement("span");
+            metroIconSpan.classList.add("metroIconSpan");
             console.log("using station", station);
             if (line) {
                 const metroIcon = document.createElement("img");
                 metroIcon.classList.add("metroIcon");
                 metroIcon.src = metroIcons[line];
                 metroIcon.title = metroIcon.alt = metroLineNames[line][1];
-                wrapper.insertAdjacentElement("beforeend", metroIcon);
+                metroIconSpan.insertAdjacentElement("beforeend", metroIcon);
+                metroIconSpan.insertAdjacentHTML("beforeend", "&nbsp;");
+                wrapper.insertAdjacentElement("afterbegin", metroIconSpan);
             }
-            wrapper.insertAdjacentText("beforeend", station);
+            textSpan.insertAdjacentText("beforeend", station);
         }
         const location = this.getAttribute("location");
         if (location) {
             wrapper.href = MAP_QUERY_LINE + encodeURI(location);
             if (station) {
-                wrapper.insertAdjacentText("beforeend", ", ");
+                textSpan.insertAdjacentText("beforeend", ", ");
             }
-            wrapper.insertAdjacentText("beforeend", `${location}`);
+            textSpan.insertAdjacentText("beforeend", `${location}`);
         }
         const room = this.getAttribute("room");
         if (room) {
             if (station || location) {
-                wrapper.insertAdjacentHTML("beforeend", ",&nbsp;");
+                textSpan.insertAdjacentHTML("beforeend", ",&nbsp;");
             }
             const roomEl = document.createElement("b");
             roomEl.innerText = `каб. ${room}`;
-            wrapper.insertAdjacentElement("beforeend", roomEl);
+            textSpan.insertAdjacentElement("beforeend", roomEl);
         }
         console.log(this.attributes);
         const style = document.createElement("style");
         style.textContent =
-            "a { display: flex; flex-direction: row; align-items: center; color: inherit} .metroIcon {height: 1em; margin-right: 3px}";
+            "a { color: inherit;display:block} .metroIcon { height:1em; display: inline-block} .metroIconSpan { line-height: 1em; vertical-align: bottom}";
         this.shadowRoot.append(wrapper, style);
     }
 }
