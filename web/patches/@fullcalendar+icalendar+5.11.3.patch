@@ -1,0 +1,12 @@
+diff --git a/node_modules/@fullcalendar/icalendar/main.js b/node_modules/@fullcalendar/icalendar/main.js
+index 484ed88..cbfd1b4 100644
+--- a/node_modules/@fullcalendar/icalendar/main.js
++++ b/node_modules/@fullcalendar/icalendar/main.js
+@@ -227,6 +227,7 @@ function buildNonDateProps(iCalEvent) {
+             location: iCalEvent.location,
+             organizer: iCalEvent.organizer,
+             description: iCalEvent.description,
++            ical: iCalEvent
+         },
+     };
+ }

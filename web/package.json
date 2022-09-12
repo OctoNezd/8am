@@ -13,12 +13,14 @@
         "knopf.css": "^1.1.2",
         "localforage": "^1.10.0",
         "lottie-web": "^5.9.6",
+        "patch-package": "^6.4.7",
         "tom-select": "^2.1.0"
     },
     "scripts": {
         "build": "webpack --config webpack.prod.js --mode production",
         "serve": "webpack serve --config webpack.dev.js --mode development",
-        "stats": "webpack --config webpack.prod.js --mode production --profile --json > stats.json"
+        "stats": "webpack --config webpack.prod.js --mode production --profile --json > stats.json",
+        "postinstall": "patch-package"
     },
     "devDependencies": {
         "copy-webpack-plugin": "^11.0.0",
