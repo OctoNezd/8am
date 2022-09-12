@@ -1,16 +1,27 @@
 import { iphone, ipad } from "./ios_modal";
 import { openModal } from "./modal";
 import { pwaDetectType, isPwa } from "./pwa_add";
-function generate_system_report() {
+import localForage from "localforage";
+
+function generate_sysreport() {
+    const report = document.getElementById("systemReport");
+    report.innerText = "Отладочная информация:";
+    report.innerText += `\nPWA:${isPwa}:${pwaDetectType}`;
+    report.innerText += `\niphone:${iphone},ipad:${ipad}`;
+    report.innerText += `\nlocation:${location}`;
+    report.innerText += `\nОтладочная информация сгенерирована: ${new Date()}`;
+    localForage.getItem("lastPeriodicSync").then((lastPeriodicSync) => {
+        report.innerText += `\nПоследнее авто-обновление расписания: ${lastPeriodicSync}`;
+    });
+}
+window.generate_sysreport = generate_sysreport;
+function setup_devmenu() {
     const openDevMenu = document.getElementById("openDevMenu");
     openDevMenu.addEventListener("click", (e) => {
         e.preventDefault();
         openModal(document.getElementById("devMenu"), e);
     });
-    const report = document.getElementById("systemReport");
-    report.innerText += `\nPWA:${isPwa}:${pwaDetectType}`;
-    report.innerText += `\niphone:${iphone},ipad:${ipad}`;
-    report.innerText += `\nlocation:${location}`;
+    generate_sysreport();
     document
         .getElementById("allReset")
         .addEventListener("click", () => allReset(true));
@@ -18,7 +29,7 @@ function generate_system_report() {
         .getElementById("cleanCaches")
         .addEventListener("click", () => allReset(false));
 }
-generate_system_report();
+setup_devmenu();
 async function allReset(nukeAll) {
     const modal = document.createElement("div");
     document.body.appendChild(modal);

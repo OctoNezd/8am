@@ -21,6 +21,7 @@ async function fetchAndCacheICS() {
     const url = `/group/${gid}.ics`;
     const myCache = await caches.open("ics-cache");
     await myCache.add(new Request(url, { cache: "no-cache" }));
+    await localForage.setItem("lastPeriodicSync", new Date());
     console.log(`Updated ${url}`);
 }
 
