@@ -23,6 +23,32 @@ if (isAndroid) {
 }
 let urlParams = new URLSearchParams(location.search);
 console.log("urlParams: " + urlParams);
+fetch("/stats", {
+    method: "get",
+})
+    .then(async function (response) {
+        return response.json();
+    })
+    .then(async function (stats) {
+        const spoiler = document.querySelector("#stats");
+        for (const [group, downloads] of Object.entries(stats["groups"])) {
+            const elem = document.createElement("tr");
+            const cell1 = document.createElement("td");
+            cell1.innerText = group;
+            const cell2 = document.createElement("td");
+            cell2.innerText = downloads;
+            elem.append(cell1);
+            elem.append(cell2);
+            spoiler.append(elem);
+        }
+        const appver = document.getElementById("appver");
+        await localForage.setItem(
+            "serverVersion",
+            stats["system"]["parser_ver"]
+        );
+        appver.innerText = `Парсер v ${stats["system"]["parser_ver"]} (${__COMMIT_HASH__})`;
+    });
+
 const select = new TomSelect("#group", {
     create: false,
     sortField: {
@@ -38,7 +64,7 @@ const select = new TomSelect("#group", {
         if (["NO", ""].includes(groupdom.value)) {
             console.log("hiding everything");
             buttons.classList.add("hidden");
-            setup_calendar_preview();
+            await setup_calendar_preview();
             return;
         }
         urlParams.set("group", groupdom.value);
@@ -60,7 +86,7 @@ const select = new TomSelect("#group", {
                     .toString(36)
                     .substring(7)}`,
             }).toString();
-        setup_calendar_preview(groupdom.value);
+        await setup_calendar_preview(groupdom.value);
     },
 });
 
@@ -90,25 +116,4 @@ fetch("/groups", {
                 select.setValue(lastgid);
             }
         }
-    });
-fetch("/stats", {
-    method: "get",
-})
-    .then(async function (response) {
-        return response.json();
-    })
-    .then(async function (stats) {
-        const spoiler = document.querySelector("#stats");
-        for (const [group, downloads] of Object.entries(stats["groups"])) {
-            const elem = document.createElement("tr");
-            const cell1 = document.createElement("td");
-            cell1.innerText = group;
-            const cell2 = document.createElement("td");
-            cell2.innerText = downloads;
-            elem.append(cell1);
-            elem.append(cell2);
-            spoiler.append(elem);
-        }
-        const appver = document.getElementById("appver");
-        appver.innerText = `Парсер v ${stats["system"]["parser_ver"]} (${__COMMIT_HASH__})`;
     });

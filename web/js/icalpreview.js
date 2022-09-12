@@ -9,23 +9,21 @@ import noTasks from "./calEmpty/noTasks.js";
 import calLoading from "./calEmpty/calLoading.js";
 import calError from "./calEmpty/calError.js";
 
-import { loadAnimation } from "lottie-web";
-import * as calLoadingAnimation from "/lottie/cal_load.json";
-import * as errorAnimation from "/lottie/error.json";
 import * as dayjs from "dayjs";
 import * as isToday from "dayjs/plugin/isToday";
 import * as isBetween from "dayjs/plugin/isBetween";
 import * as isoWeek from "dayjs/plugin/isoWeek";
+import localforage from "localforage";
 dayjs.extend(isToday);
 dayjs.extend(isBetween);
 dayjs.extend(isoWeek);
 let calendar;
 let userRequestedUpdate = false;
 const metro_color_map = {
-    "🟤": "brown",
-    "🟣": "purple",
-    "🟠": "orange",
-    "🟢": "green",
+    "🟤": "#8D5B2D",
+    "🟣": "#800080",
+    "🟠": "#ED9121",
+    "🟢": "#99CC00",
 };
 
 function checkEventVisiblity({ event, view }) {
@@ -197,7 +195,7 @@ function boot_calendar() {
     window.calendar = calendar;
     console.log("Calendar rendered");
 }
-export default function setup_calendar_preview(gid) {
+export default async function setup_calendar_preview(gid) {
     const current_es = calendar.getEventSourceById("sharaga");
     if (current_es !== null) {
         current_es.remove();
@@ -205,7 +203,11 @@ export default function setup_calendar_preview(gid) {
     if (gid !== undefined) {
         calendar.addEventSource({
             id: "sharaga",
-            url: `${location.protocol}//${location.host}/group/${gid}.ics`,
+            url: `${location.protocol}//${
+                location.host
+            }/group/${gid}.ics?sv=${await localforage.getItem(
+                "serverVersion"
+            )}`,
             format: "ics",
         });
     }

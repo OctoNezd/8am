@@ -3,22 +3,27 @@ import { precacheAndRoute } from "workbox-precaching";
 import { clientsClaim } from "workbox-core";
 import { registerRoute } from "workbox-routing/registerRoute";
 import { StaleWhileRevalidate } from "workbox-strategies/StaleWhileRevalidate";
+import { ExpirationPlugin } from "workbox-expiration";
 const wbManifest = self.__WB_MANIFEST;
 console.log("wbmanifest", wbManifest);
 
 const icsCache = new StaleWhileRevalidate({
     cacheName: "ics-cache",
-    expiration: {
-        maxAgeSeconds: 60 * 60 * 24 * 7,
-    },
+    plugins: [
+        new ExpirationPlugin({
+            maxAgeSeconds: 60 * 60 * 24 * 7,
+            maxEntries: 5,
+        }),
+    ],
 });
 async function fetchAndCacheICS() {
     const gid = await localForage.getItem("last_gid");
-    if (gid === null) {
-        console.log("Last gid is not set, not syncing");
+    const serverVersion = await localForage.getItem("serverVersion");
+    if ([gid, serverVersion].includes(null)) {
+        console.log("Last gid/server version is not set, not syncing");
         return;
     }
-    const url = `/group/${gid}.ics`;
+    const url = `/group/${gid}.ics?sv=${serverVersion}`;
     const myCache = await caches.open("ics-cache");
     await myCache.add(new Request(url, { cache: "no-cache" }));
     await localForage.setItem("lastPeriodicSync", new Date());
