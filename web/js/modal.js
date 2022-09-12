@@ -17,6 +17,10 @@ function discardModal(e) {
     var openModals = [...document.querySelectorAll(".modal.open")].sort(
         (a, b) => (parseInt(a.style.zIndex) > parseInt(b.style.zIndex) ? 1 : -1)
     );
+    if (openModals.length === 0) {
+        console.log("no open modals...");
+        return;
+    }
     openModals[openModals.length - 1].classList.remove("open");
     console.log("discarding", openModals[openModals.length - 1]);
     updateThemeColor();

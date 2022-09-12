@@ -9,6 +9,8 @@ import {
 } from "@material/material-color-utilities";
 import iro from "@jaames/iro";
 import { openModal } from "./modal";
+import localforage from "localforage";
+import showToast from "./toast";
 let cpicker_modal, colorpicker;
 
 function pwa_init() {
@@ -33,23 +35,24 @@ function handleConnection() {
 }
 
 function loadLSTheme() {
-    let userThemeColor = localStorage.getItem("userTheme");
-    if (userThemeColor === null) {
-        return;
-    }
-    if (userThemeColor.startsWith("#")) {
-        userThemeColor = argbFromHex(userThemeColor);
-    }
-    const userTheme = themeFromSourceColor(userThemeColor);
-    // Check if the user has dark mode turned on
-    const systemDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-    ).matches;
-    console.log(userTheme);
-    console.log("loading theme", userTheme, "with dark mode:", systemDark);
-    // Apply the theme to the body by updating custom properties for material tokens
-    applyTheme(userTheme, { target: document.body, dark: systemDark });
-    updateThemeColor();
+    localforage.getItem("userTheme").then((userThemeColor) => {
+        if (userThemeColor === null) {
+            return;
+        }
+        if (userThemeColor.startsWith("#")) {
+            userThemeColor = argbFromHex(userThemeColor);
+        }
+        const userTheme = themeFromSourceColor(userThemeColor);
+        // Check if the user has dark mode turned on
+        const systemDark = window.matchMedia(
+            "(prefers-color-scheme: dark)"
+        ).matches;
+        console.log(userTheme);
+        console.log("loading theme", userTheme, "with dark mode:", systemDark);
+        // Apply the theme to the body by updating custom properties for material tokens
+        applyTheme(userTheme, { target: document.body, dark: systemDark });
+        updateThemeColor();
+    });
 }
 window
     .matchMedia("(prefers-color-scheme: dark)")
@@ -83,7 +86,7 @@ function makeThemeFromImg() {
         console.log("imgel", imgel);
         const theme = await sourceColorFromImage(imgel);
         console.log("theme from image:", theme);
-        localStorage.setItem("userTheme", JSON.stringify(theme));
+        await localforage.setItem("userTheme", JSON.stringify(theme));
         loadLSTheme();
     };
 
@@ -178,6 +181,27 @@ function testmd3() {
     }, 500);
 }
 
+function permatestmd3() {
+    localforage.getItem("permamd3").then(async (permamd3) => {
+        await localforage.setItem("permamd3", !permamd3);
+        discardModalForce();
+        discardModalForce();
+
+        if (!permamd3) {
+            showToast("ЛЮБА!");
+            testmd3();
+        } else {
+            showToast("ВСМЫСЛЕ БЛЯТЬ НЕ ЛЮБА?");
+            setInterval(() => location.reload(), 1000);
+        }
+    });
+}
+window.permatestmd3 = permatestmd3;
+localforage.getItem("permamd3").then((permamd3) => {
+    if (permamd3) {
+        testmd3();
+    }
+});
 function setup_cpicker_modal() {
     cpicker_modal = document.createElement("div");
     cpicker_modal.id = "colorPickerModal";
@@ -204,9 +228,9 @@ function setup_cpicker_modal() {
     });
     const ok = createSettingsButton("OK");
     ok.classList.add("tertiary");
-    ok.addEventListener("click", () => {
+    ok.addEventListener("click", async () => {
         discardModalForce();
-        localStorage.setItem("userTheme", colorpicker.color.hexString);
+        await localforage.setItem("userTheme", colorpicker.color.hexString);
         loadLSTheme();
     });
     const cancel = createSettingsButton("Отмена");
