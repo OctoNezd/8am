@@ -31,7 +31,7 @@ async function fetchAndCacheICS() {
 }
 
 self.addEventListener("periodicsync", (event) => {
-    if (event.tag === "ics-update") {
+    if (event.tag === "update-ics") {
         console.log("Fetching ics in the background!");
         event.waitUntil(fetchAndCacheICS());
     }
