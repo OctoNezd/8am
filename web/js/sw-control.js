@@ -1,6 +1,6 @@
 import { Workbox } from "workbox-window";
 import showToast from "./toast";
-const wb = new Workbox("/sw.js");
+const wb = new Workbox("/worker.js");
 const showSkipWaitingPrompt = async (event) => {
     // Assuming the user accepted the update, set up a listener
     // that will reload the page as soon as the previously waiting

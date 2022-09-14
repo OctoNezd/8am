@@ -147,7 +147,7 @@ module.exports = {
             // skipWaiting: true,
             // ignoreURLParametersMatching: [/\/((?:\?|&|;)([^=]+)=([^&|;]+))?$/],
             exclude: ["assets"],
-            swSrc: "./js/sw.js",
+            swSrc: "./js/worker.js",
         }),
         new webpack.DefinePlugin({
             __COMMIT_HASH__: JSON.stringify(commitHash),
