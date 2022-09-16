@@ -53,6 +53,20 @@ function loadLSTheme() {
         applyTheme(userTheme, { target: document.body, dark: systemDark });
         updateThemeColor();
     });
+    localforage.getItem("bgImage").then((bgImage) => {
+        if (bgImage === null) {
+            return;
+        }
+        console.log("setting bg image", bgImage);
+        const objectUrl = URL.createObjectURL(bgImage);
+        const newBg =
+            getComputedStyle(document.body).getPropertyValue(
+                "--md-sys-color-background"
+            ) + "f0";
+        document.body.style.background = `linear-gradient( ${newBg}, ${newBg} ),url("${objectUrl}") center / cover`;
+        console.log("new bg color:", newBg);
+        console.log("new background:", document.body.style.backgroundImage);
+    });
 }
 window
     .matchMedia("(prefers-color-scheme: dark)")
@@ -65,6 +79,7 @@ function makeThemeFromImg() {
     input.onchange = async (e) => {
         var file = e.target.files[0];
         console.log("onchange", file);
+        await localforage.setItem("bgImage", file);
         const bmp = await createImageBitmap(file, {
             resizeHeight: 300,
             resizeQuality: "low",
@@ -122,7 +137,7 @@ function setup_pwa_modal() {
         "on-surface-text",
         "dialog-title"
     );
-    const loadColorImage = createSettingsButton("Загрузить картинку для темы");
+    const loadColorImage = createSettingsButton("Выбрать фоновую картинку");
     loadColorImage.addEventListener("click", makeThemeFromImg);
     const selectThemeColor = createSettingsButton(
         "Выбрать цвет для темы вручную"

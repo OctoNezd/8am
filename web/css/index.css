@@ -29,16 +29,7 @@ body {
 .hidden {
     display: none !important;
 }
-#addbuttons {
-    padding-top: 10px;
-}
-.button {
-    width: var(--buttonsize) !important;
-}
-.button-container {
-    display: block;
-    padding-top: 8px !important;
-}
+
 select {
     padding-bottom: 4px;
 }
@@ -265,4 +256,7 @@ html {
         "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
         "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
     padding-bottom: 16px;
+}
+.hasBgImage {
+    background-size: cover;
 }

@@ -38,3 +38,13 @@
     flex-direction: column;
     gap: 5px;
 }
+#addbuttons {
+    padding-top: 10px;
+}
+.button:not(.block) {
+    width: var(--buttonsize) !important;
+}
+.button-container {
+    display: block;
+    padding-top: 8px !important;
+}
