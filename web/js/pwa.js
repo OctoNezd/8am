@@ -63,7 +63,7 @@ function loadLSTheme() {
             getComputedStyle(document.body).getPropertyValue(
                 "--md-sys-color-background"
             ) + "f0";
-        document.body.style.background = `linear-gradient( ${newBg}, ${newBg} ),url("${objectUrl}") top/100% no-repeat fixed border-box`;
+        document.body.style.background = `linear-gradient( ${newBg}, ${newBg} ),url("${objectUrl}") initial/cover no-repeat fixed border-box`;
         console.log("new bg color:", newBg);
         console.log("new background:", document.body.style.backgroundImage);
     });
