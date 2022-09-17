@@ -1,8 +1,11 @@
+@import "@fontsource/roboto/500";
 @import "@fontsource/roboto";
 @import "./md3/theme.css";
 @import "toast.css";
 @import "modal.css";
 @import "buttons.css";
+@import "icons.css";
+@import "animations.css";
 .bold {
     font-weight: bold;
 }

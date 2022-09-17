@@ -36,13 +36,12 @@ module.exports = {
                                 options
                             ) {
                                 var parent = options.target || document.head;
-                                element = element.cloneNode(true);
+                                // element = element.cloneNode(true);
                                 console.log("injecting into", parent);
                                 parent.appendChild(element);
                             },
                         },
                     },
-
                     "css-loader",
                 ],
                 // issuer: /\.m?js$/,

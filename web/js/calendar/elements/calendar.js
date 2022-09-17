@@ -30,7 +30,6 @@ import { pluralize } from "/js/misc.js";
 import noTasks from "./calEmpty/noTasks";
 
 function sortElements(element) {
-    console.log(element);
     [...element.children]
         .sort((a, b) =>
             parseInt(a.id.replace("ts", "").split("-")[0]) >
@@ -57,6 +56,7 @@ const locationMap = {
 export default class SharagaCalendar extends HTMLElement {
     start = dayjs().startOf("isoWeek");
     currentView = "isoWeek";
+    ics = "";
     get end() {
         return this.start.endOf(this.currentView);
     }
@@ -71,9 +71,96 @@ export default class SharagaCalendar extends HTMLElement {
         // Create a shadow root
         this.attachShadow({ mode: "open" }); // sets and returns 'this.shadowRoot'
     }
+
+    checkForEmptyTT() {
+        if (
+            this.currentView === "isoWeek" &&
+            this.start.isSame(dayjs().startOf("isoWeek"))
+        ) {
+            this.calendarRoot.classList.add("thisWeek");
+            if (
+                this.calendarRoot.classList.contains("hasEvents") &&
+                this.calendarRoot.querySelectorAll(".day:not(.past)").length ===
+                    0
+            ) {
+                console.log("All days are hidden!");
+                this.calendarRoot.classList.add("noEvents");
+                this.calendarError.appendChild(noTasks("thisIsoWeek"));
+            }
+        } else {
+            this.calendarRoot.classList.remove("thisWeek");
+            if (this.calendarRoot.querySelectorAll(".day").length === 0) {
+                this.calendarRoot.classList.add("noEvents");
+                this.calendarError.appendChild(noTasks(this.currentView));
+            }
+        }
+    }
+
+    updateTt() {
+        const ics = ICAL.parse(this.ics);
+        const timetable = ics[2];
+        this.calendarBody.innerHTML = baseCalendarHTML;
+        this.calendarRoot.classList.remove("hasEvents");
+        this.calendarRoot.classList.remove("noEvents");
+        this.calendarRoot.classList.remove("pastVisible");
+        for (const jcal of timetable) {
+            const event = new ICAL.Component(jcal);
+            const eventStart = dayjs(event.getFirstPropertyValue("dtstart"));
+            if (!eventStart.isBetween(this.start, this.end)) {
+                continue;
+            }
+            this.calendarRoot.classList.add("hasEvents");
+            console.debug("ical event:", event);
+            const eventEnd = dayjs(event.getFirstPropertyValue("dtend"));
+            const dayid = "ts" + eventStart.startOf("day").unix();
+            var day = this.calendarBody.querySelector(`#${dayid}`);
+            if (day === null) {
+                var day = loadHtmlElements(dayHTML)[0];
+                day.id = dayid;
+                this.shadowRoot.getElementById("days").append(day);
+                day.querySelector(".weekDay").innerText =
+                    eventStart.format("dddd");
+                day.querySelector(".calendarDay").innerText =
+                    eventStart.format("D MMMM YYYY");
+                if (eventStart.isToday()) {
+                    day.classList.add("today");
+                }
+                const endofday = eventStart.endOf("day");
+                if (endofday.isBefore(dayjs())) {
+                    day.classList.add("past");
+                }
+            }
+            const dayEvents = day.querySelector(".dayEvents");
+            const eventEl = loadHtmlElements(eventHTML)[0];
+            eventEl.id = "ts" + eventStart.unix() + "-" + eventEnd.unix();
+            eventEl.querySelector(".lessonName").innerText =
+                event.getFirstPropertyValue("summary");
+            eventEl.querySelector(".eventStart").innerText =
+                eventStart.format("HH:mm");
+            eventEl
+                .querySelectorAll(".eventEnd")
+                .forEach((elem) => (elem.innerText = eventEnd.format("HH:mm")));
+            eventEl.querySelector(".teacherName").innerText =
+                event.getFirstPropertyValue("description");
+            const locationEl = eventEl.querySelector("location-info");
+            Object.entries(locationMap).forEach(([icalTag, attr]) => {
+                locationEl.setAttribute(
+                    attr,
+                    event.getFirstPropertyValue(icalTag)
+                );
+            });
+            dayEvents.appendChild(eventEl);
+        }
+        sortElements(this.shadowRoot.getElementById("days"));
+        this.shadowRoot.querySelectorAll(".dayEvents").forEach((dayEl) => {
+            sortElements(dayEl);
+        });
+        this.updateEventTimeRemaining();
+        this.calendarError.innerHTML = "";
+        this.checkForEmptyTT();
+    }
     loadSrc() {
         const source = this.getAttribute("src");
-        this.calendarBody.innerHTML = baseCalendarHTML;
         if (source === null) {
             console.log(
                 "No source set or invalid source set - setting calEmpty/noCalendar"
@@ -89,103 +176,33 @@ export default class SharagaCalendar extends HTMLElement {
                 if (!resp.ok) {
                     throw new Error(`Сервер вернул ${resp.status}`);
                 }
-                const ics = ICAL.parse(await resp.text());
-                const timetable = ics[2];
-                this.calendarRoot.classList.remove("hasEvents");
-                for (const jcal of timetable) {
-                    const event = new ICAL.Component(jcal);
-                    const eventStart = dayjs(
-                        event.getFirstPropertyValue("dtstart")
-                    );
-                    if (!eventStart.isBetween(this.start, this.end)) {
-                        continue;
-                    }
-                    this.calendarRoot.classList.add("hasEvents");
-                    console.debug("ical event:", event);
-                    const eventEnd = dayjs(
-                        event.getFirstPropertyValue("dtend")
-                    );
-                    const dayid = "ts" + eventStart.startOf("day").unix();
-                    var day = this.calendarBody.querySelector(`#${dayid}`);
-                    if (day === null) {
-                        var day = loadHtmlElements(dayHTML)[0];
-                        day.id = dayid;
-                        this.shadowRoot.getElementById("days").append(day);
-                        day.querySelector(".weekDay").innerText =
-                            eventStart.format("dddd");
-                        day.querySelector(".calendarDay").innerText =
-                            eventStart.format("D MMMM YYYY");
-                        if (eventStart.isToday()) {
-                            day.classList.add("today");
-                        }
-                        if (eventStart.endOf("day").isBefore(dayjs())) {
-                            day.classList.add("past");
-                        }
-                    }
-                    const dayEvents = day.querySelector(".dayEvents");
-                    const eventEl = loadHtmlElements(eventHTML)[0];
-                    eventEl.id =
-                        "ts" + eventStart.unix() + "-" + eventEnd.unix();
-                    eventEl.querySelector(".lessonName").innerText =
-                        event.getFirstPropertyValue("summary");
-                    eventEl.querySelector(".eventStart").innerText =
-                        eventStart.format("HH:mm");
-                    eventEl
-                        .querySelectorAll(".eventEnd")
-                        .forEach(
-                            (elem) =>
-                                (elem.innerText = eventEnd.format("HH:mm"))
-                        );
-                    eventEl.querySelector(".teacherName").innerText =
-                        event.getFirstPropertyValue("description");
-                    const locationEl = eventEl.querySelector("location-info");
-                    Object.entries(locationMap).forEach(([icalTag, attr]) => {
-                        locationEl.setAttribute(
-                            attr,
-                            event.getFirstPropertyValue(icalTag)
-                        );
-                    });
-                    dayEvents.appendChild(eventEl);
-                }
-                sortElements(this.shadowRoot.getElementById("days"));
-                this.shadowRoot
-                    .querySelectorAll(".dayEvents")
-                    .forEach((dayEl) => {
-                        sortElements(dayEl);
-                    });
-                this.updateEventTimeRemaining();
-                this.calendarError.innerHTML = "";
-                if (
-                    this.currentView === "isoWeek" &&
-                    this.start.isSame(dayjs().startOf("isoWeek"))
-                ) {
-                    this.calendarRoot.classList.add("thisWeek");
-                    if (
-                        this.calendarRoot.classList.contains("hasEvents") &&
-                        this.calendarRoot.querySelectorAll(".day:not(.past)")
-                            .length === 0
-                    ) {
-                        console.log("All days are hidden!");
-                        this.calendarRoot.classList.add("noEvents");
-                        this.calendarError.appendChild(noTasks("thisIsoWeek"));
-                    }
-                } else {
-                    this.calendarRoot.classList.remove("thisWeek");
-                }
+                this.ics = await resp.text();
+                this.updateTt();
             })
             .catch((e) => {
                 console.error("Got error!", e);
                 this.calendarBody.innerHTML = "";
+                this.calendarError.innerHTML = "";
                 this.calendarError.appendChild(calError(e));
             });
     }
     updateRangeText() {
-        console.log(this.start, this.end);
-        this.shadowRoot.getElementById(
-            "calendarRange"
-        ).innerText = `${this.start.format(rangeFormat)} - ${this.end.format(
+        let crange = document.getElementById("currentDate");
+        if (crange === null) {
+            console.log(
+                "current date not available, using currentRange",
+                document
+            );
+            crange = this.shadowRoot.getElementById("calendarRange");
+        }
+
+        if (this.currentView === "month") {
+            crange.innerText = this.start.format("MMMM YYYY");
+            return;
+        }
+        crange.innerText = `${this.start.format(
             rangeFormat
-        )}`;
+        )} - ${this.end.format(rangeFormat)}`;
     }
     updateEventTimeRemaining() {
         const eventItems =
@@ -248,7 +265,49 @@ export default class SharagaCalendar extends HTMLElement {
                 this.calendarRoot.classList.remove("noEvents");
             };
         });
+        const changeRange = (amount) => {
+            let spanToAdd = this.currentView;
+            if (spanToAdd === "isoWeek") {
+                spanToAdd = "week";
+            }
+            this.start = this.start.add(amount, spanToAdd);
+            this.updateRangeText();
+            this.updateTt();
+        };
+        this.shadowRoot.querySelector("#nextRange").onclick = () => {
+            changeRange(1);
+        };
+        this.shadowRoot.querySelector("#previousRange").onclick = () => {
+            changeRange(-1);
+        };
+        const changeView = (newView) => {
+            this.currentView = newView;
+            this.start = this.start.startOf(newView);
+            console.log(
+                "changing view to",
+                this.currentView,
+                "new start:",
+                this.start,
+                "new end:",
+                this.end
+            );
 
+            this.shadowRoot
+                .querySelectorAll(".changeView")
+                .forEach((element) => {
+                    if (element.getAttribute("data-view") === newView) {
+                        element.classList.add("active");
+                    } else {
+                        element.classList.remove("active");
+                    }
+                });
+            this.updateRangeText();
+            this.updateTt();
+        };
+        this.shadowRoot.querySelectorAll(".changeView").forEach((element) => {
+            element.onclick = () =>
+                changeView(element.getAttribute("data-view"));
+        });
         console.log("Creating calendar body");
         this.calendarError = document.createElement("div");
         this.calendarRoot.appendChild(this.calendarError);

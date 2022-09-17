@@ -1,7 +1,7 @@
-svg path {
+.icon * {
     fill: currentColor;
 }
-svg {
-    height: 1em;
-    width: 1em;
+.icon {
+    height: var(--icon-size);
+    width: var(--icon-size);
 }

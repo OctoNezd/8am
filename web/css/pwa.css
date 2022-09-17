@@ -1,5 +1,6 @@
 #pwa-header {
     width: 100vw;
+    min-height: 56px;
     max-height: 56px;
     display: flex;
     flex-direction: row;
@@ -8,14 +9,22 @@
     font-size: 20pt;
     margin-bottom: 8px;
     padding-top: env(safe-area-inset-top);
+    justify-content: space-between;
 }
 #pwa-header > h6 {
     margin: 0;
 }
-#pwa-settings-button {
+
+#pwa-header > * {
     margin-left: 16px;
-    margin-right: 32px;
+    margin-right: 16px;
+}
+
+#pwa-settings-button {
     font-size: 24px;
+}
+#pwa-settings-button mdi-cog {
+    display: block;
 }
 #pwa-header > .title {
     font-weight: bold;
@@ -62,4 +71,10 @@ summary {
 }
 .pwa #addbuttons {
     gap: 0;
+}
+#currentDate {
+    display: none;
+}
+#pwa-spacer {
+    width: 32px;
 }

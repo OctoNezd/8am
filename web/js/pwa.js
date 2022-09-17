@@ -24,6 +24,19 @@ function pwa_init() {
     window.addEventListener("offline", handleConnection);
     console.log("PWA - booted");
     css.use();
+    const e = document.getElementById("appname");
+    e.addEventListener(
+        "animationend",
+        (ev) => {
+            if (ev.type === "animationend") {
+                e.style.display = "none";
+                const cdate = document.getElementById("currentDate");
+                cdate.style.display = "unset";
+                cdate.classList.add("fadein");
+            }
+        },
+        false
+    );
 }
 pwa_init();
 function handleConnection() {

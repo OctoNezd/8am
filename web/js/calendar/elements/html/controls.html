@@ -1,28 +1,54 @@
-<div id="calendarControls">
-    <button class="navButton" id="previousRange">prev</button>
-    <div>
-        <h3 id="calendarRange">Date</h3>
-        <div>
-            <button>today</button>
-            <button>week</button>
-            <button>month</button>
-            <button>refresh</button>
+<div id="controlsBar">
+    <h3 id="calendarRange" class="title-medium"></h3>
+    <div id="calendarControls">
+        <button class="navButton" id="previousRange">
+            <mdi-arrow-left-top></mdi-arrow-left-top>
+        </button>
+        <div id="controlsGenericButtonsContainer">
+            <div id="controlsGenericButtons">
+                <button class="iconButton">
+                    <mdi-calendar-today sizePx="24"></mdi-calendar-today>
+                </button>
+                <div class="buttonGroup">
+                    <button
+                        class="active label-large changeView"
+                        id="setWeekView"
+                        data-view="isoWeek"
+                    >
+                        Неделя
+                    </button>
+                    <button
+                        class="label-large changeView"
+                        id="setMonthView"
+                        data-view="month"
+                    >
+                        Месяц
+                    </button>
+                </div>
+                <button class="iconButton">
+                    <mdi-refresh sizePx="24"></mdi-refresh>
+                </button>
+            </div>
         </div>
+        <button class="navButton" id="nextRange">
+            <mdi-arrow-right-top></mdi-arrow-right-top>
+        </button>
     </div>
-    <button class="navButton" id="nextRange">next</button>
 </div>
-<button
-    type="button"
-    class="knopf button block minor pastToggle"
-    id="hidePastButton"
->
-    Показать прошедшие дни
-</button>
-<button
-    type="button"
-    class="knopf button block minor pastToggle"
-    id="showPastButton"
->
-    Спрятать прошедшие дни
-</button>
-<br />
+<div id="pastToggles">
+    <button
+        type="button"
+        class="knopf button block minor pastToggle"
+        id="hidePastButton"
+    >
+        Показать прошедшие дни
+    </button>
+    <button
+        type="button"
+        class="knopf button block minor pastToggle"
+        id="showPastButton"
+    >
+        Спрятать прошедшие дни
+    </button>
+    <br />
+</div>

@@ -1,5 +1,6 @@
-import setup_calendar_preview, { boot_calendar } from "./calendar/icalpreview";
 import { isPwa } from "./pwa_add";
+
+import setup_calendar_preview, { boot_calendar } from "./calendar/icalpreview";
 import "./devmenu";
 import setup_icons from "./icons.js";
 import TomSelect from "tom-select";
