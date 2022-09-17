@@ -132,15 +132,8 @@ html {
     #addbuttons {
         flex-direction: column !important;
     }
-    #icalpreview {
-        width: 100% !important;
-    }
     .row-desktop {
         flex-direction: column;
-    }
-    .fc-toolbar {
-        flex-direction: column;
-        gap: 5px;
     }
     .ts-wrapper {
         width: var(--buttonsize);
@@ -148,12 +141,6 @@ html {
     #appheader h1 {
         margin-bottom: 0;
     }
-    .fc-list {
-        border: 0 !important;
-        border-left: 0 !important;
-        border-right: 0 !important;
-    }
-
     #webnavbar > div:not(.dynamic-max-height-column) {
         position: unset !important;
     }
@@ -167,65 +154,6 @@ html {
 /* pwa */
 .pwa-show {
     display: none;
-}
-
-/* fullcalendar customizations */
-.fc-list-day > th {
-    z-index: 1;
-}
-.fc-list-event > :nth-child(2),
-.fc-list-table > thead > tr > :nth-child(2) {
-    display: none;
-}
-.fc-list-event-title p {
-    margin: 0;
-}
-.fc-list-event-title .fa-fw {
-    margin-right: 0.2em;
-}
-.fc-list-empty {
-    background-color: transparent !important;
-}
-.fc-day-today th,
-.fc-day-today,
-.presentTime {
-    box-shadow: 8px 0px 0px var(--md-sys-color-primary) inset;
-    border-bottom: 0 !important;
-    border: 0 !important;
-    border-top: 0 !important;
-}
-.fc-day-today + .fc-list-event * {
-    border: 0 !important;
-    border-top: 0 !important;
-}
-
-.fa-train-subway {
-    color: white !important;
-}
-.presentTime {
-    border-right: 3px var(--app-accent) !important;
-}
-.fc .fc-button-primary:focus {
-    box-shadow: none !important;
-}
-* {
-    --fc-page-bg-color: var(--md-sys-color-primary-container);
-    --fc-button-border-color: transparent;
-    --fc-button-bg-color: var(--md-sys-color-secondary-container);
-    --fc-button-text-color: var(--md-sys-color-on-primary-container);
-    --fc-button-active-bg-color: var(--md-sys-color-primary-container);
-    --fc-button-active-border-color: var(--md-sys-color-primary-container);
-    --fc-button-hover-border-color: transparent;
-    --fc-button-hover-bg-color: var(--md-sys-color-surface-variant);
-    --fc-list-event-hover-bg-color: transparent;
-    --fc-border-color: var(--md-sys-color-outline);
-}
-
-.fc-button-active {
-    color: var(--md-sys-color-on-background) !important;
-}
-.fc-list-day-cushion {
-    color: var(--md-sys-color-on-primary-container) !important;
 }
 
 .animation * {
