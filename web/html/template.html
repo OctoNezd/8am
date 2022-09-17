@@ -14,8 +14,20 @@
         <noscript>
             Please enable JavaScript to continue using this application.
         </noscript>
-        <p>Произошла ошибка при запуске. Можно попробовать сбросить кэши.</p>
-        <button id="cacheNuke">Сброс кэшей</button>
+        Идёт запуск...<br />
+        Если вы на этом экране слишком долго, и нет сообщения об ошибке,
+        убедитесь что ваше устройство не является устаревшим.
+        <div id="errorcontacts" style="display: none">
+            <p>
+                Произошла ошибка при запуске. Можно попробовать сбросить кэши.
+            </p>
+            <button id="cacheNuke">Сброс кэшей</button>
+            <p>
+                Если ошибки продолжаются, и у вас нормальное (не устаревшее)
+                устройство и браузер, то напишите
+                <a href="https://t.me/mrvn4">мне</a>
+            </p>
+        </div>
         <script type="text/javascript">
             document.getElementById("cacheNuke").onclick = async function () {
                 const cacheKeys = await caches.keys();
@@ -27,6 +39,8 @@
             };
             window.onerror = function (e) {
                 alert(`Ошибка в ранней стадии запуска: ${e}`);
+                document.getElementById("errorcontacts").style.display =
+                    "unset";
                 return false;
             };
         </script>
