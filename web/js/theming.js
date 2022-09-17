@@ -1,7 +1,7 @@
 const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-const metaAppleStatusBarColor = document.querySelector(
-    'meta[name="apple-mobile-web-app-status-bar-style"]'
-);
+// const metaAppleStatusBarColor = document.querySelector(
+//     'meta[name="apple-mobile-web-app-status-bar-style"]'
+// );
 
 function componentToHex(c) {
     var hex = c.toString(16);
@@ -14,14 +14,14 @@ function getBgColor() {
     var bgcolor = getComputedStyle(document.body).getPropertyValue(
         "background-color"
     );
-    if (
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-    ) {
-        metaAppleStatusBarColor.setAttribute("content", "black-translucent");
-    } else {
-        metaAppleStatusBarColor.setAttribute("content", "default");
-    }
+    // if (
+    //     window.matchMedia &&
+    //     window.matchMedia("(prefers-color-scheme: dark)").matches
+    // ) {
+    //     metaAppleStatusBarColor.setAttribute("content", "black-translucent");
+    // } else {
+    //     metaAppleStatusBarColor.setAttribute("content", "default");
+    // }
     if (document.querySelector(".modal.open") !== null) {
         var base = bgcolor
             .slice(4, -1)

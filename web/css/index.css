@@ -253,3 +253,6 @@ html {
         "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
     padding-bottom: 16px;
 }
+.hasBgImage {
+    background-size: cover;
+}
