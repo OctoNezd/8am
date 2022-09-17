@@ -1,6 +1,6 @@
 import { metroIcons, metroLineNames } from "/icons/metro/moscow";
 console.log(metroIcons);
-const MAP_QUERY_LINE = "https://maps.yandex.ru/?text=";
+const MAP_QUERY_LINE = "http://maps.apple.com/?q=";
 export default class LocationLine extends HTMLElement {
     constructor() {
         // Always call super first in constructor
