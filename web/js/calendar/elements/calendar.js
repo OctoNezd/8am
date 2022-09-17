@@ -255,6 +255,18 @@ export default class SharagaCalendar extends HTMLElement {
             });
     }
     updateRangeText() {
+        this.shadowRoot.querySelectorAll(".changeView").forEach((element) => {
+            console.log(
+                element,
+                this.currentView,
+                element.getAttribute("data-view")
+            );
+            if (element.getAttribute("data-view") === this.currentView) {
+                element.classList.add("active");
+            } else {
+                element.classList.remove("active");
+            }
+        });
         let crange = document.getElementById("currentDate");
         if (crange === null) {
             console.log(
@@ -271,13 +283,6 @@ export default class SharagaCalendar extends HTMLElement {
         crange.innerText = `${this.start.format(
             rangeFormat
         )} - ${this.end.format(rangeFormat)}`;
-        this.shadowRoot.querySelectorAll(".changeView").forEach((element) => {
-            if (element.getAttribute("data-view") === this.currentView) {
-                element.classList.add("active");
-            } else {
-                element.classList.remove("active");
-            }
-        });
     }
     updateEventTimeRemaining() {
         const eventItems =
