@@ -2,6 +2,7 @@ import { iphone, ipad } from "./ios_modal";
 import { openModal } from "./modal";
 import { pwaDetectType, isPwa } from "./pwa_add";
 import localForage from "localforage";
+import showToast from "./toast";
 
 function generate_sysreport() {
     const report = document.getElementById("systemReport");
@@ -30,6 +31,12 @@ function setup_devmenu() {
         .addEventListener("click", () => allReset(false));
 }
 setup_devmenu();
+window.bootChii = function () {
+    var script = document.createElement("script");
+    script.src = "//chii.liriliri.io/target.js";
+    document.body.appendChild(script);
+    showToast("Chii запущен, откройте https://chii.liriliri.io/ в браузере");
+};
 async function allReset(nukeAll) {
     const modal = document.createElement("div");
     document.body.appendChild(modal);
