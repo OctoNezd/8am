@@ -38,12 +38,25 @@ self.addEventListener("periodicsync", (event) => {
 });
 
 registerRoute(/\/group\/\d*\.ics/, icsCache);
-precacheAndRoute(wbManifest, {
-    ignoreURLParametersMatching: [/.*/],
-});
+try {
+    precacheAndRoute(wbManifest, {
+        ignoreURLParametersMatching: [/.*/],
+    });
+} catch {
+    console.log("Corrupt cache. Nuking it.");
+    caches.keys().then(async (cacheKeys) => {
+        for (const key of cacheKeys) {
+            await caches.delete(key);
+        }
+    });
+}
 clientsClaim();
+
 addEventListener("message", (event) => {
     if (event.data && event.data.type === "SKIP_WAITING") {
         self.skipWaiting();
     }
+});
+self.addEventListener("install", (e) => {
+    self.skipWaiting();
 });
