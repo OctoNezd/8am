@@ -101,6 +101,8 @@ button {
         display: flex;
         flex-direction: column;
         overflow: hidden;
+    }
+    * {
         --controls-height: 80px;
     }
     .pwa #calendarBody {
