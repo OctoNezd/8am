@@ -55,3 +55,6 @@ addEventListener("message", (event) => {
         self.skipWaiting();
     }
 });
+self.addEventListener("install", (event) => {
+    self.skipWaiting();
+});
