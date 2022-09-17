@@ -13,7 +13,7 @@
     position: sticky;
     top: 10px;
     @supports (top: env(safe-area-inset-top)) {
-        top: calc()
+        top: calc(env(safe-area-inset-top) + 10px);
     }
 }
 .blink {

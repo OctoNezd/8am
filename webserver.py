@@ -139,7 +139,7 @@ async def startup():
     await dec_reader.get_teams_urls()
     logger.info("Started.")
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
-if os.path.exists("/web/dist"):
+if os.path.exists("web/dist"):
     app.mount("/", StaticFiles(directory="web/dist", html=True), name="web")
 else:
     logger.error("Web dist is not available. Please check your configuration.")

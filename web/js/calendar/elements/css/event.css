@@ -44,6 +44,9 @@
 .lessonInfo p {
     margin: 3px;
 }
+.lessonInfo :last-child {
+    margin-bottom: 0;
+}
 .timeSpans p {
     margin: 3px;
 }

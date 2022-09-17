@@ -5,6 +5,7 @@ const webpack = require("webpack");
 const path = require("path");
 const WebpackBar = require("webpackbar");
 const CopyPlugin = require("copy-webpack-plugin");
+const Icons = require("unplugin-icons/webpack");
 
 let commitHash = require("child_process")
     .execSync("git rev-parse --short HEAD")

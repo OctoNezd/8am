@@ -4,6 +4,11 @@ import eventHTML from "./html/event.html";
 import noCalendarHTML from "./html/calEmpty/noCalendar.html";
 import baseCalendarHTML from "./html/baseCal.html";
 
+import locationInfo from "./locationInfo";
+
+import calError from "./calEmpty/calError";
+import calLoading from "./calEmpty/calLoading";
+
 import calendarCss from "./css/calendar.css";
 
 import * as dayjs from "dayjs";
@@ -22,6 +27,7 @@ dayjs.locale("ru");
 import ICAL from "ical.js";
 
 import { pluralize } from "/js/misc.js";
+import noTasks from "./calEmpty/noTasks";
 
 function sortElements(element) {
     console.log(element);
@@ -76,6 +82,8 @@ export default class SharagaCalendar extends HTMLElement {
             return;
         }
         console.log("Loading source", source);
+        this.calendarError.innerHTML = "";
+        this.calendarError.appendChild(calLoading());
         fetch(source)
             .then(async (resp) => {
                 if (!resp.ok) {
@@ -83,6 +91,7 @@ export default class SharagaCalendar extends HTMLElement {
                 }
                 const ics = ICAL.parse(await resp.text());
                 const timetable = ics[2];
+                this.calendarRoot.classList.remove("hasEvents");
                 for (const jcal of timetable) {
                     const event = new ICAL.Component(jcal);
                     const eventStart = dayjs(
@@ -91,6 +100,7 @@ export default class SharagaCalendar extends HTMLElement {
                     if (!eventStart.isBetween(this.start, this.end)) {
                         continue;
                     }
+                    this.calendarRoot.classList.add("hasEvents");
                     console.debug("ical event:", event);
                     const eventEnd = dayjs(
                         event.getFirstPropertyValue("dtend")
@@ -144,19 +154,29 @@ export default class SharagaCalendar extends HTMLElement {
                         sortElements(dayEl);
                     });
                 this.updateEventTimeRemaining();
+                this.calendarError.innerHTML = "";
                 if (
                     this.currentView === "isoWeek" &&
                     this.start.isSame(dayjs().startOf("isoWeek"))
                 ) {
                     this.calendarRoot.classList.add("thisWeek");
+                    if (
+                        this.calendarRoot.classList.contains("hasEvents") &&
+                        this.calendarRoot.querySelectorAll(".day:not(.past)")
+                            .length === 0
+                    ) {
+                        console.log("All days are hidden!");
+                        this.calendarRoot.classList.add("noEvents");
+                        this.calendarError.appendChild(noTasks("thisIsoWeek"));
+                    }
                 } else {
                     this.calendarRoot.classList.remove("thisWeek");
                 }
             })
             .catch((e) => {
                 console.error("Got error!", e);
-                this.calendarBody.innerText = "";
-                this.calendarBody.appendChild(calError(e));
+                this.calendarBody.innerHTML = "";
+                this.calendarError.appendChild(calError(e));
             });
     }
     updateRangeText() {
@@ -225,10 +245,13 @@ export default class SharagaCalendar extends HTMLElement {
         this.shadowRoot.querySelectorAll(".pastToggle").forEach((element) => {
             element.onclick = () => {
                 this.calendarRoot.classList.toggle("pastVisible");
+                this.calendarRoot.classList.remove("noEvents");
             };
         });
 
         console.log("Creating calendar body");
+        this.calendarError = document.createElement("div");
+        this.calendarRoot.appendChild(this.calendarError);
         this.calendarBody = document.createElement("div");
         this.calendarBody.id = "calendarBody";
         this.calendarRoot.append(...controls, this.calendarBody);
@@ -246,7 +269,5 @@ export default class SharagaCalendar extends HTMLElement {
         }
     }
 }
-import locationInfo from "./locationInfo";
-import calError from "./calEmpty/calError";
 customElements.define("location-info", locationInfo);
 customElements.define("sharaga-calendar", SharagaCalendar);

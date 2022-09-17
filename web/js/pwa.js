@@ -1,5 +1,5 @@
 import updateThemeColor from "./theming";
-import "/css/pwa.css";
+import css from "/css/pwa.css";
 import htmlHeader from "/html/pwa_header.html";
 import {
     argbFromHex,
@@ -23,6 +23,7 @@ function pwa_init() {
     window.addEventListener("online", handleConnection);
     window.addEventListener("offline", handleConnection);
     console.log("PWA - booted");
+    css.use();
 }
 pwa_init();
 function handleConnection() {

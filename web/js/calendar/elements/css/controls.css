@@ -2,7 +2,8 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
+    margin-bottom: 10px;
 }
 #calendar:not(.pastVisible) .past,
 :not(.pastVisible) #showPastButton {
@@ -11,7 +12,23 @@
 .pastVisible #hidePastButton {
     display: none;
 }
-#calendar:not(.thisWeek) #showPastButton,
-#calendar:not(.thisWeek) #hidePastButton {
+.pastVisible #noTasks {
     display: none;
+}
+#calendar:not(.thisWeek, .noEvents) #showPastButton,
+#calendar:not(.thisWeek, .noEvents) #hidePastButton {
+    display: none;
+}
+#calendarRange {
+    margin: 0;
+}
+.navButton {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    border: 0;
+    height: 56px;
+    width: 56px;
+    padding: 16px;
+    font-size: 24px;
+    border-radius: 16px;
 }

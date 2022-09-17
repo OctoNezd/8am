@@ -1,4 +1,4 @@
-import htmlData from "/html/calEmpty/calLoading.html";
+import htmlData from "../html/calEmpty/calLoading.html";
 import * as animation from "/lottie/cal_load.json";
 import { loadAnimation } from "lottie-web";
 function setup_loading_lottie(loadingIndicator) {
@@ -27,3 +27,4 @@ export default function () {
     setup_loading_lottie(mainEl);
     return mainEl;
 }
+
