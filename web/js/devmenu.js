@@ -11,6 +11,11 @@ function generate_sysreport() {
     report.innerText += `\niphone:${iphone},ipad:${ipad}`;
     report.innerText += `\nlocation:${location}`;
     report.innerText += `\nОтладочная информация сгенерирована: ${new Date()}`;
+    report.innerText += `\nОтступ панели навигации: ${getComputedStyle(
+        document
+            .querySelector("#calendar")
+            .shadowRoot.querySelector("#controlsBar")
+    ).getPropertyValue("--controls-padding")}`;
     localForage.getItem("lastPeriodicSync").then((lastPeriodicSync) => {
         report.innerText += `\nПоследнее авто-обновление расписания: ${lastPeriodicSync}`;
     });
