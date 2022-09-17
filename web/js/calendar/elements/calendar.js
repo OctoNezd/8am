@@ -390,7 +390,7 @@ export default class SharagaCalendar extends HTMLElement {
             initialSlide: 1,
         });
         window.swiper = this.swiper;
-        swiper.on("slideChange", (e) => {
+        swiper.on("slideChangeTransitionEnd", (e) => {
             console.log("slide changed", swiper.activeIndex);
             const rangeMod = -1 + swiper.activeIndex;
             console.log("SWIPE:changing range by", rangeMod);
