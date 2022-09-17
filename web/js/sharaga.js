@@ -3,7 +3,8 @@ import { isPwa } from "./pwa_add";
 import "./devmenu";
 import setup_icons from "./icons.js";
 import TomSelect from "tom-select";
-import "tom-select/dist/css/tom-select.css";
+import tsCss from "tom-select/dist/css/tom-select.css";
+tsCss.use();
 import localForage from "localforage";
 
 setup_icons();
@@ -117,3 +118,10 @@ fetch("/groups", {
             }
         }
     });
+
+window.focus_group_select = function () {
+    if (isPwa) {
+        open_settings_modal();
+    }
+    select.focus();
+};

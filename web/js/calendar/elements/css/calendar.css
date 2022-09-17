@@ -1,0 +1,15 @@
+@import "./controls.css";
+@import "./day.css";
+#calendar {
+    width: 80vw;
+    min-height: 70vh;
+    height: auto;
+}
+@media only screen and (hover: none) and (pointer: coarse) {
+    #calendar {
+        width: 100vw !important;
+    }
+}
+.button {
+    margin-bottom: 15px;
+}

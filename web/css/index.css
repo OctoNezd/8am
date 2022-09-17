@@ -29,16 +29,7 @@ body {
 .hidden {
     display: none !important;
 }
-#addbuttons {
-    padding-top: 10px;
-}
-.button {
-    width: var(--buttonsize) !important;
-}
-.button-container {
-    display: block;
-    padding-top: 8px !important;
-}
+
 select {
     padding-bottom: 4px;
 }
@@ -95,11 +86,7 @@ img {
 .location_link {
     text-decoration: underline !important;
 }
-#icalpreview {
-    width: 80vw;
-    min-height: 70vh;
-    height: auto;
-}
+
 .logos img {
     max-width: 32px;
     max-height: 32px;

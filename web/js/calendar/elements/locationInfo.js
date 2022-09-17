@@ -1,7 +1,6 @@
 import { metroIcons, metroLineNames } from "/icons/metro/moscow";
 console.log(metroIcons);
 const MAP_QUERY_LINE = "https://maps.yandex.ru/?text=";
-let wrapper;
 export default class LocationLine extends HTMLElement {
     constructor() {
         // Always call super first in constructor
@@ -10,10 +9,13 @@ export default class LocationLine extends HTMLElement {
         // Create a shadow root
         this.attachShadow({ mode: "open" }); // sets and returns 'this.shadowRoot'
     }
+    static get observedAttributes() {
+        return ["metro-station", "metro-line", "location", "room"];
+    }
     connectedCallback() {
-        console.log("connectedCallback");
+        this.shadowRoot.innerHTML = "";
         const wrapper = document.createElement("a");
-        console.log("Update location info", this.attributes, wrapper);
+        wrapper.target = "sharaga-location";
         wrapper.innerHTML = "";
         const textSpan = document.createElement("span");
         textSpan.classList.add("textSpan");
@@ -23,12 +25,14 @@ export default class LocationLine extends HTMLElement {
         if (station) {
             const metroIconSpan = document.createElement("span");
             metroIconSpan.classList.add("metroIconSpan");
-            console.log("using station", station);
+            console.debug("using station", station);
             if (line) {
                 const metroIcon = document.createElement("img");
                 metroIcon.classList.add("metroIcon");
-                metroIcon.src = metroIcons[line];
-                metroIcon.title = metroIcon.alt = metroLineNames[line][1];
+                if (metroIcons[line] !== undefined) {
+                    metroIcon.src = metroIcons[line];
+                    metroIcon.title = metroIcon.alt = metroLineNames[line][1];
+                }
                 metroIconSpan.insertAdjacentElement("beforeend", metroIcon);
                 metroIconSpan.insertAdjacentHTML("beforeend", "&nbsp;");
                 wrapper.insertAdjacentElement("afterbegin", metroIconSpan);
@@ -52,10 +56,9 @@ export default class LocationLine extends HTMLElement {
             roomEl.innerText = `каб. ${room}`;
             textSpan.insertAdjacentElement("beforeend", roomEl);
         }
-        console.log(this.attributes);
         const style = document.createElement("style");
         style.textContent =
-            "a { color: inherit;display:block} .metroIcon { height:1em; display: inline-block} .metroIconSpan { line-height: 1em; vertical-align: bottom}";
+            "a { color: inherit;display:block; text-decoration: none} a :not(.metroIconSpan) { text-decoration: underline } .metroIcon { height:1em; display: inline-block} .metroIconSpan { line-height: 1em; vertical-align: bottom}";
         this.shadowRoot.append(wrapper, style);
     }
 }

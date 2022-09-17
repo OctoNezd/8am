@@ -33,8 +33,29 @@
     color: var(--md-sys-color-on-error-container) !important;
     -webkit-text-fill-color: var(--md-sys-color-on-error-container) !important;
 }
+
+.knopf.minor *,
+.knopf.minor {
+    --knopf-named-background-color: var(
+        --md-sys-color-surface-variant
+    ) !important;
+    color: var(--md-sys-color-on-surface) !important;
+    -webkit-text-fill-color: var(--md-sys-color-on-surface) !important;
+}
+
 .buttonColumn {
     display: flex;
     flex-direction: column;
     gap: 5px;
+}
+
+#addbuttons {
+    padding-top: 10px;
+}
+.button:not(.block) {
+    width: var(--buttonsize) !important;
+}
+.button-container {
+    display: block;
+    padding-top: 8px !important;
 }

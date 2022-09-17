@@ -1,3 +1,4 @@
+from ics import Calendar, Event
 import os
 from typing import OrderedDict
 import aiohttp
@@ -11,13 +12,40 @@ logger = logging.getLogger("main")
 app = FastAPI()
 GROUPS = {}
 GROUPS_INV = {}
-
+DEVGROUPS = {}
 CACHE = {}
+
+
+def datetime_range(start, end, delta):
+    current = start
+    while current < end:
+        yield current
+        current += delta
+
+
+def minute_calendar():
+    today = datetime.utcnow().date()
+    start = datetime(today.year, today.month, today.day)
+    end = start + timedelta(1)
+    dts = [dt for dt in
+           datetime_range(start, end,
+                          timedelta(minutes=1))]
+    ics = Calendar()
+    for event_start in dts:
+        event_end = event_start + timedelta(minutes=1)
+        ics.events.add(
+            Event(name=f"{event_start} - {event_end}", begin=event_start, end=event_end))
+    return str(ics)
+
+
 if "REDIS" in os.environ:
     import aioredis
     redis = aioredis.from_url(os.environ["REDIS"], decode_responses=True)
+    DEVMODE = False
 else:
     from fakeredis import aioredis
+    DEVMODE = True
+    DEVGROUPS["1"] = minute_calendar
     logger.critical("ERROR: Redis is not available, using fakeredis")
     redis = aioredis.FakeRedis(decode_responses=True)
 
@@ -37,6 +65,10 @@ async def get_new_ics(gid):
 async def get_group_ics(gid: int):
     if str(gid) not in GROUPS_INV:
         return Response(dec_reader.INVALID_GROUP, media_type="text/calendar")
+    if gid < 1000:
+        if not DEVMODE:
+            raise HTTPException(403, "Отладочные группы выключены в проде.")
+        return Response(DEVGROUPS[str(gid)](), media_type="text/calendar")
     cached = await redis.hgetall(f"group:{gid}")
     if cached == {} or datetime.now() - datetime.fromisoformat(cached["when"]) > timedelta(days=1) or cached.get("ver", "0.1") != dec_reader.__version__:
         logger.info("Timetable for %s is outdated. Updating.", gid)
@@ -99,8 +131,15 @@ async def startup():
                 tmpgroups[group["groupName"]] = str(group["groupID"])
                 GROUPS_INV[str(group["groupID"])] = group["groupName"]
     GROUPS = OrderedDict(sorted(tmpgroups.items(), key=lambda x: x[0]))
+    if DEVMODE:
+        for devgroupid, devgroup_name in DEVGROUPS.items():
+            GROUPS["DG:" + devgroup_name.__name__] = devgroupid
+            GROUPS_INV[devgroupid] = "DG:" + devgroup_name.__name__
     logger.info("Downloading MSTeams URLs...")
     await dec_reader.get_teams_urls()
     logger.info("Started.")
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
-app.mount("/", StaticFiles(directory="web/dist", html=True), name="web")
+if os.path.exists("/web/dist"):
+    app.mount("/", StaticFiles(directory="web/dist", html=True), name="web")
+else:
+    logger.error("Web dist is not available. Please check your configuration.")

@@ -1,0 +1,17 @@
+#calendarControls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+#calendar:not(.pastVisible) .past,
+:not(.pastVisible) #showPastButton {
+    display: none !important;
+}
+.pastVisible #hidePastButton {
+    display: none;
+}
+#calendar:not(.thisWeek) #showPastButton,
+#calendar:not(.thisWeek) #hidePastButton {
+    display: none;
+}
