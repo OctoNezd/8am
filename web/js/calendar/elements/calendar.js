@@ -28,6 +28,7 @@ import ICAL from "ical.js";
 
 import { pluralize } from "/js/misc.js";
 import noTasks from "./calEmpty/noTasks";
+import showToast from "../../toast";
 
 function sortElements(element) {
     [...element.children]
@@ -70,6 +71,31 @@ export default class SharagaCalendar extends HTMLElement {
         // write element functionality in here
         // Create a shadow root
         this.attachShadow({ mode: "open" }); // sets and returns 'this.shadowRoot'
+        console.log("Booting the calendar...", this.attributes);
+        this.calendarRoot = document.createElement("div");
+        this.calendarRoot.id = "calendar";
+        console.log("Copying parent css...");
+        document.querySelectorAll("style").forEach((style) => {
+            this.calendarRoot.appendChild(style.cloneNode(true));
+        });
+        this.shadowRoot.appendChild(this.calendarRoot);
+
+        console.log("Creating controls");
+        const controls = loadHtmlElements(controlsHtml);
+        this.calendarRoot.append(...controls);
+
+        console.log("Creating calendar body");
+        this.calendarError = document.createElement("div");
+        this.calendarRoot.appendChild(this.calendarError);
+        this.calendarBody = document.createElement("div");
+        this.calendarBody.id = "calendarBody";
+        this.calendarRoot.append(...controls, this.calendarBody);
+        calendarCss.use({ target: this.shadowRoot });
+
+        console.log("Loading src...");
+        this.updateRangeText();
+        this.loadSrc();
+        setInterval(() => this.updateEventTimeRemaining(), 1000);
     }
 
     checkForEmptyTT() {
@@ -159,7 +185,7 @@ export default class SharagaCalendar extends HTMLElement {
         this.calendarError.innerHTML = "";
         this.checkForEmptyTT();
     }
-    loadSrc() {
+    loadSrc(showUpdateNotice) {
         const source = this.getAttribute("src");
         if (source === null) {
             console.log(
@@ -178,6 +204,9 @@ export default class SharagaCalendar extends HTMLElement {
                 }
                 this.ics = await resp.text();
                 this.updateTt();
+                if (showUpdateNotice) {
+                    showToast("Расписание обновлено!", 1000, { width: "80vw" });
+                }
             })
             .catch((e) => {
                 console.error("Got error!", e);
@@ -203,6 +232,13 @@ export default class SharagaCalendar extends HTMLElement {
         crange.innerText = `${this.start.format(
             rangeFormat
         )} - ${this.end.format(rangeFormat)}`;
+        this.shadowRoot.querySelectorAll(".changeView").forEach((element) => {
+            if (element.getAttribute("data-view") === this.currentView) {
+                element.classList.add("active");
+            } else {
+                element.classList.remove("active");
+            }
+        });
     }
     updateEventTimeRemaining() {
         const eventItems =
@@ -246,18 +282,6 @@ export default class SharagaCalendar extends HTMLElement {
         });
     }
     connectedCallback() {
-        console.log("Booting the calendar...", this.attributes);
-        this.calendarRoot = document.createElement("div");
-        this.calendarRoot.id = "calendar";
-        console.log("Copying parent css...");
-        document.querySelectorAll("style").forEach((style) => {
-            this.calendarRoot.appendChild(style.cloneNode(true));
-        });
-        this.shadowRoot.appendChild(this.calendarRoot);
-
-        console.log("Creating controls");
-        const controls = loadHtmlElements(controlsHtml);
-        this.calendarRoot.append(...controls);
         console.log("Mapping controls");
         this.shadowRoot.querySelectorAll(".pastToggle").forEach((element) => {
             element.onclick = () => {
@@ -291,16 +315,6 @@ export default class SharagaCalendar extends HTMLElement {
                 "new end:",
                 this.end
             );
-
-            this.shadowRoot
-                .querySelectorAll(".changeView")
-                .forEach((element) => {
-                    if (element.getAttribute("data-view") === newView) {
-                        element.classList.add("active");
-                    } else {
-                        element.classList.remove("active");
-                    }
-                });
             this.updateRangeText();
             this.updateTt();
         };
@@ -308,18 +322,14 @@ export default class SharagaCalendar extends HTMLElement {
             element.onclick = () =>
                 changeView(element.getAttribute("data-view"));
         });
-        console.log("Creating calendar body");
-        this.calendarError = document.createElement("div");
-        this.calendarRoot.appendChild(this.calendarError);
-        this.calendarBody = document.createElement("div");
-        this.calendarBody.id = "calendarBody";
-        this.calendarRoot.append(...controls, this.calendarBody);
-        calendarCss.use({ target: this.shadowRoot });
-
-        console.log("Loading src...");
-        this.updateRangeText();
-        this.loadSrc();
-        setInterval(() => this.updateEventTimeRemaining(), 1000);
+        this.shadowRoot.getElementById("goToday").onclick = () => {
+            this.currentView = "isoWeek";
+            this.start = dayjs().startOf("week");
+            this.updateRangeText();
+            this.updateTt();
+        };
+        this.shadowRoot.getElementById("refresh").onclick = () =>
+            this.loadSrc(true);
     }
     attributeChangedCallback(name, oldValue, newValue) {
         console.log("attribute changed", name, oldValue, newValue);

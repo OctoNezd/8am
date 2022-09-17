@@ -5,7 +5,7 @@
 .toast {
     z-index: 1000;
     position: fixed;
-    bottom: 5vh;
+    bottom: 100px;
     left: 50%;
     display: flex;
     flex-direction: row;

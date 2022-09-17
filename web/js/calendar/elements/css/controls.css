@@ -119,3 +119,11 @@ button {
         padding-bottom: 120px;
     }
 }
+
+/* anims */
+.navButton,
+.buttonGroup > *,
+.iconButton {
+    transition: background, color;
+    transition-duration: 0.5s;
+}
