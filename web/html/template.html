@@ -14,9 +14,14 @@
         <noscript>
             Please enable JavaScript to continue using this application.
         </noscript>
+        <img src="/icons/favicon.png" height="128" />
         Идёт запуск...<br />
-        Если вы на этом экране слишком долго, и нет сообщения об ошибке,
-        убедитесь что ваше устройство не является устаревшим.
+        <progress>Loading...</progress>
+        <p id="waitingTooLong">
+            Если вы на этом экране слишком долго, и нет сообщения об ошибке,
+            убедитесь что ваше устройство не является устаревшим.<br />
+            Можно также попробовать сбросить кэши:
+        </p>
         <div id="errorcontacts" style="display: none">
             <p>Произошла ошибка при запуске.</p>
             <p>
@@ -25,7 +30,6 @@
                 <a href="https://t.me/mrvn4">мне</a>
             </p>
         </div>
-        <p>Можно попробовать сбросить кэши:</p>
         <button id="cacheNuke">Сброс кэшей</button>
         <script type="text/javascript">
             document.getElementById("cacheNuke").onclick = async function () {
@@ -42,6 +46,35 @@
                     "unset";
                 return false;
             };
+            setInterval(function () {
+                const waitingTooLong =
+                    document.getElementById("waitingTooLong");
+                if (waitingTooLong) {
+                    waitingTooLong.style.display = "unset";
+                }
+            }, 5000);
         </script>
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                font-family: -apple-system, BlinkMacSystemFont, avenir next,
+                    avenir, segoe ui, helvetica neue, helvetica, Cantarell,
+                    Ubuntu, roboto, noto, arial, sans-serif;
+                align-items: center;
+                height: 100vh;
+                text-align: center;
+            }
+            #waitingTooLong {
+                display: none;
+            }
+            @media (prefers-color-scheme: dark) {
+                body {
+                    background: #333;
+                    color: white;
+                }
+            }
+        </style>
     </body>
 </html>
