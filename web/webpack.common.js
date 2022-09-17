@@ -5,7 +5,6 @@ const webpack = require("webpack");
 const path = require("path");
 const WebpackBar = require("webpackbar");
 const CopyPlugin = require("copy-webpack-plugin");
-const Icons = require("unplugin-icons/webpack");
 
 let commitHash = require("child_process")
     .execSync("git rev-parse --short HEAD")
@@ -37,7 +36,8 @@ module.exports = {
                                 options
                             ) {
                                 var parent = options.target || document.head;
-
+                                element = element.cloneNode(true);
+                                console.log("injecting into", parent);
                                 parent.appendChild(element);
                             },
                         },

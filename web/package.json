@@ -1,10 +1,9 @@
 {
     "dependencies": {
         "@fontsource/roboto": "^4.5.8",
-        "@fortawesome/fontawesome-svg-core": "^6.2.0",
-        "@fortawesome/free-solid-svg-icons": "^6.2.0",
         "@jaames/iro": "^5.5.2",
         "@material/material-color-utilities": "^0.2.0",
+        "@mdi/js": "^7.0.96",
         "dayjs": "^1.11.5",
         "ical.js": "^1.5.0",
         "knopf.css": "^1.1.2",
@@ -15,7 +14,7 @@
     "scripts": {
         "build": "webpack --config webpack.prod.js --mode production",
         "serve": "webpack serve --config webpack.dev.js --mode development",
-        "stats": "webpack --config webpack.prod.js --mode production --profile --json > stats.json",
+        "stats": "webpack --config webpack.prod.js --mode production --profile --json > stats.json"
     },
     "devDependencies": {
         "copy-webpack-plugin": "^11.0.0",
@@ -28,6 +27,7 @@
         "imagemin": "^8.0.1",
         "style-loader": "^3.3.1",
         "webpack": "^5.74.0",
+        "webpack-bundle-analyzer": "^4.6.1",
         "webpack-cli": "^4.10.0",
         "webpack-dev-server": "^4.10.1",
         "webpack-merge": "^5.8.0",
