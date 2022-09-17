@@ -16,6 +16,10 @@ import * as isToday from "dayjs/plugin/isToday";
 import * as isBetween from "dayjs/plugin/isBetween";
 import * as isoWeek from "dayjs/plugin/isoWeek";
 import * as relativeTime from "dayjs/plugin/relativeTime";
+// import Swiper JS
+import Swiper from "swiper";
+// import Swiper styles
+import SwiperCSS from "swiper/css";
 
 import "dayjs/locale/ru";
 dayjs.extend(isToday);
@@ -29,7 +33,7 @@ import ICAL from "ical.js";
 import { pluralize } from "/js/misc.js";
 import noTasks from "./calEmpty/noTasks";
 import showToast from "../../toast";
-
+const purge_classes = ["hasEvents", "thisWeek", "noEvents"];
 function sortElements(element) {
     [...element.children]
         .sort((a, b) =>
@@ -76,7 +80,7 @@ export default class SharagaCalendar extends HTMLElement {
         this.calendarRoot.id = "calendar";
         console.log("Copying parent css...");
         document.querySelectorAll("style").forEach((style) => {
-            this.calendarRoot.appendChild(style.cloneNode(true));
+            this.shadowRoot.appendChild(style.cloneNode(true));
         });
         this.shadowRoot.appendChild(this.calendarRoot);
 
@@ -89,8 +93,11 @@ export default class SharagaCalendar extends HTMLElement {
         this.calendarRoot.appendChild(this.calendarError);
         this.calendarBody = document.createElement("div");
         this.calendarBody.id = "calendarBody";
+        this.calendarBody.innerHTML = baseCalendarHTML;
         this.calendarRoot.append(...controls, this.calendarBody);
         calendarCss.use({ target: this.shadowRoot });
+        console.log(SwiperCSS);
+        SwiperCSS.use({ target: this.shadowRoot });
 
         console.log("Loading src...");
         this.updateRangeText();
@@ -103,36 +110,54 @@ export default class SharagaCalendar extends HTMLElement {
             this.currentView === "isoWeek" &&
             this.start.isSame(dayjs().startOf("isoWeek"))
         ) {
-            this.calendarRoot.classList.add("thisWeek");
-            if (
-                this.calendarRoot.classList.contains("hasEvents") &&
-                this.calendarRoot.querySelectorAll(".day:not(.past)").length ===
-                    0
-            ) {
+            const nowContainer = this.shadowRoot.getElementById("days1");
+            nowContainer.parentElement.classList.add("thisWeek");
+            if (nowContainer.querySelectorAll(".day:not(.past)").length === 0) {
                 console.log("All days are hidden!");
-                this.calendarRoot.classList.add("noEvents");
-                this.calendarError.appendChild(noTasks("thisIsoWeek"));
-            }
-        } else {
-            this.calendarRoot.classList.remove("thisWeek");
-            if (this.calendarRoot.querySelectorAll(".day").length === 0) {
-                this.calendarRoot.classList.add("noEvents");
-                this.calendarError.appendChild(noTasks(this.currentView));
+                nowContainer.classList.add("noEvents");
+                nowContainer.appendChild(noTasks("thisIsoWeek"));
             }
         }
+        this.shadowRoot
+            .querySelectorAll(".daysContainer")
+            .forEach((container) => {
+                if (container.querySelectorAll(".day").length === 0) {
+                    console.log(container, "is empty");
+                    container.classList.add("noEvents");
+                    container.appendChild(noTasks(this.currentView));
+                }
+            });
     }
 
     updateTt() {
         const ics = ICAL.parse(this.ics);
         const timetable = ics[2];
-        this.calendarBody.innerHTML = baseCalendarHTML;
         this.calendarRoot.classList.remove("hasEvents");
         this.calendarRoot.classList.remove("noEvents");
         this.calendarRoot.classList.remove("pastVisible");
+        let ranges = [
+            [
+                this.generateModifiedRange(-1),
+                this.generateModifiedRange(-1).endOf(this.currentView),
+            ],
+            [this.start, this.end],
+            [
+                this.generateModifiedRange(1),
+                this.generateModifiedRange(1).endOf(this.currentView),
+            ],
+        ];
+        console.log("Ranges:", ranges);
+        const rangeStart = ranges[0][0];
+        const rangeEnd = ranges[2][1];
+        for (const idx of Array(3).keys()) {
+            const el = this.shadowRoot.getElementById("days" + idx);
+            el.innerHTML = "";
+        }
+        console.log("Start:", rangeStart, "end:", rangeEnd);
         for (const jcal of timetable) {
             const event = new ICAL.Component(jcal);
             const eventStart = dayjs(event.getFirstPropertyValue("dtstart"));
-            if (!eventStart.isBetween(this.start, this.end)) {
+            if (!eventStart.isBetween(rangeStart, rangeEnd)) {
                 continue;
             }
             this.calendarRoot.classList.add("hasEvents");
@@ -143,7 +168,13 @@ export default class SharagaCalendar extends HTMLElement {
             if (day === null) {
                 var day = loadHtmlElements(dayHTML)[0];
                 day.id = dayid;
-                this.shadowRoot.getElementById("days").append(day);
+                for (const [rangeidx, range] of ranges.entries()) {
+                    if (eventStart.isBetween(...range)) {
+                        this.shadowRoot
+                            .getElementById(`days${rangeidx}`)
+                            .append(day);
+                    }
+                }
                 day.querySelector(".weekDay").innerText =
                     eventStart.format("dddd");
                 day.querySelector(".calendarDay").innerText =
@@ -177,7 +208,13 @@ export default class SharagaCalendar extends HTMLElement {
             });
             dayEvents.appendChild(eventEl);
         }
-        sortElements(this.shadowRoot.getElementById("days"));
+        for (const idx of Array(3).keys()) {
+            console.log("sorting days", idx);
+            const container = this.shadowRoot.getElementById("days" + idx);
+            sortElements(container);
+            container.classList.remove(...purge_classes);
+            container.parentElement.classList.remove(...purge_classes);
+        }
         this.shadowRoot.querySelectorAll(".dayEvents").forEach((dayEl) => {
             sortElements(dayEl);
         });
@@ -191,12 +228,13 @@ export default class SharagaCalendar extends HTMLElement {
             console.log(
                 "No source set or invalid source set - setting calEmpty/noCalendar"
             );
-            this.calendarBody.innerHTML = noCalendarHTML;
+            this.calendarError.innerHTML = noCalendarHTML;
             return;
         }
         console.log("Loading source", source);
         this.calendarError.innerHTML = "";
         this.calendarError.appendChild(calLoading());
+        this.calendarBody.style.display = "none";
         fetch(source)
             .then(async (resp) => {
                 if (!resp.ok) {
@@ -204,13 +242,14 @@ export default class SharagaCalendar extends HTMLElement {
                 }
                 this.ics = await resp.text();
                 this.updateTt();
+                this.calendarBody.style.display = "";
                 if (showUpdateNotice) {
                     showToast("Расписание обновлено!", 1000, { width: "80vw" });
                 }
             })
             .catch((e) => {
                 console.error("Got error!", e);
-                this.calendarBody.innerHTML = "";
+                this.calendarBody.style.display = "none";
                 this.calendarError.innerHTML = "";
                 this.calendarError.appendChild(calError(e));
             });
@@ -281,6 +320,13 @@ export default class SharagaCalendar extends HTMLElement {
             }
         });
     }
+    generateModifiedRange(amount) {
+        let spanToAdd = this.currentView;
+        if (spanToAdd === "isoWeek") {
+            spanToAdd = "week";
+        }
+        return this.start.add(amount, spanToAdd);
+    }
     connectedCallback() {
         console.log("Mapping controls");
         this.shadowRoot.querySelectorAll(".pastToggle").forEach((element) => {
@@ -290,13 +336,11 @@ export default class SharagaCalendar extends HTMLElement {
             };
         });
         const changeRange = (amount) => {
-            let spanToAdd = this.currentView;
-            if (spanToAdd === "isoWeek") {
-                spanToAdd = "week";
-            }
-            this.start = this.start.add(amount, spanToAdd);
+            this.start = this.generateModifiedRange(amount);
+            console.log("New start:", this.start);
             this.updateRangeText();
             this.updateTt();
+            swiper.slideTo(1, 0);
         };
         this.shadowRoot.querySelector("#nextRange").onclick = () => {
             changeRange(1);
@@ -317,6 +361,7 @@ export default class SharagaCalendar extends HTMLElement {
             );
             this.updateRangeText();
             this.updateTt();
+            swiper.slideTo(1, 0);
         };
         this.shadowRoot.querySelectorAll(".changeView").forEach((element) => {
             element.onclick = () =>
@@ -330,6 +375,19 @@ export default class SharagaCalendar extends HTMLElement {
         };
         this.shadowRoot.getElementById("refresh").onclick = () =>
             this.loadSrc(true);
+        this.swiper = new Swiper(this.shadowRoot.querySelector(".swiper"), {
+            // Optional parameters
+            direction: "horizontal",
+            initialSlide: 1,
+        });
+        window.swiper = this.swiper;
+        swiper.on("slideChange", (e) => {
+            console.log("slide changed", swiper.activeIndex);
+            const rangeMod = -1 + swiper.activeIndex;
+            console.log("SWIPE:changing range by", rangeMod);
+            changeRange(rangeMod);
+        });
+        console.log("initialized swiper");
     }
     attributeChangedCallback(name, oldValue, newValue) {
         console.log("attribute changed", name, oldValue, newValue);

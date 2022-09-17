@@ -13,3 +13,7 @@
 .button {
     margin-bottom: 15px;
 }
+.swiper {
+    width: 100vw;
+    min-height: 300px;
+}

@@ -9,6 +9,7 @@
         "knopf.css": "^1.1.2",
         "localforage": "^1.10.0",
         "lottie-web": "^5.9.6",
+        "swiper": "^8.4.2",
         "tom-select": "^2.1.0"
     },
     "scripts": {

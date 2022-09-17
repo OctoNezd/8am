@@ -163,6 +163,10 @@ html {
     max-height: 200px;
 }
 
+.fullScreen {
+    height: calc(100vh - 250px);
+}
+
 #loadingAnim * {
     fill: var(--md-sys-color-on-background);
     stroke: var(--md-sys-color-on-background);
