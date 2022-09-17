@@ -1,3 +1,6 @@
+import toastcss from "/css/toast.css";
+toastcss.use();
+
 export default function showToast(
     toastMessage,
     ttl,
