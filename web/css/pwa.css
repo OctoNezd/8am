@@ -78,3 +78,6 @@ summary {
 #pwa-spacer {
     width: 32px;
 }
+body {
+    overflow: hidden;
+}

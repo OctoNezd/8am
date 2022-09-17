@@ -62,6 +62,7 @@ export default class SharagaCalendar extends HTMLElement {
     start = dayjs().startOf("isoWeek");
     currentView = "isoWeek";
     ics = "";
+    today = true;
     get end() {
         return this.start.endOf(this.currentView);
     }
@@ -108,7 +109,8 @@ export default class SharagaCalendar extends HTMLElement {
     checkForEmptyTT() {
         if (
             this.currentView === "isoWeek" &&
-            this.start.isSame(dayjs().startOf("isoWeek"))
+            this.start.isSame(dayjs().startOf("isoWeek")) &&
+            this.today
         ) {
             const nowContainer = this.shadowRoot.getElementById("days1");
             nowContainer.parentElement.classList.add("thisWeek");
@@ -221,6 +223,7 @@ export default class SharagaCalendar extends HTMLElement {
         this.updateEventTimeRemaining();
         this.calendarError.innerHTML = "";
         this.checkForEmptyTT();
+        this.today = false;
     }
     loadSrc(showUpdateNotice) {
         const source = this.getAttribute("src");
@@ -373,6 +376,7 @@ export default class SharagaCalendar extends HTMLElement {
                 changeView(element.getAttribute("data-view"));
         });
         this.shadowRoot.getElementById("goToday").onclick = () => {
+            this.today = true;
             this.currentView = "isoWeek";
             this.start = dayjs().startOf("week");
             this.updateRangeText();
