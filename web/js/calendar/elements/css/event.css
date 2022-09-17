@@ -10,6 +10,7 @@
 .endIn {
     text-align: center;
     width: 100px;
+    min-width: 100px;
     min-height: 50px;
     padding: 5px;
     border-radius: 8px;

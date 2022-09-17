@@ -395,6 +395,8 @@ export default class SharagaCalendar extends HTMLElement {
             const rangeMod = -1 + swiper.activeIndex;
             console.log("SWIPE:changing range by", rangeMod);
             changeRange(rangeMod);
+            const days1 = this.shadowRoot.getElementById("days1");
+            days1.scrollTo(0, 0);
         });
         console.log("initialized swiper");
     }
