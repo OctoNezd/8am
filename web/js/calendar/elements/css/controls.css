@@ -97,16 +97,16 @@ button {
     color: var(--md-sys-color-primary);
 }
 @media only screen and (hover: none) and (pointer: coarse) {
-    #calendar {
+    .pwa #calendar {
         display: flex;
         flex-direction: column;
         overflow: hidden;
         --controls-height: 80px;
     }
-    #calendarBody {
+    .pwa #calendarBody {
         order: 1;
     }
-    #controlsBar {
+    .pwa #controlsBar {
         background: var(--md-sys-color-surface-variant);
         background-blend-mode: multiply;
         /* position: fixed; */
@@ -116,26 +116,26 @@ button {
         height: var(--controls-height);
         z-index: 50;
         order: 9;
-        position: absolute;
+        position: fixed;
         bottom: 0;
         @supports (padding-bottom: env(safe-area-inset-bottom)) {
             padding-bottom: env(safe-area-inset-bottom);
         }
     }
-    #calendarRange {
+    .pwa #calendarRange {
         padding-top: 12px;
     }
-    #calendarRange:empty {
+    .pwa #calendarRange:empty {
         display: none;
     }
-    #calendarControls {
+    .pwa #calendarControls {
         margin: 12px 16px;
     }
-    #calendarBody {
+    .pwa #calendarBody {
         /* padding-bottom: 120px; */
         max-height: calc(100vh - var(--controls-height) - 56px);
     }
-    #days1 {
+    .pwa #days1 {
         overflow: scroll;
         max-height: calc(100vh - var(--controls-height) - 56px);
     }

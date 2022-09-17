@@ -33,6 +33,7 @@ import ICAL from "ical.js";
 import { pluralize } from "/js/misc.js";
 import noTasks from "./calEmpty/noTasks";
 import showToast from "../../toast";
+import { isPwa } from "../../pwa_add";
 const purge_classes = ["hasEvents", "thisWeek", "noEvents"];
 function sortElements(element) {
     [...element.children]
@@ -79,6 +80,9 @@ export default class SharagaCalendar extends HTMLElement {
         console.log("Booting the calendar...", this.attributes);
         this.calendarRoot = document.createElement("div");
         this.calendarRoot.id = "calendar";
+        if (isPwa) {
+            this.calendarRoot.classList.add("pwa");
+        }
         console.log("Copying parent css...");
         document.querySelectorAll("style").forEach((style) => {
             this.shadowRoot.appendChild(style.cloneNode(true));
