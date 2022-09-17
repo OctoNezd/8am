@@ -8,7 +8,6 @@ FROM node:18-bullseye AS webpack
 RUN apt update && apt install git automake build-essential autoconf nasm -y
 WORKDIR /build/
 COPY ./web/package.json ./web/package-lock.json ./
-COPY ./web/patches ./patches
 RUN npm install 
 COPY ./.git ./.git
 COPY ./web/ ./
