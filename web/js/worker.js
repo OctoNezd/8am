@@ -1,6 +1,5 @@
 import localForage from "localforage";
 import { precacheAndRoute } from "workbox-precaching";
-import { clientsClaim } from "workbox-core";
 import { registerRoute } from "workbox-routing/registerRoute";
 import { StaleWhileRevalidate } from "workbox-strategies/StaleWhileRevalidate";
 import { ExpirationPlugin } from "workbox-expiration";
@@ -50,13 +49,9 @@ try {
         }
     });
 }
-clientsClaim();
 
 addEventListener("message", (event) => {
     if (event.data && event.data.type === "SKIP_WAITING") {
         self.skipWaiting();
     }
-});
-self.addEventListener("install", (e) => {
-    self.skipWaiting();
 });
