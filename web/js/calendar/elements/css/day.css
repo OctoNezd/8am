@@ -46,6 +46,11 @@
     margin: 10px;
 }
 
+.daysContainer .day:first-child .dayEvents {
+    /* HACK: Idk why this happens */
+    margin-top: 20px;
+}
+
 .dayEvents .event:not(:last-child) {
     padding-bottom: 15px;
     border-bottom: 1px solid var(--md-sys-color-on-background);
