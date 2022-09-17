@@ -282,14 +282,44 @@ export default class SharagaCalendar extends HTMLElement {
             );
             crange = this.shadowRoot.getElementById("calendarRange");
         }
-
-        if (this.currentView === "month") {
-            crange.innerText = this.start.format("MMMM YYYY");
-            return;
-        }
-        crange.innerText = `${this.start.format(
-            rangeFormat
-        )} - ${this.end.format(rangeFormat)}`;
+        crange
+            .animate(
+                [
+                    {
+                        opacity: 1,
+                    },
+                    {
+                        opacity: 0,
+                    },
+                ],
+                {
+                    duration: 500,
+                    iterations: 1,
+                }
+            )
+            .finished.then(() => {
+                if (this.currentView === "month") {
+                    crange.innerText = this.start.format("MMMM YYYY");
+                } else {
+                    crange.innerText = `${this.start.format(
+                        rangeFormat
+                    )} - ${this.end.format(rangeFormat)}`;
+                }
+                crange.animate(
+                    [
+                        {
+                            opacity: 0,
+                        },
+                        {
+                            opacity: 1,
+                        },
+                    ],
+                    {
+                        duration: 500,
+                        iterations: 1,
+                    }
+                );
+            });
     }
     updateEventTimeRemaining() {
         const eventItems =
