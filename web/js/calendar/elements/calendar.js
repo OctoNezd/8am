@@ -130,7 +130,9 @@ export default class SharagaCalendar extends HTMLElement {
                 if (container.querySelectorAll(".day").length === 0) {
                     console.log(container, "is empty");
                     container.classList.add("noEvents");
-                    container.appendChild(noTasks(this.currentView));
+                    container
+                        .querySelector(".days")
+                        .appendChild(noTasks(this.currentView));
                 }
             });
     }
@@ -429,7 +431,9 @@ export default class SharagaCalendar extends HTMLElement {
             const rangeMod = -1 + swiper.activeIndex;
             console.log("SWIPE:changing range by", rangeMod);
             changeRange(rangeMod);
-            const days1 = this.shadowRoot.getElementById("days1");
+            const days1 = this.shadowRoot.querySelector(
+                ".daysContainer:has(#days1)"
+            );
             days1.scrollTo(0, 0);
         });
         console.log("initialized swiper");
