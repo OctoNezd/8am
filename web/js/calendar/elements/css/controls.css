@@ -110,7 +110,8 @@ button {
         var(--pwa-cal-height) - var(--controls-height) - var(--controls-padding)
     );
 }
-.pwa #calendarBody {
+.pwa #calendarBody,
+.pwa #calendarWait {
     /* padding-bottom: 120px; */
     height: var(--calpage-height);
 }
