@@ -432,9 +432,11 @@ export default class SharagaCalendar extends HTMLElement {
             console.log("SWIPE:changing range by", rangeMod);
             changeRange(rangeMod);
             const days1 = this.shadowRoot.querySelector(
-                ".daysContainer:has(#days1)"
+                "#days1"
             );
-            days1.scrollTo(0, 0);
+            if (days1 !== undefined) {
+            days1.parentElement.scrollTo(0, 0);
+            }
         });
         console.log("initialized swiper");
     }
