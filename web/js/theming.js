@@ -56,7 +56,7 @@ function getBgColor() {
 
 function updateThemeColor() {
     const new_color = getBgColor();
-    if (new_color.contains("NaN")) {
+    if (new_color.toLowerCase().includes("nan")) {
         return
     }
     metaThemeColor.setAttribute("content", new_color);
