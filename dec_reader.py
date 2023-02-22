@@ -104,9 +104,12 @@ __version__ = "0.2.5p1"
 
 async def get_teams_urls():
     global TEAMS_URLS
-    async with aiohttp.ClientSession(base_url="https://mgutm.ru/", raise_for_status=True) as session:
-        async with session.get("/wp-json/prepods/v1/info") as resp:
-            TEAMS_URLS = {link["name"]: link["url"] for link in await resp.json()}
+    try:
+        async with aiohttp.ClientSession(base_url="https://mgutm.ru/", raise_for_status=True) as session:
+            async with session.get("/wp-json/prepods/v1/info") as resp:
+                TEAMS_URLS = {link["name"]: link["url"] for link in await resp.json()}
+    except aiohttp.client_exceptions.ClientResponseError:
+        TEAMS_URLS = {}
 
 
 def generate_ical(tt):
