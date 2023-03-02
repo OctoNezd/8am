@@ -22,8 +22,7 @@ RUN pip install -r requirements.txt
 COPY ./static/ /app/static/
 COPY --from=webpack /build/dist /app/web/dist
 # Creating folders, and files for a project:
-COPY webserver.py /app/
-COPY dec_reader.py /app/
+COPY *.py /app/
 USER 33:33
 EXPOSE 80
 ENV REDIS=redis://redis:6379/0
