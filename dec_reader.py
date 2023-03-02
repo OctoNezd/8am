@@ -1,8 +1,12 @@
 import json
 from datetime import datetime, timedelta
 import aiohttp
-from ics import Attendee, Calendar, Event, Organizer
+from ics import Calendar, Event
 from ics.parse import ContentLine
+from collections import OrderedDict
+
+from classes import TimetableSource
+
 
 LOCATIONS = """
 1 	г. Москва, ул. Земляной Вал, д.73
@@ -70,35 +74,6 @@ def force_metro_emojis():
 
 force_metro_emojis()
 
-
-def gen_days(year):
-    start_date = datetime(year, 1, 1)
-    end_date = datetime(year, 12, 31)
-    d = start_date
-    dates = [start_date]
-    while d < end_date:
-        d += timedelta(days=1)
-        dates.append(d)
-    return dates
-
-
-def generate_invalid_group_ical():
-    cal = Calendar()
-    for name in ["NAME", "X-WR-CALNAME"]:
-        cal.extra.append(ContentLine(
-            name, value=f"Устаревшее расписание (sharaga.octonezd.me)"))
-    cal.extra.append(ContentLine("X-PUBLISHED-TTL", value="PT12Y"))
-    for date in gen_days(datetime.now().year):
-        event = Event(
-            name="Неверный ID расписания. Переустановите календарь",
-            begin=date,
-        )
-        cal.events.add(event)
-    return str(cal)
-
-
-INVALID_GROUP = generate_invalid_group_ical()
-
 __version__ = "0.2.5p1"
 
 
@@ -112,53 +87,70 @@ async def get_teams_urls():
         TEAMS_URLS = {}
 
 
-def generate_ical(tt):
-    print("downloaded timetable")
-    cal = Calendar()
-    for name in ["NAME", "X-WR-CALNAME"]:
+class MgutmParser(TimetableSource):
+    def generate_ical(self, tt):
+        print("downloaded timetable")
+        cal = Calendar()
+        for name in ["NAME", "X-WR-CALNAME"]:
+            cal.extra.append(ContentLine(
+                name, value=f"Расписание {tt['info']['group']['name']} (sharaga.octonezd.me)"))
+        cal.extra.append(ContentLine("X-PUBLISHED-TTL", value="PT12H"))
         cal.extra.append(ContentLine(
-            name, value=f"Расписание {tt['info']['group']['name']} (sharaga.octonezd.me)"))
-    cal.extra.append(ContentLine("X-PUBLISHED-TTL", value="PT12H"))
-    cal.extra.append(ContentLine(
-        "URL", value=f"webcal://sharaga.octonezd.me/group/{tt['info']['group']['groupID']}.ics"))
-    debug_info = Event(name="Отладочная информация",
-                       begin=datetime(1970, 1, 1), end=datetime(1970, 1, 1))
-    debug_info.description = f"Сгенерировано: {datetime.now()}\nВерсия генератора: {__version__}\ngid:{tt['info']['group']['groupID']}"
-    cal.events.add(debug_info)
-    for lesson in tt["rasp"]:
-        event = Event(
-            name=lesson["дисциплина"],
-            begin=datetime.fromisoformat(lesson["датаНачала"] + "+03:00"),
-            end=datetime.fromisoformat(lesson["датаОкончания"] + "+03:00"),
-        )
-        event.description = f'Препод: {lesson["должность"]} {lesson["преподаватель"]}'
-        if "-" in lesson["аудитория"]:
-            location_id, room = lesson["аудитория"].split("-")
-            event.extra.append(ContentLine("X-SHARAGA-ROOM", value=room))
-            if location_id in LOCATIONS:
-                nearest_metro = NEAREST_METRO_STATIONS[location_id]
-                metro_info = f"{LINES[nearest_metro['line']][1]}{nearest_metro['station']}"
+            "URL", value=f"webcal://sharaga.octonezd.me/group/{tt['info']['group']['groupID']}.ics"))
+        debug_info = Event(name="Отладочная информация",
+                           begin=datetime(1970, 1, 1), end=datetime(1970, 1, 1))
+        debug_info.description = f"Сгенерировано: {datetime.now()}\nВерсия генератора: {__version__}\ngid:{tt['info']['group']['groupID']}"
+        cal.events.add(debug_info)
+        for lesson in tt["rasp"]:
+            event = Event(
+                name=lesson["дисциплина"],
+                begin=datetime.fromisoformat(lesson["датаНачала"] + "+03:00"),
+                end=datetime.fromisoformat(lesson["датаОкончания"] + "+03:00"),
+            )
+            event.description = f'Препод: {lesson["должность"]} {lesson["преподаватель"]}'
+            if "-" in lesson["аудитория"]:
+                location_id, room = lesson["аудитория"].split("-")
+                event.extra.append(ContentLine("X-SHARAGA-ROOM", value=room))
+                if location_id in LOCATIONS:
+                    nearest_metro = NEAREST_METRO_STATIONS[location_id]
+                    metro_info = f"{LINES[nearest_metro['line']][1]}{nearest_metro['station']}"
 
-                location = f"{metro_info}, {LOCATIONS[location_id]}, каб. {room}"
-                event.extra.append(ContentLine(
-                    "X-SHARAGA-LOCATION", value=LOCATIONS[location_id]))
-                event.extra.append(ContentLine(
-                    "X-SHARAGA-METRO", value=nearest_metro['station']))
-                event.extra.append(ContentLine(
-                    "X-SHARAGA-METRO-LINE", value=nearest_metro['line']))
+                    location = f"{metro_info}, {LOCATIONS[location_id]}, каб. {room}"
+                    event.extra.append(ContentLine(
+                        "X-SHARAGA-LOCATION", value=LOCATIONS[location_id]))
+                    event.extra.append(ContentLine(
+                        "X-SHARAGA-METRO", value=nearest_metro['station']))
+                    event.extra.append(ContentLine(
+                        "X-SHARAGA-METRO-LINE", value=nearest_metro['line']))
+                else:
+                    location = f"Хуй знает где, каб. {room}"
+                    event.extra.append(ContentLine(
+                        "X-SHARAGA-LOCATION", value="Неизвестно"))
             else:
-                location = f"Хуй знает где, каб. {room}"
-                event.extra.append(ContentLine(
-                    "X-SHARAGA-LOCATION", value="Неизвестно"))
-        else:
-            location = TEAMS_URLS.get(
-                lesson["преподаватель"], "Дистанционно, ссылка не найдена.")
-            if "Дистанционно" not in location:
-                event.extra.append(ContentLine(
-                    "X-GOOGLE-CONFERENCE", value=location))
-        event.location = location
-        cal.events.add(event)
-    return str(cal)
+                location = TEAMS_URLS.get(
+                    lesson["преподаватель"], "Дистанционно, ссылка не найдена.")
+                if "Дистанционно" not in location:
+                    event.extra.append(ContentLine(
+                        "X-GOOGLE-CONFERENCE", value=location))
+            event.location = location
+            cal.events.add(event)
+        return str(cal)
+
+    async def get_groups(self):
+        tmpgroups = {}
+        async with aiohttp.ClientSession(base_url="https://dec.mgutm.ru/", raise_for_status=True) as session:
+            async with session.get("/api/Groups") as resp:
+                groupdata = await resp.json()
+                for group in groupdata["data"]["groups"]:
+                    tmpgroups[group["groupName"]] = str(group["groupID"])
+        return OrderedDict(sorted(tmpgroups.items(), key=lambda x: x[0]))
+
+    async def get_new_ics(self, gid):
+        async with aiohttp.ClientSession(base_url="https://dec.mgutm.ru/", raise_for_status=True) as session:
+            async with session.get("/api/Rasp", params={"idGroup": gid}) as resp:
+                tt = (await resp.json())["data"]
+        tt = self.generate_ical(tt)
+        return tt
 
 
 if __name__ == "__main__":
@@ -166,7 +158,9 @@ if __name__ == "__main__":
     asyncio.run(get_teams_urls())
     with open("rasp.json", encoding="utf-8") as f:
         tt = json.load(f)["data"]
-    ical = generate_ical(tt)
+
+    rdr = MgutmParser()
+    ical = rdr.generate_ical(tt)
     with open("test.ics", "w", newline='', encoding="utf-8") as f:
         f.write(ical)
     print(LOCATIONS, TEAMS_URLS)

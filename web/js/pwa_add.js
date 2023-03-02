@@ -21,10 +21,8 @@ function bootPWA() {
     require("./pwa");
 }
 window.bootPWA = bootPWA;
-
-if (isPwa) {
-    bootPWA();
-} else {
+bootPWA();
+if (!isPwa) {
     addEventListener("beforeinstallprompt", (e) => {
         installApp.classList.remove("hidden");
         deferredPrompt = e;

@@ -1,41 +1,30 @@
 from ics import Calendar, Event
+from ics.parse import ContentLine
 import os
-from typing import OrderedDict
 import aiohttp
 from fastapi import FastAPI, HTTPException, Response, Request
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from datetime import datetime, timedelta
 import logging
+from classes import TimetableSource
 import dec_reader
+import debug_source
 from urllib.parse import urlparse
 logger = logging.getLogger("main")
 app = FastAPI()
 GROUPS = {}
-GROUPS_INV = {}
+GROUP_IDS = {}
 DEVGROUPS = {}
 CACHE = {}
-
-
-def datetime_range(start, end, delta):
-    current = start
-    while current < end:
-        yield current
-        current += delta
-
-
-def minute_calendar():
-    today = datetime.utcnow().date()
-    start = datetime(today.year, today.month, today.day)
-    end = start + timedelta(1)
-    dts = [dt for dt in
-           datetime_range(start, end,
-                          timedelta(minutes=1))]
-    ics = Calendar()
-    for event_start in dts:
-        event_end = event_start + timedelta(minutes=1)
-        ics.events.add(
-            Event(name=f"{event_start} - {event_end}", begin=event_start, end=event_end))
-    return str(ics)
+SOURCES = {
+    "mgutm": dec_reader.MgutmParser(),
+    "debug": debug_source.DebugSource()
+}
+SOURCES_DESC = {
+    "mgutm": "МГУТУ им. К.Г. Разумовского",
+    "debug": "Отладка"
+}
 
 
 if "REDIS" in os.environ:
@@ -45,36 +34,61 @@ if "REDIS" in os.environ:
 else:
     from fakeredis import aioredis
     DEVMODE = True
-    DEVGROUPS["1"] = minute_calendar
     logger.critical("ERROR: Redis is not available, using fakeredis")
     redis = aioredis.FakeRedis(decode_responses=True)
 
 
-async def get_new_ics(gid):
-    async with aiohttp.ClientSession(base_url="https://dec.mgutm.ru/", raise_for_status=True) as session:
-        async with session.get("/api/Rasp", params={"idGroup": gid}) as resp:
-            tt = (await resp.json())["data"]
-    tt = dec_reader.generate_ical(tt)
-    await redis.hset(f"group:{gid}", "tt", tt)
-    await redis.hset(f"group:{gid}", "when", datetime.now().isoformat())
-    await redis.hset(f"group:{gid}", "ver", dec_reader.__version__)
-    return tt
-
-
 @app.get("/group/{gid}.ics", response_class=Response(media_type="text/calendar"))
-async def get_group_ics(gid: int):
-    if str(gid) not in GROUPS_INV:
-        return Response(dec_reader.INVALID_GROUP, media_type="text/calendar")
-    if gid < 1000:
-        if not DEVMODE:
-            raise HTTPException(403, "Отладочные группы выключены в проде.")
-        return Response(DEVGROUPS[str(gid)](), media_type="text/calendar")
-    cached = await redis.hgetall(f"group:{gid}")
-    if cached == {} or datetime.now() - datetime.fromisoformat(cached["when"]) > timedelta(days=1) or cached.get("ver", "0.1") != dec_reader.__version__:
+def get_group_ics_legacy(gid):
+    return RedirectResponse(f"/group/mgutm/{gid}.ics", status_code=308)
+
+
+def gen_days(year):
+    start_date = datetime(year, 1, 1)
+    end_date = datetime(year, 12, 31)
+    d = start_date
+    dates = [start_date]
+    while d < end_date:
+        d += timedelta(days=1)
+        dates.append(d)
+    return dates
+
+
+def generate_invalid_group_ical():
+    cal = Calendar()
+    for name in ["NAME", "X-WR-CALNAME"]:
+        cal.extra.append(ContentLine(
+            name, value=f"Устаревшее расписание (sharaga.octonezd.me)"))
+    cal.extra.append(ContentLine("X-PUBLISHED-TTL", value="PT12Y"))
+    for date in gen_days(datetime.now().year):
+        event = Event(
+            name="Неверный ID расписания. Переустановите календарь",
+            begin=date,
+        )
+        cal.events.add(event)
+    return str(cal)
+
+
+INVALID_GROUP = generate_invalid_group_ical()
+
+
+@app.get("/group/{source_name}/{gid}.ics", response_class=Response(media_type="text/calendar"))
+async def get_group_ics(source_name: str, gid: int):
+    if source_name not in SOURCES:
+        return Response(INVALID_GROUP, media_type="text/calendar")
+    source: TimetableSource = SOURCES[source_name]
+    if str(gid) not in GROUP_IDS[source_name]:
+        return Response(INVALID_GROUP, media_type="text/calendar")
+    group_cache_id = f"group:{source_name}/{gid}"
+    cached = await redis.hgetall(group_cache_id)
+    if cached == {} or datetime.now() - datetime.fromisoformat(cached["when"]) > timedelta(days=1) or cached.get("ver", "0") != source.__version__:
         logger.info("Timetable for %s is outdated. Updating.", gid)
         try:
-            tt = await get_new_ics(gid)
-            logger.info("Updated timetable for %s.", gid)
+            tt = await source.get_new_ics(gid)
+            await redis.hset(group_cache_id, "tt", tt)
+            await redis.hset(group_cache_id, "when", datetime.now().isoformat())
+            await redis.hset(group_cache_id, "ver", source.__version__)
+            logger.info("Updated timetable for %s.", group_cache_id)
         except aiohttp.ClientError as e:
             logger.error("Failed to get new timetable for %s",
                          gid, exc_info=True)
@@ -84,7 +98,6 @@ async def get_group_ics(gid: int):
     else:
         tt = cached["tt"]
         logger.info("Timetable for %s is fresh enough", gid)
-    await redis.hincrby("stats", gid)
     return Response(tt, media_type="text/calendar")
 
 
@@ -93,13 +106,14 @@ def get_groups():
     return GROUPS
 
 
+@app.get("/sources")
+def get_sources():
+    return SOURCES_DESC
+
+
 @app.get("/stats")
 async def get_stats():
-    a = {}
-    for key, value in list((await redis.hgetall("stats")).items()):
-        if key in GROUPS_INV:
-            a[GROUPS_INV[key]] = value
-    return {"groups": {k: v for k, v in sorted(a.items(), key=lambda item: int(item[1]), reverse=True)}, "system": {"parser_ver": dec_reader.__version__}}
+    return {"system": {"parser_ver": dec_reader.__version__}}
 
 
 @app.middleware("http")
@@ -122,19 +136,14 @@ async def startup():
     console_handler.setFormatter(console_formatter)
     logger.addHandler(console_handler)
     logger.setLevel(logging.DEBUG)
-    logger.info("Downloading group list...")
-    tmpgroups = {}
-    async with aiohttp.ClientSession(base_url="https://dec.mgutm.ru/", raise_for_status=True) as session:
-        async with session.get("/api/Groups") as resp:
-            groupdata = await resp.json()
-            for group in groupdata["data"]["groups"]:
-                tmpgroups[group["groupName"]] = str(group["groupID"])
-                GROUPS_INV[str(group["groupID"])] = group["groupName"]
-    GROUPS = OrderedDict(sorted(tmpgroups.items(), key=lambda x: x[0]))
-    if DEVMODE:
-        for devgroupid, devgroup_name in DEVGROUPS.items():
-            GROUPS["DG:" + devgroup_name.__name__] = devgroupid
-            GROUPS_INV[devgroupid] = "DG:" + devgroup_name.__name__
+    GROUPS = {}
+    for source_name, source in SOURCES.items():
+        logger.info("Downloading group list for %s...", source_name)
+        GROUPS[source_name] = await source.get_groups()
+        GROUP_IDS[source_name] = []
+        for group in GROUPS[source_name].values():
+            GROUP_IDS[source_name].append(str(group))
+        logger.info("%s: %s groups", source_name, len(GROUPS[source_name]))
     logger.info("Downloading MSTeams URLs...")
     await dec_reader.get_teams_urls()
     logger.info("Started.")

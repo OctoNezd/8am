@@ -26,6 +26,7 @@ module.exports = merge(common, {
             "/stats": devapi,
             "/groups": devapi,
             "/group": devapi,
+            "/sources": devapi,
         },
         client: {
             overlay: {

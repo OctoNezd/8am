@@ -175,7 +175,7 @@ function boot_calendar() {
     // window.calendar = calendar;
     console.log("Calendar rendered");
 }
-export default async function setup_calendar_preview(gid) {
+export default async function setup_calendar_preview(url) {
     // const current_es = calendar.getEventSourceById("sharaga");
     // if (current_es !== null) {
     //     current_es.remove();
@@ -193,13 +193,10 @@ export default async function setup_calendar_preview(gid) {
     // }
     // calendar.render();
     const calEl = document.getElementById("calendar");
-    if (gid === undefined) {
+    if (url === undefined) {
         calEl.removeAttribute("src");
         return;
     }
-    const url = `${location.protocol}//${
-        location.host
-    }/group/${gid}.ics?sv=${await localforage.getItem("serverVersion")}`;
     calEl.setAttribute("src", url);
 }
 
