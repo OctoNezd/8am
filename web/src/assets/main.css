@@ -1,0 +1,23 @@
+@import '@fontsource/roboto/500';
+@import '@fontsource/roboto';
+@import './md3/theme.css';
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+.uilink {
+    text-decoration: none;
+    color: inherit;
+}
+a {
+    color: inherit;
+}
+.button {
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-primary-container);
+    padding: 5px;
+    border-radius: 5px;
+    text-decoration: none;
+}

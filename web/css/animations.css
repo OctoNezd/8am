@@ -1,9 +1,0 @@
-.fadeout {
-    animation: fadeout 0.5s linear forwards;
-    white-space: nowrap;
-    animation-delay: 2s;
-}
-.fadein {
-    animation: fadein 0.5s linear forwards;
-    white-space: nowrap;
-}

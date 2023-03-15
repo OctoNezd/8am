@@ -1,38 +1,40 @@
 {
-    "dependencies": {
-        "@fontsource/roboto": "^4.5.8",
-        "@jaames/iro": "^5.5.2",
-        "@material/material-color-utilities": "^0.2.0",
-        "@mdi/js": "^7.0.96",
-        "dayjs": "^1.11.5",
-        "favicons-webpack-plugin": "^6.0.0",
-        "ical.js": "^1.5.0",
-        "knopf.css": "^1.1.2",
-        "localforage": "^1.10.0",
-        "lottie-web": "^5.9.6",
-        "swiper": "^8.4.2",
-        "tom-select": "^2.1.0"
-    },
-    "scripts": {
-        "build": "webpack --config webpack.prod.js --mode production",
-        "serve": "webpack serve --config webpack.dev.js --mode development",
-        "stats": "webpack --config webpack.prod.js --mode production --profile --json > stats.json"
-    },
-    "devDependencies": {
-        "copy-webpack-plugin": "^11.0.0",
-        "css-loader": "^6.7.1",
-        "favicons": "^7.0.0-beta.5",
-        "html-loader": "^4.1.0",
-        "html-webpack-plugin": "^5.5.0",
-        "image-minimizer-webpack-plugin": "^3.3.0",
-        "imagemin": "^8.0.1",
-        "style-loader": "^3.3.1",
-        "webpack": "^5.74.0",
-        "webpack-bundle-analyzer": "^4.6.1",
-        "webpack-cli": "^4.10.0",
-        "webpack-dev-server": "^4.10.1",
-        "webpack-merge": "^5.8.0",
-        "webpackbar": "^5.0.2",
-        "workbox-webpack-plugin": "^6.5.4"
-    }
+  "name": "web",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "format": "prettier --write src/"
+  },
+  "dependencies": {
+    "@fontsource/roboto": "^4.5.8",
+    "@material/material-color-utilities": "^0.2.4",
+    "@mdi/js": "^7.1.96",
+    "@radial-color-picker/vue-color-picker": "^5.0.1",
+    "dayjs": "^1.11.7",
+    "git-describe": "^4.1.1",
+    "ical.js": "^1.5.0",
+    "localforage": "^1.10.0",
+    "lottie-web": "^5.10.2",
+    "mdi-vue": "^3.0.13",
+    "pinia": "^2.0.32",
+    "swiper": "^9.1.0",
+    "vite-plugin-favicon": "^1.0.8",
+    "vue": "^3.2.47",
+    "vue-multiselect": "^3.0.0-beta.1",
+    "vue-router": "^4.1.6",
+    "vue-search-select": "^3.1.0"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.2.0",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "@vue/eslint-config-prettier": "^7.1.0",
+    "eslint": "^8.34.0",
+    "eslint-plugin-vue": "^9.9.0",
+    "prettier": "^2.8.4",
+    "vite": "^4.1.4"
+  }
 }
