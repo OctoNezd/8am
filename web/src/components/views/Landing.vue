@@ -1,10 +1,10 @@
 <template>
     <section style="text-align: center" id="landing" class="background">
         <div>
-            <img src="../assets/icons/main_icon.png" class="logo" />
+            <img src="@/assets/icons/main_icon.png" class="logo" />
             <h1>Добро пожаловать в Ш А Р А Г А v2.</h1>
             <h3>
-                Для начала работы, выберите вашу группу в
+                Для начала "работы", выберите вашу группу в
                 <RouterLink to="/settings" class="button">настройках</RouterLink>.
             </h3>
         </div>

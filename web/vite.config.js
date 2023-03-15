@@ -2,34 +2,49 @@ import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { ViteFaviconsPlugin } from 'vite-plugin-favicon'
+import { VitePWA } from 'vite-plugin-pwa'
 import { gitDescribeSync } from 'git-describe'
 const devapi = 'http://127.0.0.1:8000'
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
         vue(),
-        ViteFaviconsPlugin({
-            logo: './src/assets/icons/main_icon.png',
-            devMode: 'webapp',
-            mode: 'webapp',
-            favicons: {
-                orientation: 'portrait',
-                maskable: true,
-                appName: 'Ш А Р А Г А',
-                appDescription: 'Веб-Приложение для просмотра расписания шараги',
-                developerURL: null, // prevent retrieving from the nearest package.json
-                background: '#201a18',
-                theme_color: '#201a18',
-                manifestMaskable: './src/assets/icons/maskable.png',
-                icons: {
-                    favicons: false
-                },
-                files: {
-                    android: {
-                        manifestFileName: 'manifest.json'
+        VitePWA({
+            mode: 'development',
+            strategies: 'injectManifest',
+            srcDir: 'src',
+            filename: 'sw.js',
+            injectManifest: {
+                maximumFileSizeToCacheInBytes: 3000000
+            },
+            manifest: {
+                name: 'Ш А Р А Г А',
+                short_name: 'ШАРАГА',
+                lang: 'ru',
+                description: 'Веб-Приложение для просмотра расписания шараги',
+                icons: [
+                    {
+                        src: 'pwa-192x192.png',
+                        sizes: '192x192',
+                        type: 'image/png'
+                    },
+                    {
+                        src: 'pwa-512x512.png',
+                        sizes: '512x512',
+                        type: 'image/png'
+                    },
+                    {
+                        src: 'pwa-512x512.png',
+                        sizes: '512x512',
+                        type: 'image/png',
+                        purpose: 'any maskable'
                     }
-                }
+                ]
+            },
+            devOptions: {
+                enabled: true,
+                type: 'module',
+                navigateFallback: 'index.html'
             }
         })
     ],

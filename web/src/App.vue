@@ -2,12 +2,14 @@
     <div class="body-medium background on-background-text" id="main">
         <router-view v-if="storeLoaded"></router-view>
         <div v-else>Идёт загрузка хранилища настроек...</div>
+        <SW />
     </div>
 </template>
 <script setup>
 import { useSettingsStore } from './stores/settings'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
+import SW from './swmgmt.vue'
 const router = useRouter()
 console.log(router.currentRoute)
 const setStore = useSettingsStore()

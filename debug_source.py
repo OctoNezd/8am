@@ -14,7 +14,7 @@ def datetime_range(start, end, delta):
 class DebugSource(TimetableSource):
 
     async def get_groups(self):
-        return {"1min": 0}
+        return {"1h": 0}
 
     def generate_ical(*_):
         today = datetime.utcnow().date()

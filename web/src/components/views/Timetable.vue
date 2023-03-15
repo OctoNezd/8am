@@ -161,7 +161,8 @@ fetch(ics_path)
 
 <style>
 #tt {
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     max-height: calc(100vh - 56px);
     padding-left: 5px;
     padding-right: 5px;

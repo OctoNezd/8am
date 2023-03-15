@@ -4,7 +4,7 @@ RUN pip install poetry==1.1.13
 COPY poetry.lock pyproject.toml /build/
 RUN poetry export -f requirements.txt --without-hashes > requirements.txt
 
-FROM node:18-bullseye AS webpack
+FROM node:18-bullseye AS webbuild
 RUN apt update && apt install git automake build-essential autoconf nasm -y
 WORKDIR /build/
 COPY ./web/package.json ./web/package-lock.json ./
@@ -20,7 +20,7 @@ COPY --from=requirements /build/requirements.txt /app/
 RUN pip install -r requirements.txt
 # Copy only requirements to cache them in docker layer
 COPY ./static/ /app/static/
-COPY --from=webpack /build/dist /app/web/dist
+COPY --from=webbuild /build/dist /app/web/dist
 # Creating folders, and files for a project:
 COPY *.py /app/
 USER 33:33
