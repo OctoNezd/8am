@@ -91,7 +91,7 @@ if (startDJ.isSame(dayjs(), 'day') && dayjs().isBefore(endDJ)) {
             instance?.proxy?.$forceUpdate()
             console.log('updated endin', endIn)
         }
-    }, 1000)
+    }, 25000)
     function stopEndIn() {
         console.log(
             'destroying interval',
