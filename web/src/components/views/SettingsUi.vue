@@ -20,10 +20,7 @@
                     { value: 'http://maps.yandex.ru/?q=', text: 'Yandex Maps' }
                 ]"
             />
-            <h4>
-                Версия приложения: {{ app_version }}.
-                <a href="#" @click="forceAppUpdate">Принудительно обновить</a>
-            </h4>
+            <h4>Версия приложения: {{ app_version }}</h4>
         </section>
     </div>
 </template>
@@ -55,14 +52,6 @@ const ttids = computed(() => {
         })
     }
 })
-async function forceAppUpdate() {
-    const cacheKeys = await caches.keys()
-    for (const key of cacheKeys) {
-        await caches.delete(key)
-        console.log(`Удалён кэш: ${key}`)
-    }
-    location.reload()
-}
 fetch('/groups')
     .then((res) => res.json())
     .then((ttidDt) => (allTimeTableIDs.value = ttidDt))
