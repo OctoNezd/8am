@@ -20,7 +20,10 @@
                     { value: 'http://maps.yandex.ru/?q=', text: 'Yandex Maps' }
                 ]"
             />
-            <h4>Версия приложения: {{ app_version }}</h4>
+            <h4>
+                Версия приложения: {{ app_version }}.
+                <a href="#" class="button" @click="forceAppUpdate">Принудительно обновить</a>
+            </h4>
         </section>
     </div>
 </template>
@@ -83,6 +86,17 @@ Array(
         settingsStore.save()
     })
 })
+async function forceAppUpdate() {
+    const cacheKeys = await caches.keys()
+    for (const key of cacheKeys) {
+        await caches.delete(key)
+    }
+    const workers = await navigator.serviceWorker.getRegistrations()
+    for (const worker of workers) {
+        worker.unregister()
+    }
+    location.reload()
+}
 </script>
 <style>
 #settingsUi {
