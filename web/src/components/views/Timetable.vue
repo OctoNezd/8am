@@ -24,7 +24,7 @@
                 :id="dayid"
             >
                 <div v-if="lessons === 'empty'" class="no-lessons">Нет пар</div>
-                <div v-else v-for="[idx, lesson] of lessons.entries()" :key="lesson.eventStart">
+                <div v-else>
                     <lesson
                         :start="lesson.start"
                         :end="lesson.end"
@@ -36,8 +36,10 @@
                         :line="lesson.line"
                         :isoStart="lesson.isoStart"
                         :isoEnd="lesson.isoEnd"
+                        v-for="[idx, lesson] of lessons.entries()"
+                        :key="lesson.eventStart"
                     />
-                    <hr v-if="idx !== lessons.length - 1" />
+                    <!-- <hr v-if="idx !== lessons.length - 1" /> -->
                 </div>
             </dayStart>
         </div>
