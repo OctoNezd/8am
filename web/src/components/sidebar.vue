@@ -42,7 +42,7 @@ function shouldClose(e) {
 }
 #sidebar-main {
     width: var(--sidebar-size);
-    height: 100vw;
+    height: 100vh;
     overflow: auto;
     animation: sidebarslide 0.5s forwards;
 }
