@@ -36,7 +36,7 @@ if (offlineReady) {
     z-index: 1;
     text-align: left;
     box-shadow: 3px 4px 5px 0 #8885;
-    background-color: white;
+    background-color: inherit;
 }
 .pwa-toast .message {
     margin-bottom: 8px;
