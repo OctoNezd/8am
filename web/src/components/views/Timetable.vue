@@ -25,7 +25,7 @@
             >
                 <div v-if="lessons === 'empty'" class="no-lessons">Нет пар</div>
                 <div v-else>
-                    <lesson
+                    <event
                         :start="lesson.start"
                         :end="lesson.end"
                         :lesson="lesson.lesson"
@@ -39,7 +39,7 @@
                         v-for="[idx, lesson] of lessons.entries()"
                         :key="lesson.eventStart"
                     />
-                    <!-- <hr v-if="idx !== lessons.length - 1" /> -->
+                    <hr v-if="idx !== lessons.length - 1" />
                 </div>
             </dayStart>
         </div>
@@ -47,7 +47,7 @@
 </template>
 <script setup>
 import dayStart from '../tt/dayStart.vue'
-import lesson from '../tt/lesson.vue'
+import event from '../tt/lesson.vue'
 import { useRoute } from 'vue-router'
 import ical from 'ical.js'
 import { useSettingsStore } from '../../stores/settings'
