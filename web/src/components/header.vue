@@ -1,8 +1,8 @@
 <template>
     <span>
         <header class="topbar surface">
-            <button @click="sidebarVisible = true">
-                <mdicon name="menu" sizePx="32"></mdicon>
+            <button @click="sidebarVisible = true" class="topbar-lnav">
+                <mdicon name="menu"></mdicon>
             </button>
             <p class="topbar-headline">{{ title }}</p>
             <div style="flex-grow: 1" />
@@ -37,6 +37,8 @@ const sidebarVisible = ref(false)
     color: inherit;
     gap: inherit;
     cursor: pointer;
+    padding-left: 16px;
+    padding-right: 16px;
 }
 .topbar-headline {
     color: var(--md-sys-color-on-surface);
@@ -45,6 +47,7 @@ const sidebarVisible = ref(false)
     font-size: var(--md-sys-typescale-title-large-font-size);
     letter-spacing: var(--md-sys-typescale-title-large-letter-spacing);
     line-height: var(--md-sys-typescale-title-large-line-height);
+    text-transform: capitalize;
 }
 </style>
 
