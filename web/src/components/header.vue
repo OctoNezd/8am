@@ -1,21 +1,56 @@
 <template>
     <span>
         <header class="topbar surface">
-            <button @click="sidebarVisible = true" class="topbar-lnav">
-                <mdicon name="menu"></mdicon>
+            <button @click="sidebarVisible = true" class="topbar-lnav" v-if="!searchActive">
+                <mdicon name="menu" />
             </button>
-            <p class="topbar-headline">{{ title }}</p>
-            <div style="flex-grow: 1" />
-            <slot />
+            <button @click="searchActive = false" class="topbar-lnav" v-else>
+                <mdicon name="arrow-left" />
+            </button>
+            <p class="topbar-headline" v-if="!searchActive">{{ title }}</p>
+            <div style="flex-grow: 1" v-if="!searchActive" />
+            <input
+                type="text"
+                v-else
+                v-model="searchQuery"
+                class="topbar-search"
+                :placeholder="searchPlaceholder"
+                ref="searchBox"
+                @input="emit('searchQueryChanged', searchQuery)"
+            />
+            <slot v-if="!searchActive" />
+            <button
+                style="color: var(--md-sys-color-on-surface-variant)"
+                v-if="!searchActive && searchable"
+            >
+                <mdicon name="magnify" @click="searchActive = true"></mdicon>
+            </button>
+            <button v-else-if="searchActive">
+                <mdicon name="close" @click=";(searchQuery = ''), emit('searchQueryChanged', '')" />
+            </button>
         </header>
         <sidebar v-if="sidebarVisible" @close="sidebarVisible = false" />
     </span>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, watch, defineEmits, nextTick } from 'vue'
 import Sidebar from './sidebar.vue'
-const props = defineProps(['title'])
+const emit = defineEmits(['searchQueryChanged', 'searchClosed'])
+const props = defineProps({ title: String, searchable: Boolean, searchPlaceholder: String })
+const searchQuery = ref('')
+const searchBox = ref(null)
+const searchActive = ref(false)
 const sidebarVisible = ref(false)
+watch(searchActive, (val) => {
+    searchQuery.value = ''
+    if (val) {
+        nextTick(() => {
+            searchBox.value.focus()
+        })
+    } else {
+        emit('searchClosed')
+    }
+})
 </script>
 
 <style>
@@ -48,6 +83,25 @@ const sidebarVisible = ref(false)
     letter-spacing: var(--md-sys-typescale-title-large-letter-spacing);
     line-height: var(--md-sys-typescale-title-large-line-height);
     text-transform: capitalize;
+}
+.topbar-search {
+    flex-grow: 1;
+    min-height: 100%;
+    background-color: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+    font-family: var(--md-sys-typescale-body-large-font-family-name);
+    font-weight: var(--md-sys-typescale-body-large-font-weight);
+    font-size: var(--md-sys-typescale-body-large-font-size);
+    letter-spacing: var(--md-sys-typescale-body-large-letter-spacing);
+    line-height: var(--md-sys-typescale-body-large-line-height);
+    border: 0;
+}
+.topbar-search:focus {
+    border: 0;
+    outline: none;
+}
+.topbar-search::placeholder {
+    color: var(--md-sys-color-on-surface-variant);
 }
 </style>
 
