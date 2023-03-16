@@ -32,6 +32,7 @@ import { ref, computed, watch } from 'vue'
 import { ModelSelect } from 'vue-search-select'
 import { useSettingsStore } from '@/stores/settings'
 import Header from '../header.vue'
+import axios from 'axios'
 const settingsStore = useSettingsStore()
 const preferredMapProvider = ref(settingsStore.preferredMapProvider)
 const currentSource = ref(settingsStore.source)
@@ -55,20 +56,16 @@ const ttids = computed(() => {
         })
     }
 })
-fetch('/groups')
-    .then((res) => res.json())
-    .then((ttidDt) => (allTimeTableIDs.value = ttidDt))
-fetch('/sources')
-    .then((res) => res.json())
-    .then((sourceRemote) =>
-        Object.entries(sourceRemote).forEach((el) => {
-            const [value, text] = el
-            sources.value.push({
-                text,
-                value
-            })
+axios.get('/groups').then((res) => (allTimeTableIDs.value = res.data))
+axios.get('/sources').then((res) =>
+    Object.entries(res.data).forEach((el) => {
+        const [value, text] = el
+        sources.value.push({
+            text,
+            value
         })
-    )
+    })
+)
 
 Array(
     [currentSource, 'source'],

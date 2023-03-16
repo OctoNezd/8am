@@ -11,6 +11,7 @@ from classes import TimetableSource
 import dec_reader
 import debug_source
 from urllib.parse import urlparse
+from fastapi.middleware.cors import CORSMiddleware
 logger = logging.getLogger("main")
 app = FastAPI()
 GROUPS = {}
@@ -25,6 +26,21 @@ SOURCES_DESC = {
     "mgutm": "МГУТУ им. К.Г. Разумовского",
     "debug": "Отладка"
 }
+origins = [
+    "http://sharaga.octonezd.me",
+    "https://sharaga.octonezd.me",
+    "http://localhost:5173",
+    "http://localhost",
+    "capacitor://localhost"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 if "REDIS" in os.environ:

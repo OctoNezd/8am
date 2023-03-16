@@ -53,10 +53,11 @@ import event from '../tt/lesson.vue'
 import { useRoute } from 'vue-router'
 import ical from 'ical.js'
 import { useSettingsStore } from '../../stores/settings'
-import { ref, nextTick, computed, toRaw } from 'vue'
+import { ref, nextTick, computed } from 'vue'
 import 'dayjs/locale/ru'
 import dayjs from 'dayjs'
 import Header from '../header.vue'
+import axios from 'axios'
 
 const visibleMonth = ref('')
 dayjs.locale('ru')
@@ -142,13 +143,11 @@ function scrollToToday(smooth) {
 }
 window.scrollToToday = scrollToToday
 let icsData = ''
-fetch(ics_path)
-    .then((res) => res.text())
-    .then((icsRaw) => {
-        icsData = icsRaw
-        updateTt('')
-        nextTick().then(scrollToToday)
-    })
+axios.get(ics_path, { responseType: 'text' }).then((res) => {
+    icsData = res.data
+    updateTt('')
+    nextTick().then(scrollToToday)
+})
 function updateTt(search) {
     const jcaldata = ical.parse(icsData)
     for (const jcal of jcaldata[2]) {

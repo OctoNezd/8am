@@ -53,16 +53,6 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url))
         }
     },
-    server: {
-        proxy: {
-            '/stats': devapi,
-            '/group': devapi,
-            '/groups': devapi,
-            '/teacher': devapi,
-            '/teachers': devapi,
-            '/sources': devapi
-        }
-    },
     define: {
         __APP_VER__: JSON.stringify(
             gitDescribeSync(__dirname, { dirtyMark: '' }).toString().replace('-dirty', '')

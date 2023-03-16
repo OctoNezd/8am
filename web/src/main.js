@@ -13,12 +13,13 @@ import * as VueRouter from 'vue-router'
 
 import './assets/main.css'
 import 'vue-search-select/dist/VueSearchSelect.css'
-import { useSettingsStore } from './stores/settings'
+import axios from 'axios'
+console.log(import.meta.env)
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE
+console.log('baseURL:', axios.defaults.baseURL)
 
 const app = createApp(App)
 app.use(createPinia())
-
-const settingsStore = useSettingsStore()
 
 const routes = [
     { path: '/', component: Landing },
