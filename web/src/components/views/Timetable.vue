@@ -88,10 +88,7 @@ const calItemsFiltered = computed(() => {
                 }
             }
             if (filtered_day.length > 0) {
-                console.log('sorting')
                 filtered_month[day] = filtered_day.sort((a, b) => {
-                    console.log(a)
-                    console.log('compare:', dayjs(a.isoStart) > dayjs(b.isoStart))
                     return dayjs(a.isoStart) > dayjs(b.isoStart)
                 })
                 console.log(filtered_month[day])
