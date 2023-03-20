@@ -80,7 +80,7 @@ const calItemsFiltered = computed(() => {
         for (const [day, lessons] of Object.entries(days)) {
             const filtered_day = []
             if (lessons === 'empty') {
-                continue
+                filtered_month[day] = 'empty'
             }
             for (const lesson of lessons) {
                 if (lesson.lesson.toLowerCase().includes(sfilter.value.toLowerCase())) {
