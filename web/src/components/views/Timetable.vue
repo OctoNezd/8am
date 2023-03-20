@@ -88,9 +88,9 @@ const calItemsFiltered = computed(() => {
                 }
             }
             if (filtered_day.length > 0) {
-                filtered_month[day] = filtered_day.sort((a, b) => {
-                    return dayjs(a.isoStart) > dayjs(b.isoStart)
-                })
+                filtered_month[day] = filtered_day.sort(
+                    (a, b) => dayjs(a.isoStart) > dayjs(b.isoStart)
+                )
                 console.log(filtered_month[day])
             }
         }
