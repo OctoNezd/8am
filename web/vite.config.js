@@ -57,6 +57,15 @@ export default defineConfig({
         __APP_VER__: JSON.stringify(
             gitDescribeSync(__dirname, { dirtyMark: '' }).toString().replace('-dirty', '')
         )
+    },
+    build: {
+        rollupOptions: {
+            output: {
+                entryFileNames: `assets/[name].js`,
+                chunkFileNames: `assets/[name].js`,
+                assetFileNames: `assets/[name].[ext]`
+            }
+        }
     }
 })
 
