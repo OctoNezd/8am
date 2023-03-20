@@ -72,9 +72,9 @@ const ttbox = ref(false)
 const sfilter = ref('')
 const calItemsFiltered = computed(() => {
     let new_citems = {}
-    if (sfilter.value === '') {
-        return calItems.value
-    }
+    // if (sfilter.value === '') {
+    //     return calItems.value
+    // }
     for (const [month, days] of Object.entries(calItems.value)) {
         const filtered_month = {}
         for (const [day, lessons] of Object.entries(days)) {
@@ -88,7 +88,13 @@ const calItemsFiltered = computed(() => {
                 }
             }
             if (filtered_day.length > 0) {
-                filtered_month[day] = filtered_day
+                console.log('sorting')
+                filtered_month[day] = filtered_day.sort((a, b) => {
+                    console.log(a)
+                    console.log('compare:', dayjs(a.isoStart) > dayjs(b.isoStart))
+                    return dayjs(a.isoStart) > dayjs(b.isoStart)
+                })
+                console.log(filtered_month[day])
             }
         }
         if (Object.keys(filtered_month).length > 0) {

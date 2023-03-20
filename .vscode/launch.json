@@ -27,7 +27,14 @@
             "type": "python",
             "request": "launch",
             "module": "uvicorn",
-            "args": ["webserver:app", "--reload", "--host", "0.0.0.0", "--reload-exclude", "web"],
+            "args": [
+                "webserver:app",
+                "--reload",
+                "--host",
+                "0.0.0.0",
+                "--reload-exclude",
+                "web"
+            ],
             "jinja": true,
             "justMyCode": true
         }
