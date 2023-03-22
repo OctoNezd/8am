@@ -2,7 +2,7 @@ import json
 from datetime import datetime, timedelta
 import aiohttp
 from ics import Calendar, Event
-from ics.parse import ContentLine
+from ics.grammar.parse import ContentLine
 from collections import OrderedDict
 
 from classes import TimetableSource

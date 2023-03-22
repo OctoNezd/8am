@@ -33,7 +33,7 @@
     </span>
 </template>
 <script setup>
-import { ref, watch, defineEmits, nextTick } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import Sidebar from './sidebar.vue'
 const emit = defineEmits(['searchQueryChanged', 'searchClosed'])
 const props = defineProps({ title: String, searchable: Boolean, searchPlaceholder: String })
@@ -104,4 +104,3 @@ watch(searchActive, (val) => {
     color: var(--md-sys-color-on-surface-variant);
 }
 </style>
-

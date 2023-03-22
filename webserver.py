@@ -1,5 +1,5 @@
 from ics import Calendar, Event
-from ics.parse import ContentLine
+from ics.grammar.parse import ContentLine
 import os
 import aiohttp
 from fastapi import FastAPI, HTTPException, Response, Request

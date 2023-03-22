@@ -116,9 +116,12 @@ if (startDJ.isSame(dayjs(), 'day') && dayjs().isBefore(endDJ)) {
     align-items: center;
     gap: 10px;
     text-align: left;
-    padding-top: 5px;
+    padding-top: 500px;
     padding-bottom: 5px;
 }
+/* .event:not(:last-child) {
+    border-top: none;
+} */
 .timeSpans,
 .endIn {
     text-align: center;
@@ -164,4 +167,3 @@ if (startDJ.isSame(dayjs(), 'day') && dayjs().isBefore(endDJ)) {
     margin: 3px;
 }
 </style>
-

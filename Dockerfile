@@ -1,4 +1,4 @@
-FROM python:3.10-bullseye AS requirements
+FROM python:3.11-bullseye AS requirements
 WORKDIR /build/
 RUN pip install poetry==1.1.13
 COPY poetry.lock pyproject.toml /build/
@@ -13,7 +13,7 @@ COPY ./.git ./.git
 COPY ./web/ ./
 RUN npm run build
 
-FROM python:3.10-bullseye AS app
+FROM python:3.11-bullseye AS app
 WORKDIR /app
 # Project initialization:
 COPY --from=requirements /build/requirements.txt /app/

@@ -27,8 +27,9 @@
                 :id="dayid"
             >
                 <div v-if="lessons === 'empty'" class="no-lessons">Нет пар</div>
-                <div v-else v-for="[idx, lesson] of lessons.entries()">
+                <div v-else>
                     <event
+                        v-for="lesson of lessons"
                         :start="lesson.start"
                         :end="lesson.end"
                         :lesson="lesson.lesson"
@@ -41,7 +42,6 @@
                         :isoEnd="lesson.isoEnd"
                         :key="lesson.eventStart"
                     />
-                    <hr v-if="idx !== lessons.length - 1" />
                 </div>
             </dayStart>
         </div>
@@ -86,11 +86,12 @@ const calItemsFiltered = computed(() => {
             for (const lesson of lessons) {
                 if (lesson.lesson.toLowerCase().includes(sfilter.value.toLowerCase())) {
                     filtered_day.push(lesson)
+                    console.log(lesson.isoStart)
                 }
             }
             if (filtered_day.length > 0) {
                 filtered_month[day] = filtered_day.sort(
-                    (a, b) => dayjs(a.isoStart) > dayjs(b.isoStart)
+                    (a, b) => dayjs(a.isoStart).unix() > dayjs(b.isoStart).unix()
                 )
                 console.log(filtered_month[day])
             }
@@ -196,9 +197,6 @@ function updateTt(search) {
         console.log('created empty today', calItems.value[thismonth])
     }
 }
-function updateSearch(search) {
-    console.log(search)
-}
 </script>
 
 <style>
@@ -215,5 +213,62 @@ function updateSearch(search) {
     font-size: 24px;
     padding: 24px;
 }
-</style>
+.event {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-top: 1px solid var(--md-sys-color-outline);
+}
+.event:first-child {
+    border-top: none;
+}
+.timeSpans,
+.endIn {
+    text-align: center;
+    width: 100px;
+    min-width: 100px;
+    min-height: 50px;
+    padding: 5px;
+    border-radius: 8px;
+}
+.active .timeSpans {
+    display: none;
+}
+.active .endIn {
+    display: flex;
+}
 
+.endIn {
+    flex-direction: column;
+    background-color: var(--md-sys-color-tertiary);
+    color: var(--md-sys-color-on-tertiary);
+    justify-content: center;
+}
+
+.event.active .timeSpans {
+    background-color: var(--md-sys-color-secondary);
+    color: var(--md-sys-color-on-secondary);
+}
+.event.active .timeSpans hr {
+    background-color: var(--md-sys-color-on-secondary);
+}
+.timeSpans hr {
+    border: none;
+    height: 1px;
+    background-color: var(--md-sys-color-on-background);
+}
+.lessonInfo p {
+    margin: 3px;
+}
+.lessonInfo :last-child {
+    margin-bottom: 0;
+}
+.timeSpans p {
+    margin: 3px;
+}
+</style>
