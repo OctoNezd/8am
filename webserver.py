@@ -44,7 +44,7 @@ app.add_middleware(
 
 
 if "REDIS" in os.environ:
-    import aioredis
+    import redis.asyncio as aioredis
     redis = aioredis.from_url(os.environ["REDIS"], decode_responses=True)
     DEVMODE = False
 else:
