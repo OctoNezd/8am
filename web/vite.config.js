@@ -48,9 +48,7 @@ export default defineConfig({
         }
     },
     define: {
-        __APP_VER__: JSON.stringify(
-            gitDescribeSync(__dirname, { dirtyMark: '' }).toString().replace('-dirty', '')
-        )
+        __APP_VER__: JSON.stringify(gitDescribeSync(__dirname, { dirtyMark: '' }).raw)
     },
     build: {
         rollupOptions: {

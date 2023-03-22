@@ -92,6 +92,7 @@ async function forceAppUpdate() {
     for (const worker of workers) {
         worker.unregister()
     }
+    alert('Кэши очищены. Страница будет перезагружена.')
     location.reload()
 }
 </script>
@@ -104,4 +105,3 @@ async function forceAppUpdate() {
     min-height: 100vh;
 }
 </style>
-

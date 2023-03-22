@@ -72,13 +72,10 @@ const ttbox = ref(false)
 const sfilter = ref('')
 const calItemsFiltered = computed(() => {
     let new_citems = {}
-    // if (sfilter.value === '') {
-    //     return calItems.value
-    // }
     for (const [month, days] of Object.entries(calItems.value)) {
         const filtered_month = {}
         for (const [day, lessons] of Object.entries(days)) {
-            const filtered_day = []
+            let filtered_day = []
             if (lessons === 'empty') {
                 filtered_month[day] = 'empty'
                 continue
@@ -86,14 +83,14 @@ const calItemsFiltered = computed(() => {
             for (const lesson of lessons) {
                 if (lesson.lesson.toLowerCase().includes(sfilter.value.toLowerCase())) {
                     filtered_day.push(lesson)
-                    console.log(lesson.isoStart)
                 }
             }
             if (filtered_day.length > 0) {
-                filtered_month[day] = filtered_day.sort(
-                    (a, b) => dayjs(a.isoStart).unix() > dayjs(b.isoStart).unix()
+                filtered_day = filtered_day.sort(
+                    (a, b) => dayjs(a.isoEnd).unix() - dayjs(b.isoStart).unix()
                 )
-                console.log(filtered_month[day])
+                console.log('filtered_day', filtered_day)
+                filtered_month[day] = filtered_day
             }
         }
         if (Object.keys(filtered_month).length > 0) {
