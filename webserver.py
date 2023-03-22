@@ -135,7 +135,7 @@ async def get_stats():
 @app.middleware("http")
 async def add_my_headers(request: Request, call_next):
     response = await call_next(request)
-    if ".ics" in request.url:
+    if ".ics" in str(request.url):
         response.headers["Cache-Control"] = "max-age=43200, stale-if-error=43200"
     if response.status_code in range(200, 400) and urlparse(str(request.url)).path.endswith(".js"):
         response.media_type = "text/javascript"
