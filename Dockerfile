@@ -1,6 +1,6 @@
 FROM python:3.11-bullseye AS requirements
 WORKDIR /build/
-RUN pip install poetry==1.1.13
+RUN pip install poetry==1.4.1
 COPY poetry.lock pyproject.toml /build/
 RUN poetry export -f requirements.txt --without-hashes > requirements.txt
 
