@@ -16,7 +16,8 @@ import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import SW from './swmgmt.vue'
 import Tabbar from './components/tabbar.vue'
-
+import { loadLSTheme } from './theming'
+loadLSTheme()
 const router = useRouter()
 console.log(router.currentRoute)
 const setStore = useWebAppStore()

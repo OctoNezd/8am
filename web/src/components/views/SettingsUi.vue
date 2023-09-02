@@ -36,6 +36,11 @@
                     { value: 'http://maps.yandex.ru/?q=', text: 'Yandex Maps' }
                 ]"
             />
+            <br />
+            <md-outlined-button @click="makeThemeFromImg">
+                <mdicon name="palette" :width="24" slot="icon" />
+                Загрузить изображение для темы monet
+            </md-outlined-button>
             <h4>
                 <p>Версия приложения: {{ app_version }}.</p>
 
@@ -51,6 +56,7 @@
 import { ref, computed, watch } from 'vue'
 import { ModelSelect } from 'vue-search-select'
 import { useWebAppStore } from '@/stores/settings'
+import { makeThemeFromImg } from '@/theming'
 import Header from '../header.vue'
 import axios from 'axios'
 import '@material/web/button/outlined-button.js'

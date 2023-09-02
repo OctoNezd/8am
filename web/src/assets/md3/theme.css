@@ -3,3 +3,8 @@
 @import url(typography.css);
 @import url(theme.light.css) (prefers-color-scheme: light);
 @import url(theme.dark.css) (prefers-color-scheme: dark);
+:root,
+body {
+    --md-sys-color-surface-container-light: var(--md-ref-palette-neutral-variant100);
+    --md-sys-color-surface-container-dark: var(--md-ref-palette-neutral-variant10);
+}
