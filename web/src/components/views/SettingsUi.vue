@@ -16,7 +16,7 @@
                 :href="`webcals://sharaga.octonezd.me/group/${currentSource}/${currentttid}.ics`"
             >
                 <mdicon name="calendar" :width="24" slot="icon" />
-                Добавить в календарь по WebCal (iOS, DAVx5 на Android)
+                Добавить в календарь WebCal (iOS, DAVx5)
             </md-filled-button>
             <br />
             <br />
