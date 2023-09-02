@@ -7,11 +7,11 @@ RUN poetry export -f requirements.txt --without-hashes > requirements.txt
 FROM node:18-bullseye AS webbuild
 RUN apt update && apt install git automake build-essential autoconf nasm -y
 WORKDIR /build/
-COPY ./web/package.json ./web/package-lock.json ./
-RUN npm install 
+COPY ./web/package.json ./web/yarn.lock ./
+RUN yarn install
 COPY ./.git ./.git
 COPY ./web/ ./
-RUN npm run build
+RUN yarn build
 
 FROM python:3.11-bullseye AS app
 WORKDIR /app
