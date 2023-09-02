@@ -11,6 +11,22 @@
             />
             <h3>Группа</h3>
             <ModelSelect v-model="currentttid" :options="ttids" :is-disabled="ttids.length === 0" />
+            <br />
+            <md-filled-button
+                :href="`webcals://sharaga.octonezd.me/group/${currentSource}/${currentttid}.ics`"
+            >
+                <mdicon name="calendar" :width="24" slot="icon" />
+                Добавить в календарь по WebCal (iOS, DAVx5 на Android)
+            </md-filled-button>
+            <br />
+            <br />
+
+            <md-filled-button
+                :href="`https://www.google.com/calendar/render?cid=webcal://sharaga.octonezd.me/group/${currentSource}/${currentttid}.ics`"
+            >
+                <mdicon name="google" :width="24" slot="icon" />
+                Добавить в Google Calendar
+            </md-filled-button>
             <h3>Предпочитаемые карты</h3>
             <ModelSelect
                 v-model="preferredMapProvider"
@@ -38,6 +54,7 @@ import { useWebAppStore } from '@/stores/settings'
 import Header from '../header.vue'
 import axios from 'axios'
 import '@material/web/button/outlined-button.js'
+import '@material/web/button/filled-button.js'
 
 const settingsStore = useWebAppStore()
 const preferredMapProvider = ref(settingsStore.preferredMapProvider)
