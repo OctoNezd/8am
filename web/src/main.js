@@ -5,7 +5,7 @@ import SettingsUi from './components/views/SettingsUi.vue'
 import Landing from './components/views/Landing.vue'
 import Timetable from './components/views/Timetable.vue'
 import PageNotFound from './components/views/PageNotFound.vue'
-import OtherGroup from './components/views/OtherGroup.vue'
+import OtherData from './components/views/OtherData.vue'
 
 import mdiVue from 'mdi-vue/v3'
 import * as mdijs from '@mdi/js'
@@ -25,7 +25,8 @@ app.use(createPinia())
 const routes = [
     { path: '/', component: Landing },
     { path: '/settings', component: SettingsUi },
-    { path: '/othergroup', component: OtherGroup },
+    { path: '/othergroup', component: OtherData },
+    { path: '/teachers', component: OtherData },
     { path: '/tt/:type/:id', component: Timetable },
     { path: '/:pathMatch(.*)*', component: PageNotFound }
 ]
