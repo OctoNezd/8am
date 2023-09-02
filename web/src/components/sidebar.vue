@@ -1,5 +1,5 @@
 <template>
-    <div id="sidebar" @click="shouldClose">
+    <nav id="sidebar" @click="shouldClose">
         <div id="sidebar-main" class="surface on-secondary-container">
             <p class="sidebar-headline">Ш А Р А Г А</p>
             <SidebarItem text="Моё расписание" icon="account-star" to="/" />
@@ -8,7 +8,7 @@
             <hr />
             <SidebarItem text="Настройки" icon="cog" to="/settings" />
         </div>
-    </div>
+    </nav>
 </template>
 <script setup>
 import { watch } from 'vue'
@@ -36,6 +36,9 @@ function shouldClose(e) {
     margin: 0;
     padding: 0;
     z-index: 999;
+}
+#sidebar.hidden {
+    display: none;
 }
 :root {
     --sidebar-size: 360px;

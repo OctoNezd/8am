@@ -1,0 +1,33 @@
+@media (min-width:801px) {
+    #sidebar.hidden {
+        display: block;
+    }
+    #sidebar {
+        position: static;
+        width: 360px;
+        height: 100vh;
+    }
+    #main {
+        display: flex;
+    }
+    #main > section {
+        width: calc( 100vw - 360px );
+    }
+    .dayHeader {
+        justify-content: flex-end !important;
+        flex-direction: row-reverse !important;
+        gap: 5px;
+    }
+    .topbar-lnav {
+        display: none;
+    }
+    .topbar {
+        box-shadow: none !important;
+    }
+    .topbar-headline {
+        padding-left: 16px;
+    }
+    #sidebar-main {
+        animation: none !important;
+    }
+}

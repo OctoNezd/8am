@@ -63,9 +63,11 @@ const visibleMonth = ref('')
 dayjs.locale('ru')
 const today = ref(dayjs().startOf('day'))
 const route = useRoute()
+const props = defineProps(["type", "id"])
 console.log(route.params)
 const setStore = useSettingsStore()
-const ics_path = `/${route.params.type}/${setStore.source}/${route.params.id}.ics`
+const params = {...props, ...route.params}
+const ics_path = `/${params.type}/${setStore.source}/${params.id}.ics`
 const calItems = ref({})
 const ttbox = ref(false)
 

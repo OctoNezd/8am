@@ -1,46 +1,41 @@
 <template>
-    <span>
-        <header class="topbar surface">
-            <button @click="sidebarVisible = true" class="topbar-lnav" v-if="!searchActive">
-                <mdicon name="menu" />
-            </button>
-            <button @click="searchActive = false" class="topbar-lnav" v-else>
-                <mdicon name="arrow-left" />
-            </button>
-            <p class="topbar-headline" v-if="!searchActive">{{ title }}</p>
-            <div style="flex-grow: 1" v-if="!searchActive" />
-            <input
-                type="text"
-                v-else
-                v-model="searchQuery"
-                class="topbar-search"
-                :placeholder="searchPlaceholder"
-                ref="searchBox"
-                @input="emit('searchQueryChanged', searchQuery)"
-            />
-            <slot v-if="!searchActive" />
-            <button
-                style="color: var(--md-sys-color-on-surface-variant)"
-                v-if="!searchActive && searchable"
-            >
-                <mdicon name="magnify" @click="searchActive = true"></mdicon>
-            </button>
-            <button v-else-if="searchActive">
-                <mdicon name="close" @click=";(searchQuery = ''), emit('searchQueryChanged', '')" />
-            </button>
-        </header>
-        <sidebar v-if="sidebarVisible" @close="sidebarVisible = false" />
-    </span>
+    <header class="topbar surface">
+        <button @click="emit('toggleSidebar')" class="topbar-lnav" v-if="!searchActive">
+            <mdicon name="menu" />
+        </button>
+        <button @click="searchActive = false" class="topbar-lnav" v-else>
+            <mdicon name="arrow-left" />
+        </button>
+        <p class="topbar-headline" v-if="!searchActive">{{ title }}</p>
+        <div style="flex-grow: 1" v-if="!searchActive" />
+        <input
+            type="text"
+            v-else
+            v-model="searchQuery"
+            class="topbar-search"
+            :placeholder="searchPlaceholder"
+            ref="searchBox"
+            @input="emit('searchQueryChanged', searchQuery)"
+        />
+        <slot v-if="!searchActive" />
+        <button
+            style="color: var(--md-sys-color-on-surface-variant)"
+            v-if="!searchActive && searchable"
+        >
+            <mdicon name="magnify" @click="searchActive = true"></mdicon>
+        </button>
+        <button v-else-if="searchActive">
+            <mdicon name="close" @click=";(searchQuery = ''), emit('searchQueryChanged', '')" />
+        </button>
+    </header>
 </template>
 <script setup>
 import { ref, watch, nextTick } from 'vue'
-import Sidebar from './sidebar.vue'
-const emit = defineEmits(['searchQueryChanged', 'searchClosed'])
+const emit = defineEmits(['searchQueryChanged', 'searchClosed', 'toggleSidebar'])
 const props = defineProps({ title: String, searchable: Boolean, searchPlaceholder: String })
 const searchQuery = ref('')
 const searchBox = ref(null)
 const searchActive = ref(false)
-const sidebarVisible = ref(false)
 watch(searchActive, (val) => {
     searchQuery.value = ''
     if (val) {

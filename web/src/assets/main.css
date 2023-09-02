@@ -1,6 +1,7 @@
 @import '@fontsource/roboto/500';
 @import '@fontsource/roboto';
 @import './md3/theme.css';
+@import './desktop.css';
 
 body {
     margin: 0;

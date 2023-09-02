@@ -2,7 +2,7 @@
     <div :class="{ today }" :id="id" class="day">
         <div class="dayHeader surface-variant">
             <p>{{ date }} - {{ weekday }}</p>
-            <div>
+            <div class="todayIndicator">
                 <div v-if="today">
                     <div class="circle"></div>
                 </div>

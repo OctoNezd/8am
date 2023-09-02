@@ -1,5 +1,5 @@
 <template>
-    <section style="text-align: center" id="landing" class="background">
+    <section style="text-align: center" id="landing" class="background" v-if="displayLanding">
         <div>
             <img src="@/assets/icons/main_icon.png" class="logo" />
             <h1>Добро пожаловать в Ш А Р А Г А v2.</h1>
@@ -9,20 +9,23 @@
             </h3>
         </div>
     </section>
+    <section v-else>
+        <Timetable :type="timetabletype" :id="ttid"/>
+    </section>
 </template>
 
 <script setup>
 import { storeToRefs } from 'pinia'
-import { watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { watch, ref } from 'vue'
+import Timetable from './Timetable.vue'
 import { useSettingsStore } from '@/stores/settings'
-const router = useRouter()
 const settingsStore = useSettingsStore()
 const { timetabletype, ttid } = storeToRefs(settingsStore)
+const displayLanding = ref(true)
 function checkIfLandingStillNeeded() {
     if (!['', undefined, null].includes(ttid.value)) {
-        console.log('landing is no longer needed - killing myself')
-        router.push(`/tt/${timetabletype.value}/${ttid.value}`)
+        console.log('landing is not needed')
+        displayLanding.value = false
     }
 }
 checkIfLandingStillNeeded()
