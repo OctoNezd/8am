@@ -1,6 +1,6 @@
 <template>
     <div class="body-medium background on-background-text" id="main">
-        <sidebar @toggleSidebar="sidebarVisible = !sidebarVisible" :class="{ hidden: !sidebarVisible }" @close="sidebarVisible = false" />
+        <sidebar :class="{ hidden: !sidebarVisible }" @close="sidebarVisible = false" />
         <section v-if="storeLoaded">
             <router-view></router-view>
         </section>
@@ -15,12 +15,11 @@ import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import SW from './swmgmt.vue'
 import Sidebar from './components/sidebar.vue'
-const sidebarVisible = ref(false)
 
 const router = useRouter()
 console.log(router.currentRoute)
 const setStore = useSettingsStore()
-const { storeLoaded } = storeToRefs(setStore)
+const { storeLoaded, sidebarVisible } = storeToRefs(setStore)
 
 setStore.load()
 </script>

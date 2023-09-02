@@ -1,6 +1,6 @@
 <template>
     <header class="topbar surface">
-        <button @click="emit('toggleSidebar')" class="topbar-lnav" v-if="!searchActive">
+        <button @click="sidebarVisible = true" class="topbar-lnav" v-if="!searchActive">
             <mdicon name="menu" />
         </button>
         <button @click="searchActive = false" class="topbar-lnav" v-else>
@@ -31,6 +31,9 @@
 </template>
 <script setup>
 import { ref, watch, nextTick } from 'vue'
+import { useSettingsStore } from '../stores/settings';
+import { storeToRefs } from "pinia"
+const { sidebarVisible } = storeToRefs(useSettingsStore())
 const emit = defineEmits(['searchQueryChanged', 'searchClosed', 'toggleSidebar'])
 const props = defineProps({ title: String, searchable: Boolean, searchPlaceholder: String })
 const searchQuery = ref('')
