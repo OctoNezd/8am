@@ -8,9 +8,7 @@ export const useWebAppStore = defineStore('settings', () => {
     const ttid = ref('')
     const preferredMapProvider = ref('http://maps.apple.com/?q=')
 
-
     const storeLoaded = ref(false)
-    const sidebarVisible = ref(false)
 
     async function save() {
         console.log('Settings: saving...')
@@ -42,10 +40,8 @@ export const useWebAppStore = defineStore('settings', () => {
         preferredMapProvider,
 
         storeLoaded,
-        sidebarVisible,
 
         save,
         load
     }
 })
-

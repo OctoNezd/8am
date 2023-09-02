@@ -7,6 +7,7 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    --md-navigation-bar-container-color: var(--md-sys-color-surface-container);
 }
 .uilink {
     text-decoration: none;
@@ -36,4 +37,7 @@ md-filled-button .mdi,
 md-outlined-button .mdi {
     width: 24px;
     height: 24px;
+}
+.tabbar-padding-mobile {
+    height: 80px;
 }

@@ -1,8 +1,10 @@
 <template>
     <div class="body-medium background on-background-text" id="main">
-        <sidebar :class="{ hidden: !sidebarVisible }" @close="sidebarVisible = false" />
+        <Tabbar />
+
         <section v-if="storeLoaded">
             <router-view></router-view>
+            <div class="tabbar-padding-mobile"></div>
         </section>
         <div v-else>Идёт загрузка хранилища настроек...</div>
         <SW />
@@ -12,14 +14,13 @@
 import { useWebAppStore } from './stores/settings'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
 import SW from './swmgmt.vue'
-import Sidebar from './components/sidebar.vue'
+import Tabbar from './components/tabbar.vue'
 
 const router = useRouter()
 console.log(router.currentRoute)
 const setStore = useWebAppStore()
-const { storeLoaded, sidebarVisible } = storeToRefs(setStore)
+const { storeLoaded } = storeToRefs(setStore)
 
 setStore.load()
 </script>

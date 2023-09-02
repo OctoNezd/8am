@@ -75,9 +75,9 @@ function routeSetup() {
         itemsName.value = 'групп'
     } else if (route.path === '/teachers') {
         desiredEndpoint.value = 'teacher'
-        pageTitle.value = 'Расписание учителей'
-        searchPlaceholder.value = 'Поиск по учителям'
-        itemsName.value = 'учителей'
+        pageTitle.value = 'Расписание преподов'
+        searchPlaceholder.value = 'Поиск по преподам'
+        itemsName.value = 'преподов'
     }
     axios
         .get(`/${desiredEndpoint.value}s`)

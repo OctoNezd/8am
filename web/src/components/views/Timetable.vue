@@ -63,10 +63,10 @@ const visibleMonth = ref('')
 dayjs.locale('ru')
 const today = ref(dayjs().startOf('day'))
 const route = useRoute()
-const props = defineProps(["type", "id"])
+const props = defineProps(['type', 'id'])
 console.log(route.params)
 const setStore = useWebAppStore()
-const params = {...props, ...route.params}
+const params = { ...props, ...route.params }
 const ics_path = `/${params.type}/${setStore.source}/${params.id}.ics`
 const calItems = ref({})
 const ttbox = ref(false)
@@ -103,7 +103,7 @@ const calItemsFiltered = computed(() => {
 })
 console.log(route.query)
 function visibilityChanged() {
-    let displayMonth = ""
+    let displayMonth = ''
 
     for (const event of document.querySelectorAll('.event')) {
         const rect = event.getBoundingClientRect()
@@ -114,7 +114,7 @@ function visibilityChanged() {
             rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
             rect.right <= (window.innerWidth || document.documentElement.clientWidth)
         if (isInViewport) {
-            month = event.closest('.month').getAttribute('data-monthhdr')
+            displayMonth = event.closest('.month').getAttribute('data-monthhdr')
             break
         }
     }
@@ -123,7 +123,7 @@ function visibilityChanged() {
         displayMonth = dayjs().format('MMMM YYYY')
     }
     if (route.query.headerPrefix !== undefined) {
-        displayMonth = route.query.headerPrefix + " - " + displayMonth
+        displayMonth = route.query.headerPrefix + ' - ' + displayMonth
     }
     visibleMonth.value = displayMonth
 }

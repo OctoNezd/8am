@@ -1,9 +1,6 @@
 <template>
     <header class="topbar surface">
-        <button @click="sidebarVisible = true" class="topbar-lnav" v-if="!searchActive">
-            <mdicon name="menu" />
-        </button>
-        <button @click="searchActive = false" class="topbar-lnav" v-else>
+        <button @click="searchActive = false" class="topbar-lnav" v-if="searchActive">
             <mdicon name="arrow-left" />
         </button>
         <p class="topbar-headline" v-if="!searchActive">{{ title }}</p>
@@ -33,7 +30,6 @@
 import { ref, watch, nextTick } from 'vue'
 import { useWebAppStore } from '../stores/settings'
 import { storeToRefs } from 'pinia'
-const { sidebarVisible } = storeToRefs(useWebAppStore())
 const emit = defineEmits(['searchQueryChanged', 'searchClosed', 'toggleSidebar'])
 const props = defineProps({ title: String, searchable: Boolean, searchPlaceholder: String })
 const searchQuery = ref('')
@@ -69,6 +65,8 @@ function closeSearch() {
     padding-top: env(safe-area-inset-top);
     justify-content: space-between;
     position: sticky;
+    top: 0;
+    z-index: 98;
 }
 .topbar button {
     border: 0;
@@ -106,5 +104,8 @@ function closeSearch() {
 }
 .topbar-search::placeholder {
     color: var(--md-sys-color-on-surface-variant);
+}
+.topbar p:first-child {
+    padding-left: 16px;
 }
 </style>

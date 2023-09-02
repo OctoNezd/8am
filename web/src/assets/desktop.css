@@ -1,4 +1,10 @@
-@media (min-width:801px) {
+@media (min-width: 801px) {
+    body {
+        --tabbardirection: column;
+        --md-navigation-bar-container-height: 100vh;
+        --tabbarwidth: 80px;
+        --tabbarjustify: center;
+    }
     #sidebar.hidden {
         display: block;
     }
@@ -11,7 +17,11 @@
         display: flex;
     }
     #main > section {
-        width: calc( 100vw - 360px );
+        width: calc(100vw - 80px);
+        margin-left: 80px;
+    }
+    .tabbar-padding-mobile {
+        display: none;
     }
     .dayHeader {
         justify-content: flex-end !important;
@@ -27,7 +37,14 @@
     .topbar-headline {
         padding-left: 16px;
     }
-    #sidebar-main {
-        animation: none !important;
+    #tabbar {
+        top: 0 !important;
+        left: 0;
+        width: 80px !important;
+        height: 100vh !important;
+    }
+    md-navigation-tab {
+        max-height: 56px;
+        margin-top: 12px;
     }
 }
