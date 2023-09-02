@@ -25,15 +25,15 @@
             <mdicon name="magnify" @click="searchActive = true"></mdicon>
         </button>
         <button v-else-if="searchActive">
-            <mdicon name="close" @click=";(searchQuery = ''), emit('searchQueryChanged', '')" />
+            <mdicon name="close" @click="closeSearch" />
         </button>
     </header>
 </template>
 <script setup>
 import { ref, watch, nextTick } from 'vue'
-import { useSettingsStore } from '../stores/settings';
-import { storeToRefs } from "pinia"
-const { sidebarVisible } = storeToRefs(useSettingsStore())
+import { useWebAppStore } from '../stores/settings'
+import { storeToRefs } from 'pinia'
+const { sidebarVisible } = storeToRefs(useWebAppStore())
 const emit = defineEmits(['searchQueryChanged', 'searchClosed', 'toggleSidebar'])
 const props = defineProps({ title: String, searchable: Boolean, searchPlaceholder: String })
 const searchQuery = ref('')
@@ -49,11 +49,17 @@ watch(searchActive, (val) => {
         emit('searchClosed')
     }
 })
+function closeSearch() {
+    searchActive.value = false
+    searchQuery.value = ''
+    emit('searchQueryChanged', '')
+    emit('searchClosed')
+}
 </script>
 
 <style>
 .topbar {
-    width: 100vw;
+    width: 100%;
     height: 56px;
     display: flex;
     flex-direction: row;

@@ -9,7 +9,7 @@
     </div>
 </template>
 <script setup>
-import { useSettingsStore } from './stores/settings'
+import { useWebAppStore } from './stores/settings'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
@@ -18,7 +18,7 @@ import Sidebar from './components/sidebar.vue'
 
 const router = useRouter()
 console.log(router.currentRoute)
-const setStore = useSettingsStore()
+const setStore = useWebAppStore()
 const { storeLoaded, sidebarVisible } = storeToRefs(setStore)
 
 setStore.load()
@@ -26,5 +26,9 @@ setStore.load()
 <style scoped>
 #main {
     min-height: 100vh;
+}
+#main > section {
+    max-height: 100vh;
+    overflow-y: scroll;
 }
 </style>

@@ -52,7 +52,7 @@ import dayStart from '../tt/dayStart.vue'
 import event from '../tt/lesson.vue'
 import { useRoute } from 'vue-router'
 import ical from 'ical.js'
-import { useSettingsStore } from '../../stores/settings'
+import { useWebAppStore } from '../../stores/settings'
 import { ref, nextTick, computed } from 'vue'
 import 'dayjs/locale/ru'
 import dayjs from 'dayjs'
@@ -65,7 +65,7 @@ const today = ref(dayjs().startOf('day'))
 const route = useRoute()
 const props = defineProps(["type", "id"])
 console.log(route.params)
-const setStore = useSettingsStore()
+const setStore = useWebAppStore()
 const params = {...props, ...route.params}
 const ics_path = `/${params.type}/${setStore.source}/${params.id}.ics`
 const calItems = ref({})
@@ -101,8 +101,10 @@ const calItemsFiltered = computed(() => {
     }
     return new_citems
 })
-
+console.log(route.query)
 function visibilityChanged() {
+    let displayMonth = ""
+
     for (const event of document.querySelectorAll('.event')) {
         const rect = event.getBoundingClientRect()
 
@@ -112,12 +114,20 @@ function visibilityChanged() {
             rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
             rect.right <= (window.innerWidth || document.documentElement.clientWidth)
         if (isInViewport) {
-            visibleMonth.value = event.closest('.month').getAttribute('data-monthhdr')
+            month = event.closest('.month').getAttribute('data-monthhdr')
             break
         }
     }
+    if (displayMonth.length === 0) {
+        // fallback to this month
+        displayMonth = dayjs().format('MMMM YYYY')
+    }
+    if (route.query.headerPrefix !== undefined) {
+        displayMonth = route.query.headerPrefix + " - " + displayMonth
+    }
+    visibleMonth.value = displayMonth
 }
-
+visibilityChanged()
 function scrollToToday(smooth) {
     const dayEl = document.getElementById(dayjs().startOf('day').unix().toString())
     const weekEl = document.getElementById(dayjs().startOf('week').unix().toString())

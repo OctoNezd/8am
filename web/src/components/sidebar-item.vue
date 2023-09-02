@@ -8,10 +8,10 @@
 </template>
 <script setup>
 import { useRoute } from 'vue-router'
-import { useSettingsStore } from '@/stores/settings'
-import { ref } from 'vue'
+import { useWebAppStore } from '@/stores/settings'
+import { ref, watch } from 'vue'
 const route = useRoute()
-const store = useSettingsStore()
+const store = useWebAppStore()
 const props = defineProps({
     text: String,
     icon: String,
@@ -19,14 +19,19 @@ const props = defineProps({
 })
 const active = ref(false)
 console.log(route)
-if (route.path === props.to) {
-    active.value = true
-}
-if (props.to === '/') {
-    if (route.path === `/tt/${store.timetabletype}/${store.ttid}`) {
+function updateRouteActive() {
+    active.value = false
+    if (route.path === props.to) {
         active.value = true
     }
+    if (props.to === '/') {
+        if (route.path === `/tt/${store.timetabletype}/${store.ttid}`) {
+            active.value = true
+        }
+    }
 }
+watch(route, updateRouteActive)
+updateRouteActive()
 </script>
 <style>
 .sidebar-item {

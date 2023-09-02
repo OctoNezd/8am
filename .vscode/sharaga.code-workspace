@@ -1,11 +1,13 @@
 {
-	"folders": [
-		{
-			"path": ".."
-		},
-		{
-			"path": "../web"
-		}
-	],
-	"settings": {}
+    "folders": [
+        {
+            "path": ".."
+        },
+        {
+            "path": "../web"
+        }
+    ],
+    "settings": {
+        "prettier.prettierPath": ".yarn/sdks/prettier/index.js"
+    }
 }

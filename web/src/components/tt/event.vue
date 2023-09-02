@@ -32,11 +32,11 @@
     </div>
 </template>
 <script setup>
-import { useSettingsStore } from '../../stores/settings'
+import { useWebAppStore } from '../../stores/settings'
 import { metroIcons } from '@/assets/icons/metro/moscow'
 import { ref, onUnmounted, getCurrentInstance } from 'vue'
 import dayjs from 'dayjs'
-const settings = useSettingsStore()
+const settings = useWebAppStore()
 const preferredMapProvider = settings.preferredMapProvider
 const props = defineProps([
     'start',

@@ -18,8 +18,8 @@
 import { storeToRefs } from 'pinia'
 import { watch, ref } from 'vue'
 import Timetable from './Timetable.vue'
-import { useSettingsStore } from '@/stores/settings'
-const settingsStore = useSettingsStore()
+import { useWebAppStore } from '@/stores/settings'
+const settingsStore = useWebAppStore()
 const { timetabletype, ttid } = storeToRefs(settingsStore)
 const displayLanding = ref(true)
 function checkIfLandingStillNeeded() {

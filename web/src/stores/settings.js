@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import localForage from 'localforage'
 
-export const useSettingsStore = defineStore('settings', () => {
+export const useWebAppStore = defineStore('settings', () => {
     const source = ref('')
     const timetabletype = ref('group')
     const ttid = ref('')

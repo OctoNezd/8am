@@ -30,10 +30,10 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { ModelSelect } from 'vue-search-select'
-import { useSettingsStore } from '@/stores/settings'
+import { useWebAppStore } from '@/stores/settings'
 import Header from '../header.vue'
 import axios from 'axios'
-const settingsStore = useSettingsStore()
+const settingsStore = useWebAppStore()
 const preferredMapProvider = ref(settingsStore.preferredMapProvider)
 const currentSource = ref(settingsStore.source)
 const currentttid = ref(settingsStore.ttid)
@@ -98,10 +98,8 @@ async function forceAppUpdate() {
 </script>
 <style>
 #settingsUi {
-    position: fixed;
     top: 0;
     left: 0;
-    min-width: 100vw;
     min-height: 100vh;
 }
 </style>
