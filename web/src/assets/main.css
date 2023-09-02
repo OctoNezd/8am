@@ -32,3 +32,8 @@ html {
     -webkit-text-size-adjust: none;
     text-size-adjust: none;
 }
+md-filled-button .mdi,
+md-outlined-button .mdi {
+    width: 24px;
+    height: 24px;
+}

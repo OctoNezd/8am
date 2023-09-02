@@ -43,7 +43,6 @@ import { useWebAppStore } from '@/stores/settings.js'
 import { useRoute } from 'vue-router'
 import '@material/web/list/list.js'
 import '@material/web/list/list-item.js'
-import '@material/web/divider/divider.js'
 import '@material/web/progress/circular-progress.js'
 
 import axios from 'axios'

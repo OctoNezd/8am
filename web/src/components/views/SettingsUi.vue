@@ -21,8 +21,12 @@
                 ]"
             />
             <h4>
-                Версия приложения: {{ app_version }}.
-                <a href="#" class="button" @click="forceAppUpdate">Принудительно обновить</a>
+                <p>Версия приложения: {{ app_version }}.</p>
+
+                <md-outlined-button @click="forceAppUpdate">
+                    <mdicon name="warning" :width="24" slot="icon" />
+                    Принудительно обновить
+                </md-outlined-button>
             </h4>
         </section>
     </div>
@@ -33,6 +37,8 @@ import { ModelSelect } from 'vue-search-select'
 import { useWebAppStore } from '@/stores/settings'
 import Header from '../header.vue'
 import axios from 'axios'
+import '@material/web/button/outlined-button.js'
+
 const settingsStore = useWebAppStore()
 const preferredMapProvider = ref(settingsStore.preferredMapProvider)
 const currentSource = ref(settingsStore.source)
@@ -97,9 +103,9 @@ async function forceAppUpdate() {
 }
 </script>
 <style>
-#settingsUi {
-    top: 0;
-    left: 0;
-    min-height: 100vh;
+#settingsUi > section {
+    padding-left: 16px;
+    padding-right: 16px;
+    overflow-x: hidden;
 }
 </style>
