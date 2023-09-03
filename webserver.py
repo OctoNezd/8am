@@ -29,6 +29,8 @@ origins = [
     "http://localhost:5173",
     "http://localhost",
     "capacitor://localhost",
+    "http://*.sharaga.pages.dev",
+    "https://*.sharaga.pages.dev",
 ]
 
 app.add_middleware(
