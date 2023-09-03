@@ -13,7 +13,7 @@
             <ModelSelect v-model="currentttid" :options="ttids" :is-disabled="ttids.length === 0" />
             <br />
             <md-filled-button
-                :href="`webcals://sharaga.octonezd.me/group/${currentSource}/${currentttid}.ics`"
+                :href="`webcal://sharaga.octonezd.me/group/${currentSource}/${currentttid}.ics`"
             >
                 <mdicon name="calendar" :width="24" slot="icon" />
                 Добавить в календарь WebCal (iOS, DAVx5)
