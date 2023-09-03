@@ -13,7 +13,7 @@
             <ModelSelect v-model="currentttid" :options="ttids" :is-disabled="ttids.length === 0" />
             <br />
             <md-filled-button
-                :href="`webcal://sharaga.octonezd.me/group/${currentSource}/${currentttid}.ics`"
+                :href="`webcal://${apiEndpoint}/group/${currentSource}/${currentttid}.ics`"
             >
                 <mdicon name="calendar" :width="24" slot="icon" />
                 Добавить в календарь WebCal (iOS, DAVx5)
@@ -62,6 +62,7 @@ import axios from 'axios'
 import '@material/web/button/outlined-button.js'
 import '@material/web/button/filled-button.js'
 
+const apiEndpoint = ref(location.host)
 const settingsStore = useWebAppStore()
 const preferredMapProvider = ref(settingsStore.preferredMapProvider)
 const currentSource = ref(settingsStore.source)
