@@ -8,6 +8,7 @@
         </section>
         <div v-else>Идёт загрузка хранилища настроек...</div>
         <SW />
+        <Custom />
     </div>
 </template>
 <script setup>
@@ -17,6 +18,7 @@ import { useRouter } from 'vue-router'
 import SW from './swmgmt.vue'
 import Tabbar from './components/tabbar.vue'
 import { loadLSTheme } from './theming'
+import Custom from './Custom.vue'
 loadLSTheme()
 const router = useRouter()
 console.log(router.currentRoute)
