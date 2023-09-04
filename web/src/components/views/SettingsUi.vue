@@ -43,6 +43,7 @@
             </md-outlined-button>
             <h4>
                 <p>Версия приложения: {{ app_version }}.</p>
+                <p v-if="vercelUrl !== undefined">Ссылка Vercel: {{  vercelUrl }}</p>
 
                 <md-outlined-button @click="forceAppUpdate">
                     <mdicon name="warning" :width="24" slot="icon" />
@@ -62,6 +63,7 @@ import axios from 'axios'
 import '@material/web/button/outlined-button.js'
 import '@material/web/button/filled-button.js'
 
+const vercelUrl = ref(import.meta.env.VITE_VERCEL_URL)
 const apiEndpoint = ref(location.host)
 const settingsStore = useWebAppStore()
 const preferredMapProvider = ref(settingsStore.preferredMapProvider)

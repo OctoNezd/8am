@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from ics import Calendar, Event
 
-from classes import TimetableSource
+from . import classes
 
 
 def datetime_range(start, end, delta):
@@ -11,7 +11,7 @@ def datetime_range(start, end, delta):
         current += delta
 
 
-class DebugSource(TimetableSource):
+class DebugSource(classes.TimetableSource):
 
     async def get_groups(self):
         return {"1h": 0}

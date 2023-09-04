@@ -1,0 +1,6 @@
+# WARNING WARNING WARNING: DO NOT USE THIS - THIS IS FOR VERCEL.
+# UPDATE MANUALLY.
+aiohttp==3.8.5 ; python_version >= "3.9" and python_version < "4.0"
+fastapi==0.95.2 ; python_version >= "3.9" and python_version < "4.0"
+ics==0.7.2 ; python_version >= "3.9" and python_version < "4.0"
+redis==4.6.0 ; python_version >= "3.9" and python_version < "4.0"

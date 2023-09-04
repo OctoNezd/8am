@@ -1,0 +1,1 @@
+from sharaga_ics import app

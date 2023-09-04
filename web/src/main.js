@@ -15,8 +15,13 @@ import * as VueRouter from 'vue-router'
 import './assets/main.css'
 import 'vue-search-select/dist/VueSearchSelect.css'
 import axios from 'axios'
+import { inject } from '@vercel/analytics';
+ 
+inject();
 console.log(import.meta.env)
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE
+if (import.meta.env.VITE_VERCEL_URL === undefined) {
+    axios.defaults.baseURL = import.meta.env.VITE_API_BASE
+}
 console.log('baseURL:', axios.defaults.baseURL)
 
 const app = createApp(App)

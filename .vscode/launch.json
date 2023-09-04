@@ -28,7 +28,7 @@
             "request": "launch",
             "module": "uvicorn",
             "args": [
-                "webserver:app",
+                "sharaga_ics:app",
                 "--reload",
                 "--host",
                 "0.0.0.0",

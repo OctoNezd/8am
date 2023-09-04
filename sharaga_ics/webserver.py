@@ -4,12 +4,9 @@ import os
 import aiohttp
 from fastapi import FastAPI, HTTPException, Response, Request
 from fastapi.responses import RedirectResponse
-from fastapi.staticfiles import StaticFiles
 from datetime import datetime, timedelta
 import logging
-from classes import TimetableSource
-import dec_reader
-import debug_source
+from . import dec_reader, debug_source, classes
 from urllib.parse import urlparse
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -43,11 +40,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-if "REDIS" in os.environ:
+redis_url = os.environ.get("REDIS_URL", os.environ.get("REDIS", None))
+if redis_url is not None:
     import redis.asyncio as aioredis
 
-    redis = aioredis.from_url(os.environ["REDIS"], decode_responses=True)
+    redis = aioredis.from_url(redis_url, decode_responses=True)
     DEVMODE = False
 else:
     from fakeredis import aioredis
@@ -101,7 +98,7 @@ async def get_ics(ics_type: str, source_name: str, gid: int):
         return Response(INVALID_GROUP, media_type="text/calendar")
     if source_name not in SOURCES:
         return Response(INVALID_GROUP, media_type="text/calendar")
-    source: TimetableSource = SOURCES[source_name]
+    source: classes.TimetableSource = SOURCES[source_name]
     if str(gid) not in GROUP_IDS[source_name]:
         return Response(INVALID_GROUP, media_type="text/calendar")
     group_cache_id = f"group:{source_name}/{gid}"
@@ -134,23 +131,22 @@ async def get_ics(ics_type: str, source_name: str, gid: int):
 
 
 @app.get("/groups")
-def get_groups():
+async def get_groups():
+    if len(GROUPS) == 0:
+        await populate_stores()
     return GROUPS
 
 
 @app.get("/teachers")
-def get_teachers():
+async def get_teachers():
+    if len(TEACHERS) == 0:
+        await populate_stores()
     return TEACHERS
 
 
 @app.get("/sources")
 def get_sources():
     return SOURCES_DESC
-
-
-@app.get("/stats")
-async def get_stats():
-    return {"system": {"parser_ver": dec_reader.__version__}}
 
 
 @app.middleware("http")
@@ -166,17 +162,8 @@ async def add_my_headers(request: Request, call_next):
         logger.info("set text/javascript for %s", request.url)
     return response
 
-
-@app.on_event("startup")
-async def startup():
+async def populate_stores():
     global GROUPS, TEACHERS
-    console_handler = logging.StreamHandler()
-    console_formatter = logging.Formatter(
-        "[%(asctime)s] %(levelname)-5.5s: %(message)s", "%Y-%m-%d %H:%M:%S"
-    )
-    console_handler.setFormatter(console_formatter)
-    logger.addHandler(console_handler)
-    logger.setLevel(logging.DEBUG)
     GROUPS = {}
     TEACHERS = {}
     for source_name, source in SOURCES.items():
@@ -190,13 +177,17 @@ async def startup():
         for teacher in TEACHERS[source_name].values():
             GROUP_IDS[source_name].append(str(teacher))
         logger.info("%s: %s groups", source_name, len(GROUPS[source_name]))
+
+@app.on_event("startup")
+async def startup():
+    console_handler = logging.StreamHandler()
+    console_formatter = logging.Formatter(
+        "[%(asctime)s] %(levelname)-5.5s: %(message)s", "%Y-%m-%d %H:%M:%S"
+    )
+    console_handler.setFormatter(console_formatter)
+    logger.addHandler(console_handler)
+    logger.setLevel(logging.DEBUG)
+    await populate_stores()
     logger.info("Downloading MSTeams URLs...")
     await dec_reader.get_teams_urls()
     logger.info("Started.")
-
-
-app.mount("/static", StaticFiles(directory="static", html=True), name="static")
-if os.path.exists("web/dist"):
-    app.mount("/", StaticFiles(directory="web/dist", html=True), name="web")
-else:
-    logger.error("Web dist is not available. Please check your configuration.")

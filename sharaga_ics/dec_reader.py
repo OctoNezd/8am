@@ -5,7 +5,7 @@ from ics import Calendar, Event
 from ics.grammar.parse import ContentLine
 from collections import OrderedDict
 
-from classes import TimetableSource
+from . import classes
 
 
 LOCATIONS = """
@@ -94,7 +94,7 @@ async def get_teams_urls():
         TEAMS_URLS = {}
 
 
-class MgutmParser(TimetableSource):
+class MgutmParser(classes.TimetableSource):
     def generate_ical(self, tt):
         print("downloaded timetable")
         cal = Calendar()
