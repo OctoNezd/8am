@@ -3,6 +3,9 @@ from ics.grammar.parse import ContentLine
 import os
 import aiohttp
 from fastapi import FastAPI, HTTPException, Response, Request
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
+from traceback import print_exc
 from fastapi.responses import RedirectResponse
 from datetime import datetime, timedelta
 import logging
@@ -44,6 +47,8 @@ redis_url = os.environ.get("REDIS_URL", os.environ.get("REDIS", None))
 if redis_url is not None:
     import redis.asyncio as aioredis
 
+    if "vercel-storage" in redis_url:
+        redis_url = redis_url.replace("redis://", "rediss://")
     redis = aioredis.from_url(redis_url, decode_responses=True)
     DEVMODE = False
 else:
@@ -89,6 +94,16 @@ def generate_invalid_group_ical():
 INVALID_GROUP = generate_invalid_group_ical()
 
 
+@app.exception_handler(500)
+async def internal_exception_handler(request: Request, exc: Exception):
+    logger.error("Error!", exc_info=True)
+    print_exc()
+    return JSONResponse(
+        status_code=500,
+        content=jsonable_encoder({"code": 500, "msg": "Internal Server Error"}),
+    )
+
+
 @app.get(
     "/{ics_type}/{source_name}/{gid}.ics",
     response_class=Response(media_type="text/calendar"),
@@ -99,8 +114,6 @@ async def get_ics(ics_type: str, source_name: str, gid: int):
     if source_name not in SOURCES:
         return Response(INVALID_GROUP, media_type="text/calendar")
     source: classes.TimetableSource = SOURCES[source_name]
-    if str(gid) not in GROUP_IDS[source_name]:
-        return Response(INVALID_GROUP, media_type="text/calendar")
     group_cache_id = f"group:{source_name}/{gid}"
     cached = await redis.hgetall(group_cache_id)
     if (
@@ -162,6 +175,7 @@ async def add_my_headers(request: Request, call_next):
         logger.info("set text/javascript for %s", request.url)
     return response
 
+
 async def populate_stores():
     global GROUPS, TEACHERS
     GROUPS = {}
@@ -177,6 +191,7 @@ async def populate_stores():
         for teacher in TEACHERS[source_name].values():
             GROUP_IDS[source_name].append(str(teacher))
         logger.info("%s: %s groups", source_name, len(GROUPS[source_name]))
+
 
 @app.on_event("startup")
 async def startup():
