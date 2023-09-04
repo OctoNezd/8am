@@ -33,9 +33,8 @@ if (offlineReady) {
     padding: 12px;
     border: 1px solid #8885;
     border-radius: 4px;
-    z-index: 1;
+    z-index: 1000;
     text-align: left;
-    box-shadow: 3px 4px 5px 0 #8885;
     background-color: inherit;
 }
 .pwa-toast .message {
@@ -49,4 +48,3 @@ if (offlineReady) {
     padding: 3px 10px;
 }
 </style>
-
