@@ -17,6 +17,10 @@
             "dest": "api/asgi"
         },
         {
+            "src": "/sources",
+            "dest": "api/asgi"
+        },
+        {
             "src": "/.*\\.ics",
             "dest": "api/asgi"
         },
