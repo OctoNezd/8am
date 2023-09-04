@@ -43,20 +43,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-redis_url = os.environ.get("REDIS_URL", os.environ.get("REDIS", None))
-if redis_url is not None:
-    import redis.asyncio as aioredis
 
-    if "vercel-storage" in redis_url:
-        redis_url = redis_url.replace("redis://", "rediss://")
-    redis = aioredis.from_url(redis_url, decode_responses=True)
-    DEVMODE = False
-else:
-    from fakeredis import aioredis
+def get_redis():
+    redis_url = os.environ.get("REDIS_URL", os.environ.get("REDIS", None))
+    if redis_url is not None:
+        import redis.asyncio as aioredis
 
-    DEVMODE = True
-    logger.critical("ERROR: Redis is not available, using fakeredis")
-    redis = aioredis.FakeRedis(decode_responses=True)
+        if "vercel-storage" in redis_url:
+            redis_url = redis_url.replace("redis://", "rediss://")
+        redis = aioredis.from_url(redis_url, decode_responses=True)
+    else:
+        from fakeredis import aioredis
+
+        logger.critical("ERROR: Redis is not available, using fakeredis")
+        redis = aioredis.FakeRedis(decode_responses=True)
+    return redis
 
 
 @app.get("/group/{gid}.ics", response_class=Response(media_type="text/calendar"))
@@ -115,6 +116,7 @@ async def get_ics(ics_type: str, source_name: str, gid: int):
         return Response(INVALID_GROUP, media_type="text/calendar")
     source: classes.TimetableSource = SOURCES[source_name]
     group_cache_id = f"group:{source_name}/{gid}"
+    redis = get_redis()
     cached = await redis.hgetall(group_cache_id)
     if (
         cached == {}
