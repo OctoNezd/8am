@@ -27,6 +27,10 @@
         {
             "src": "/docs",
             "dest": "api/asgi"
+        },
+        {
+            "src": "/openapi.json",
+            "dest": "api/asgi"
         }
     ]
 }
