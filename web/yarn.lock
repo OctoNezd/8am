@@ -2366,6 +2366,86 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry-internal/tracing@npm:7.67.0":
+  version: 7.67.0
+  resolution: "@sentry-internal/tracing@npm:7.67.0"
+  dependencies:
+    "@sentry/core": 7.67.0
+    "@sentry/types": 7.67.0
+    "@sentry/utils": 7.67.0
+    tslib: ^2.4.1 || ^1.9.3
+  checksum: 58dd1f502de6a4016610234f85cd04fae4eac66033abbcdc06bf5df39c2c50beb361ec156595b545721ec3e084ab068dea04c6b3c00a8e85401db8cd6f978a28
+  languageName: node
+  linkType: hard
+
+"@sentry/browser@npm:7.67.0":
+  version: 7.67.0
+  resolution: "@sentry/browser@npm:7.67.0"
+  dependencies:
+    "@sentry-internal/tracing": 7.67.0
+    "@sentry/core": 7.67.0
+    "@sentry/replay": 7.67.0
+    "@sentry/types": 7.67.0
+    "@sentry/utils": 7.67.0
+    tslib: ^2.4.1 || ^1.9.3
+  checksum: 023654efd30858bf1dfe5d99e075d4ae22bfc2d68551de4f228a7c32a85bc4bdc634690a729baf8e8ead641eaad0093c826515543beb9774a6478695ce2ee534
+  languageName: node
+  linkType: hard
+
+"@sentry/core@npm:7.67.0":
+  version: 7.67.0
+  resolution: "@sentry/core@npm:7.67.0"
+  dependencies:
+    "@sentry/types": 7.67.0
+    "@sentry/utils": 7.67.0
+    tslib: ^2.4.1 || ^1.9.3
+  checksum: c541b1dc0396c88d6b5b866d7ac64355e0a848209958c11dd11246b0c7c2d056823343522278bd5fe6c90adc2da7e55a75350895b6a2f413ef58a5b6df4a6e72
+  languageName: node
+  linkType: hard
+
+"@sentry/replay@npm:7.67.0":
+  version: 7.67.0
+  resolution: "@sentry/replay@npm:7.67.0"
+  dependencies:
+    "@sentry/core": 7.67.0
+    "@sentry/types": 7.67.0
+    "@sentry/utils": 7.67.0
+  checksum: f0d311fffd678196c88924a7d7a49358d30af65c41130eed2458c71ffd65f03f80cd3481e5a812897d13cb2ad1a785b9baa0d3a741af48385a2b7d0620d9c07a
+  languageName: node
+  linkType: hard
+
+"@sentry/types@npm:7.67.0":
+  version: 7.67.0
+  resolution: "@sentry/types@npm:7.67.0"
+  checksum: 8c58a939a84b497408bbcbb918f1578fc8484256e40260e1af31446af218163b34e125fb0f0f7d8f678be38f8b462b589cc95c3fd890a141bbb20ef420d4fef1
+  languageName: node
+  linkType: hard
+
+"@sentry/utils@npm:7.67.0":
+  version: 7.67.0
+  resolution: "@sentry/utils@npm:7.67.0"
+  dependencies:
+    "@sentry/types": 7.67.0
+    tslib: ^2.4.1 || ^1.9.3
+  checksum: 8f9d2fb823480789e62cb8fba624964bac9020b62be0f304f110427cd04409a283a887fe3c0e3da3ef0c38aaab4b3ae9859b6ae143c529e484359dff1877d219
+  languageName: node
+  linkType: hard
+
+"@sentry/vue@npm:^7.67.0":
+  version: 7.67.0
+  resolution: "@sentry/vue@npm:7.67.0"
+  dependencies:
+    "@sentry/browser": 7.67.0
+    "@sentry/core": 7.67.0
+    "@sentry/types": 7.67.0
+    "@sentry/utils": 7.67.0
+    tslib: ^2.4.1 || ^1.9.3
+  peerDependencies:
+    vue: 2.x || 3.x
+  checksum: 62ced9b6ec5a9fb73d157d61bdd3b293296876932b3e35cfb314972df178d1b24d8469e884c3010ed4ec3c66a8a2c65f28afa22586687a311106653e22e99088
+  languageName: node
+  linkType: hard
+
 "@surma/rollup-plugin-off-main-thread@npm:^2.2.3":
   version: 2.2.3
   resolution: "@surma/rollup-plugin-off-main-thread@npm:2.2.3"
@@ -7511,7 +7591,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.1, tslib@npm:^2.1.0, tslib@npm:^2.4.0":
+"tslib@npm:^2.0.1, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.4.1 || ^1.9.3":
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: 329ea56123005922f39642318e3d1f0f8265d1e7fcb92c633e0809521da75eeaca28d2cf96d7248229deb40e5c19adf408259f4b9640afd20d13aecc1430f3ad
@@ -7933,6 +8013,7 @@ __metadata:
     "@mdi/js": ^7.2.96
     "@radial-color-picker/vue-color-picker": ^5.0.1
     "@rushstack/eslint-patch": ^1.3.3
+    "@sentry/vue": ^7.67.0
     "@vercel/analytics": ^1.0.2
     "@vitejs/plugin-vue": ^4.3.4
     "@vue/eslint-config-prettier": 7.1.0

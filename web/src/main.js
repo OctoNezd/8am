@@ -16,7 +16,8 @@ import './assets/main.css'
 import 'vue-search-select/dist/VueSearchSelect.css'
 import axios from 'axios'
 import { inject } from '@vercel/analytics';
- 
+import * as Sentry from "@sentry/vue"; 
+
 inject();
 console.log(import.meta.env)
 if (import.meta.env.VITE_VERCEL_URL === undefined) {
@@ -44,6 +45,35 @@ const router = VueRouter.createRouter({
     history: VueRouter.createWebHashHistory(),
     routes // short for `routes: routes`
 })
+console.log("DSN:", __SENTRY_DSN__)
+if (__SENTRY_DSN__ !== undefined) {
+    console.info("Starting sentry")
+Sentry.init({
+    app,
+    dsn: __SENTRY_DSN__,
+    integrations: [
+      new Sentry.BrowserTracing({
+        routingInstrumentation: Sentry.vueRouterInstrumentation(router),
+      }),
+      new Sentry.Replay(),
+    ],
+  
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: 1.0,
+  
+    // Set `tracePropagationTargets` to control for which URLs distributed tracing should be enabled
+    tracePropagationTargets: ["localhost", /^http(s?):\/\/sharaga(-.*\.vercel\.app|\.octonezd\.me)\/(groups|sources|teachers|.*\.ics)/],
+  
+    // Capture Replay for 10% of all sessions,
+    // plus for 100% of sessions with an error
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
+  });
+} else {
+    console.warn("Sentry DSN is not set up.")
+}
 app.use(mdiVue, {
     icons: mdijs
 })

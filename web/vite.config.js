@@ -54,7 +54,8 @@ export default defineConfig({
         }
     },
     define: {
-        __APP_VER__: JSON.stringify(gitDescribeSync(__dirname, { dirtyMark: '' }).raw)
+        __APP_VER__: JSON.stringify(gitDescribeSync(__dirname, { dirtyMark: '' }).raw),
+        __SENTRY_DSN__: JSON.stringify(process.env.SENTRY_DSN)
     },
     build: {
         rollupOptions: {

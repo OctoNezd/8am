@@ -1,5 +1,5 @@
 {
-    "buildCommand": "pip install . && cd web && yarn build",
+    "buildCommand": "cd web && yarn build",
     "outputDirectory": "web/dist",
     "installCommand": "cd web && yarn",
     "functions": {

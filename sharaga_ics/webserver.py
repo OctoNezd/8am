@@ -43,6 +43,31 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+def init_sentry():
+    sentry_dsn = os.environ.get("SENTRY_DSN", False)
+    if sentry_dsn:
+        logger.info("Initializing sentry")
+        import sentry_sdk
+        sentry_sdk.init(
+            dsn=sentry_dsn,
+            # Set traces_sample_rate to 1.0 to capture 100%
+            # of transactions for performance monitoring.
+            # We recommend adjusting this value in production.
+            traces_sample_rate=1.0,
+            # Set profiles_sample_rate to 1.0 to profile 100%
+            # of sampled transactions.
+            # We recommend adjusting this value in production.
+            profiles_sample_rate=1.0,
+        )
+    else:
+        logger.error("Sentry DSN is not set.")
+    return
+
+init_sentry()
+
+@app.get("/sentry-debug")
+async def trigger_error():
+    division_by_zero = 1 / 0
 
 def get_redis():
     redis_url = os.environ.get("REDIS_URL", os.environ.get("REDIS", None))
