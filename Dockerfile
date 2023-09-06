@@ -21,7 +21,6 @@ WORKDIR /app
 COPY --from=requirements /build/requirements.txt /app/
 RUN pip install -r requirements.txt
 # Copy only requirements to cache them in docker layer
-COPY ./static/ /app/static/
 COPY --from=webbuild /build/dist /app/web/dist
 # Creating folders, and files for a project:
 COPY *.py /app/
