@@ -19,7 +19,7 @@ FROM python:3.11-bookworm AS app
 WORKDIR /app
 # Project initialization:
 COPY --from=requirements /build/requirements.txt /app/
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt gunicorn
 # Copy only requirements to cache them in docker layer
 COPY --from=webbuild /build/dist /app/web/dist
 # Creating folders, and files for a project:
