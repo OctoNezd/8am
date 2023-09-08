@@ -23,7 +23,7 @@ RUN pip install -r requirements.txt
 # Copy only requirements to cache them in docker layer
 COPY --from=webbuild /build/dist /app/web/dist
 # Creating folders, and files for a project:
-COPY *.py /app/
+COPY sharaga_ics/*.py /app/
 USER 33:33
 EXPOSE 80
 ENV REDIS=redis://redis:6379/0
