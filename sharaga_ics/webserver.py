@@ -12,6 +12,7 @@ import logging
 from . import dec_reader, debug_source, classes
 from urllib.parse import urlparse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 logger = logging.getLogger("main")
 app = FastAPI()
@@ -43,11 +44,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+if os.environ.get("ANALYTICS_API_KEY", False):
+    from api_analytics.fastapi import Analytics
+
+    app.add_middleware(Analytics, api_key=os.environ.get("ANALYTICS_API_KEY"))
+
+
 def init_sentry():
     sentry_dsn = os.environ.get("SENTRY_DSN", False)
     if sentry_dsn:
         logger.info("Initializing sentry")
         import sentry_sdk
+
         sentry_sdk.init(
             dsn=sentry_dsn,
             # Set traces_sample_rate to 1.0 to capture 100%
@@ -63,11 +71,14 @@ def init_sentry():
         logger.error("Sentry DSN is not set.")
     return
 
+
 init_sentry()
+
 
 @app.get("/sentry-debug")
 async def trigger_error():
     division_by_zero = 1 / 0
+
 
 def get_redis():
     redis_url = os.environ.get("REDIS_URL", os.environ.get("REDIS", None))
@@ -233,3 +244,9 @@ async def startup():
     logger.info("Downloading MSTeams URLs...")
     await dec_reader.get_teams_urls()
     logger.info("Started.")
+
+
+if os.path.exists("web/dist"):
+    app.mount("/", StaticFiles(directory="web/dist", html=True), name="web")
+else:
+    logger.error("Web dist is not available. Please check your configuration.")

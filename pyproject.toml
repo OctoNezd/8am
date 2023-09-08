@@ -11,6 +11,7 @@ aiohttp = "^3.8.4"
 ics = "^0.7"
 redis = "^4.5.2"
 sentry-sdk = {extras = ["fastapi"], version = "^1.30.0"}
+fastapi-analytics = "^1.1.4"
 
 [tool.poetry.dev-dependencies]
 uvicorn = "^0.21.1"
