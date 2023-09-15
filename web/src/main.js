@@ -17,6 +17,7 @@ import 'vue-search-select/dist/VueSearchSelect.css'
 import axios from 'axios'
 import { inject } from '@vercel/analytics'
 import * as Sentry from '@sentry/vue'
+import "element-internals-polyfill"
 
 console.log(import.meta.env)
 if (import.meta.env.VITE_VERCEL_URL === undefined) {
