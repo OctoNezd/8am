@@ -50,7 +50,7 @@
     "eslint-plugin-vue": "^9.17.0",
     "prettier": "2.8.8",
     "vite": "^4.4.9",
-    "vite-plugin-pwa": "^0.16.4",
+    "vite-plugin-pwa": "^0.16.5",
     "workbox-core": "^7.0.0",
     "workbox-expiration": "^7.0.0",
     "workbox-precaching": "^7.0.0",
