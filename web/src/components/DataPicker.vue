@@ -6,7 +6,7 @@
         </md-list-item>
         <section class="dataPicker background" :class="{ active: isActive }">
             <Header :title="props.pageTitle" searchable :search-placeholder="props.searchPlaceholder"
-                @search-query-changed="sfilter = $event" @search-closed="sfilter = ''" @close="$emit('close')"
+                @search-query-changed="sfilter = $event" @search-closed="sfilter = ''" @close="isActive = false"
                 :closable="true"></Header>
             <div class="gl">
                 <md-list style="
@@ -111,6 +111,7 @@ const dataItemsFiltered = computed(createDataItems)
     flex-direction: column;
     height: 90vh;
 }
+
 .listIcon {
     padding-left: 16px;
 }

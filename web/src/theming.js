@@ -1,6 +1,5 @@
 import {
     argbFromHex,
-    applyTheme,
     hexFromArgb,
     themeFromSourceColor,
     sourceColorFromImage,
