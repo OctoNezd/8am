@@ -13,7 +13,6 @@ import * as mdijs from '@mdi/js'
 import * as VueRouter from 'vue-router'
 
 import './assets/main.css'
-import 'vue-search-select/dist/VueSearchSelect.css'
 import axios from 'axios'
 import * as Sentry from '@sentry/vue'
 import "./polyfills.js"
