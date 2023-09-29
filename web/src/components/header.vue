@@ -1,8 +1,12 @@
 <template>
     <header class="topbar surface">
+        <button @click="$emit('close')" class="topbar-lnav" v-if="closable && !searchActive">
+            <mdicon slot="end" name="close" />
+        </button>
         <button @click="searchActive = false" class="topbar-lnav" v-if="searchActive">
             <mdicon name="arrow-left" />
         </button>
+
         <p class="topbar-headline" v-if="!searchActive">{{ title }}</p>
         <div style="flex-grow: 1" v-if="!searchActive" />
         <input
@@ -30,8 +34,8 @@
 import { ref, watch, nextTick } from 'vue'
 import { useWebAppStore } from '../stores/settings'
 import { storeToRefs } from 'pinia'
-const emit = defineEmits(['searchQueryChanged', 'searchClosed', 'toggleSidebar'])
-const props = defineProps({ title: String, searchable: Boolean, searchPlaceholder: String })
+const emit = defineEmits(['searchQueryChanged', 'searchClosed', 'toggleSidebar', 'close'])
+const props = defineProps({ title: String, searchable: Boolean, searchPlaceholder: String, closable: Boolean })
 const searchQuery = ref('')
 const searchBox = ref(null)
 const searchActive = ref(false)

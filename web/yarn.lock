@@ -8713,13 +8713,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-search-select@npm:^3.1.2":
-  version: 3.1.2
-  resolution: "vue-search-select@npm:3.1.2"
-  checksum: 1f2865d180f73503ddda1e38cc229f4562d87fe5644da208e73a208e010229314c58dee97291311c31a547686fde198e2d80afcf6e3348a73a6d4bd041995345
-  languageName: node
-  linkType: hard
-
 "vue@npm:^3.3.4":
   version: 3.3.4
   resolution: "vue@npm:3.3.4"
@@ -8777,7 +8770,6 @@ __metadata:
     vue-gtag: ^2.0.1
     vue-multiselect: ^2.1.7
     vue-router: ^4.2.4
-    vue-search-select: ^3.1.2
     workbox-core: ^7.0.0
     workbox-expiration: ^7.0.0
     workbox-precaching: ^7.0.0
