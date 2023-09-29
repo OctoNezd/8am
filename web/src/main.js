@@ -15,15 +15,13 @@ import * as VueRouter from 'vue-router'
 import './assets/main.css'
 import 'vue-search-select/dist/VueSearchSelect.css'
 import axios from 'axios'
-import { inject } from '@vercel/analytics'
 import * as Sentry from '@sentry/vue'
 import "./polyfills.js"
+import VueGtag from "vue-gtag";
 
 console.log(import.meta.env)
 if (import.meta.env.VITE_VERCEL_URL === undefined) {
     axios.defaults.baseURL = import.meta.env.VITE_API_BASE
-} else {
-    inject()
 }
 console.log('baseURL:', axios.defaults.baseURL)
 
@@ -79,6 +77,9 @@ if (__SENTRY_DSN__ !== undefined) {
 } else {
     console.warn('Sentry DSN is not set up.')
 }
+
+const GA_ID = 'G-LTG2WCYJWB'
+app.use(VueGtag, {config: { id: GA_ID }})
 app.use(mdiVue, {
     icons: mdijs
 })

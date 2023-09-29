@@ -41,3 +41,20 @@ md-outlined-button .mdi {
 .tabbar-padding-mobile {
     height: 80px;
 }
+/* TODO: style it properly */
+.cookie__bar {
+    background-color: var(--md-sys-color-inverse-surface);
+    color: var(--md-sys-color-inverse-on-surface);
+}
+.cookie__bar__buttons__button--accept, .cookie__bar__buttons__button--accept:hover {
+    background: var(--md-sys-color-on-tertiary);
+    color: var(--md-sys-color-tertiary);
+    font-family: var(--md-sys-typescale-label-large-font-family-name);
+    font-style: var(--md-sys-typescale-label-large-font-family-style);
+    font-weight: var(--md-sys-typescale-label-large-font-weight);
+    font-size: var(--md-sys-typescale-label-large-font-size);
+    letter-spacing: var(--md-sys-typescale-label-large-tracking);
+    line-height: var(--md-sys-typescale-label-large-height);
+    text-transform: var(--md-sys-typescale-label-large-text-transform);
+    text-decoration: var(--md-sys-typescale-label-large-text-decoration);
+}

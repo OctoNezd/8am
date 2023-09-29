@@ -3084,7 +3084,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/shared@npm:3.3.4":
+"@vue/shared@npm:3.3.4, @vue/shared@npm:^3.3.4":
   version: 3.3.4
   resolution: "@vue/shared@npm:3.3.4"
   checksum: 12fe53ff816bfa29ea53f89212067a86512c626b8d30149ff28b36705820f6150e1fb4e4e46897ad9eddb1d1cfc02d8941053939910eed69a905f7a5509baabe
@@ -7049,6 +7049,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postcss@npm:^8.4.31":
+  version: 8.4.31
+  resolution: "postcss@npm:8.4.31"
+  dependencies:
+    nanoid: ^3.3.6
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: 1d8611341b073143ad90486fcdfeab49edd243377b1f51834dc4f6d028e82ce5190e4f11bb2633276864503654fb7cab28e67abdc0fbf9d1f88cad4a0ff0beea
+  languageName: node
+  linkType: hard
+
 "prebuild-install@npm:^6.1.2":
   version: 6.1.4
   resolution: "prebuild-install@npm:6.1.4"
@@ -8206,6 +8217,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tiny-cookie@npm:^2.3.2":
+  version: 2.4.1
+  resolution: "tiny-cookie@npm:2.4.1"
+  checksum: 15f8b6af4a2ffeb04364c49c3fd77d23daffb05c05a5bb15c3d8cc15bd10f82f75b5a12d8dfe481de406277a5ccf6a07d57e8e5855e0e1fcfbbf0065780800c6
+  languageName: node
+  linkType: hard
+
 "tinycolor2@npm:^1.1.2, tinycolor2@npm:^1.4.1, tinycolor2@npm:^1.4.2":
   version: 1.6.0
   resolution: "tinycolor2@npm:1.6.0"
@@ -8624,6 +8642,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vue-cookie-accept-decline@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "vue-cookie-accept-decline@npm:6.1.0"
+  dependencies:
+    tiny-cookie: ^2.3.2
+  peerDependencies:
+    vue: ^3.2.31
+  checksum: d06bb2615d7a68c9f8e002077a441f043cebb219099d0a5041a189f025c2be0f8c48e1f83ca6e3af8758f3d77e9c605df0f5f2e63fc2b9b77abd81ac4cd411b5
+  languageName: node
+  linkType: hard
+
 "vue-demi@npm:>=0.14.5":
   version: 0.14.6
   resolution: "vue-demi@npm:0.14.6"
@@ -8654,6 +8683,15 @@ __metadata:
   peerDependencies:
     eslint: ">=6.0.0"
   checksum: 6d1476b45fcc5b456a1e5c0f33ec695cf1d392ca6113250d5e3441e6cf3b2a0ec28a9455699363641dfb7c48358f215db07856c98385a31ace9bc58196f4156e
+  languageName: node
+  linkType: hard
+
+"vue-gtag@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "vue-gtag@npm:2.0.1"
+  peerDependencies:
+    vue: ^3.0.0
+  checksum: 949260ae4fbe6db62759d4050fa80c061e39025f7a9f50a97c662cac8d7d8ebf5d60228a7f9aa75d7ea910fb977852e954099a276f432c8cd13a063c40ba4ccd
   languageName: node
   linkType: hard
 
@@ -8714,6 +8752,7 @@ __metadata:
     "@vitejs/plugin-legacy": ^4.1.1
     "@vitejs/plugin-vue": ^4.3.4
     "@vue/eslint-config-prettier": 8.0.0
+    "@vue/shared": ^3.3.4
     axios: ^1.5.0
     css-prefers-color-scheme: ^9.0.0
     dayjs: ^1.11.9
@@ -8726,6 +8765,7 @@ __metadata:
     lottie-web: ^5.12.2
     mdi-vue: ^3.0.13
     pinia: ^2.1.6
+    postcss: ^8.4.31
     prettier: 3.0.3
     swiper: ^10.2.0
     terser: ^5.19.4
@@ -8733,6 +8773,8 @@ __metadata:
     vite-plugin-favicon: ^1.0.8
     vite-plugin-pwa: ^0.16.5
     vue: ^3.3.4
+    vue-cookie-accept-decline: ^6.1.0
+    vue-gtag: ^2.0.1
     vue-multiselect: ^2.1.7
     vue-router: ^4.2.4
     vue-search-select: ^3.1.2

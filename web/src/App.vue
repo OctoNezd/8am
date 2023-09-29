@@ -9,6 +9,18 @@
         <div v-else>Идёт загрузка хранилища настроек...</div>
         <SW />
         <Custom />
+        <vue-cookie-accept-decline
+            :disableDecline="true" :showPostponeButton="false"
+            elementId="myPanel1" position="bottom" ref="myPanel1" transitionName="slideFromBottom" type="bar">
+
+            <!-- Optional -->
+            <template #message>
+                Я использую куки чтоб смотреть сколько людей пользуются Шарагой через аналитику гугла.
+            </template>
+
+            <!-- Optional -->
+            <template #acceptContent>к</template>
+        </vue-cookie-accept-decline>
     </div>
 </template>
 <script setup>
@@ -19,6 +31,8 @@ import SW from './swmgmt.vue'
 import Tabbar from './components/tabbar.vue'
 import { loadLSTheme } from './theming'
 import Custom from './Custom.vue'
+import VueCookieAcceptDecline from 'vue-cookie-accept-decline';
+import 'vue-cookie-accept-decline/dist/vue-cookie-accept-decline.css';
 loadLSTheme()
 const router = useRouter()
 console.log(router.currentRoute)
@@ -31,7 +45,8 @@ setStore.load()
 #main {
     min-height: 100vh;
 }
-#main > section {
+
+#main>section {
     max-height: 100vh;
     overflow-y: scroll;
 }

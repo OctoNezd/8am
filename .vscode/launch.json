@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch via NPM",
+            "name": "Launch webui",
             "request": "launch",
-            "runtimeArgs": ["run", "dev"],
-            "runtimeExecutable": "npm",
+            "runtimeArgs": ["dev"],
+            "runtimeExecutable": "yarn",
             "skipFiles": ["<node_internals>/**"],
             "type": "node",
             "cwd": "${workspaceFolder}/web",
