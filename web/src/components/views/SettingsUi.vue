@@ -37,6 +37,10 @@
                 @click="forceAppUpdate">
                 <mdicon name="update" slot="start" class="listIcon" />
             </md-list-item>
+            <md-list-item headline="Ввести название группы вручную"
+                supporting-text="Если открытие списка вызывает вылет браузера." @click="manuallySelectGroup">
+                <mdicon name="car-shift-pattern" slot="start" class="listIcon" />
+            </md-list-item>
         </md-list>
     </div>
 </template>
@@ -102,6 +106,17 @@ Array(
         settingsStore.save()
     })
 })
+function manuallySelectGroup() {
+    const desiredGroup = prompt("Введите ID вашей группы. Обычно это цифра в адресной строке сайта университета, например 24285")
+    const gid = ttids.value[desiredGroup]
+    console.log(ttids.value, desiredGroup)
+    if (gid !== undefined) {
+        alert(`Установлена группа ${gid}`)
+        currentttid.value = desiredGroup;
+    } else {
+        alert("Группа не найдена. Попробуйте ещё раз.")
+    }
+}
 async function forceAppUpdate() {
     const cacheKeys = await caches.keys()
     for (const key of cacheKeys) {

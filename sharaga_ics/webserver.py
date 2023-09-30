@@ -35,7 +35,8 @@ origins = [
     "https://sharaga.pages.dev",
     "http://sharaga.pages.dev",
 ]
-
+origins = origins if not os.environ.get("DEBUG", False) else ["*"]
+print("CORS", origins)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

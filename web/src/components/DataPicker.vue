@@ -4,7 +4,7 @@
             :supporting-text="!dataSourceInvertedDisplay ? dataItems[props.modelValue] : props.modelValue">
             <mdicon :name="icon" slot="start" v-if="props.icon" class="listIcon" />
         </md-list-item>
-        <section class="dataPicker background" :class="{ active: isActive }">
+        <section class="dataPicker background" v-if="isActive">
             <Header :title="props.pageTitle" searchable :search-placeholder="props.searchPlaceholder"
                 @search-query-changed="sfilter = $event" @search-closed="sfilter = ''" @close="isActive = false"
                 :closable="true"></Header>
@@ -91,10 +91,6 @@ const dataItemsFiltered = computed(createDataItems)
 }
 
 .dataPicker {
-    display: none;
-}
-
-.dataPicker.active {
     display: block !important;
     position: fixed;
     width: 100vw;

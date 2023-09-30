@@ -69,5 +69,12 @@ export default defineConfig({
                 assetFileNames: `assets/[name].[ext]`
             }
         }
+    },
+    server: {
+        proxy: {
+            '/groups': 'http://localhost:8089',
+            '/sources': 'http://localhost:8089',
+            '.*\.ics': 'http://localhost:8089',
+        }
     }
 })

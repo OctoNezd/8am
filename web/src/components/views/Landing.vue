@@ -1,19 +1,13 @@
 <template>
     <section style="text-align: center" id="landing" class="background" v-if="displayLanding">
         <div>
-            <img src="@/assets/icons/main_icon.png" class="logo" />
+            <img src="@/assets/icons/main_icon.png" height="300" class="logo" />
             <h1>Добро пожаловать в Ш А Р А Г А v2.</h1>
             <h3>
                 <p>Для начала "работы", выберите вашу шарагу и группу в настройках.</p>
                 <RouterLink to="/settings">
                     <md-filled-button>
-                        <mdicon
-                            slot="icon"
-                            viewBox="0 0 24 24"
-                            name="cog"
-                            :width="24"
-                            :height="24"
-                        />
+                        <mdicon slot="icon" viewBox="0 0 24 24" name="cog" :width="24" :height="24" />
                         Перейти в настройки
                     </md-filled-button>
                 </RouterLink>
@@ -49,8 +43,9 @@ console.log('landing opened')
 
 <style scoped>
 .logo {
-    height: 60vh;
+    height: 40vh;
 }
+
 #landing {
     position: fixed;
     top: 0;
@@ -58,7 +53,8 @@ console.log('landing opened')
     height: 100vh;
     width: 100vw;
 }
-#landing > div {
+
+#landing>div {
     margin: 0;
     position: absolute;
     top: 50%;

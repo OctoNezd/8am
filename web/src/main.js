@@ -21,8 +21,15 @@ import VueGtag from "vue-gtag";
 console.log(import.meta.env)
 if (import.meta.env.VITE_VERCEL_URL === undefined) {
     axios.defaults.baseURL = import.meta.env.VITE_API_BASE
+    const url = new URL(axios.defaults.baseURL)
+    console.log("baseurl:", url, url.host, url.hostname)
+    if (url.hostname === "127.0.0.1") {
+        url.hostname = location.hostname
+        console.log("DEV: Updating baseurl to", url)
+        axios.defaults.baseURL = url.toString()
+    }
 }
-console.log('baseURL:', axios.defaults.baseURL)
+console.log('Final baseURL:', axios.defaults.baseURL)
 
 const app = createApp(App)
 app.use(createPinia())
