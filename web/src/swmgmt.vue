@@ -8,17 +8,12 @@ const close = () => {
     offlineReady.value = false
     needRefresh.value = false
 }
-if (offlineReady) {
-    console.log('autoclose in 2sec')
-    setTimeout(close, 2000)
-}
 </script>
 
 <template>
-    <div v-if="offlineReady || needRefresh" class="pwa-toast" role="alert">
+    <div v-if="needRefresh" class="pwa-toast" role="alert">
         <div class="message">
-            <span v-if="offlineReady"> Приложение готово к работе оффлайн. </span>
-            <span v-else> Доступно обновление. Нажмите для перезапуска приложения. </span>
+            <span> Доступно обновление. Нажмите для перезапуска приложения. </span>
         </div>
         <button v-if="needRefresh" @click="updateServiceWorker()">Обновить</button>
     </div>
@@ -37,9 +32,11 @@ if (offlineReady) {
     text-align: left;
     background-color: inherit;
 }
+
 .pwa-toast .message {
     margin-bottom: 8px;
 }
+
 .pwa-toast button {
     border: 1px solid #8885;
     outline: none;
