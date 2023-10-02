@@ -2751,10 +2751,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rushstack/eslint-patch@npm:^1.3.3":
-  version: 1.3.3
-  resolution: "@rushstack/eslint-patch@npm:1.3.3"
-  checksum: fd8a19ec5842634da8e4c2c479a4d13ecbefa4f212e42c7f9c39e8706f9eeef7a50db8d6ea939884ac0ff36bb21930c9642068cf68e8309ad491c54f2fc30c01
+"@rushstack/eslint-patch@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "@rushstack/eslint-patch@npm:1.5.1"
+  checksum: e4c25322312dbaa29e835a7ab4fbac53c8731dd0da65e46646e38945e296429e7fb91c2ef3da5af5d5938d44b0cde1d5290438ebb3dcb015e02b80b5e2530d24
   languageName: node
   linkType: hard
 
@@ -8739,7 +8739,7 @@ __metadata:
     "@material/web": ^1.0.0-pre.17
     "@mdi/js": ^7.2.96
     "@radial-color-picker/vue-color-picker": ^5.0.1
-    "@rushstack/eslint-patch": ^1.3.3
+    "@rushstack/eslint-patch": ^1.5.1
     "@sentry/vue": ^7.70.0
     "@vercel/analytics": ^1.0.2
     "@vitejs/plugin-legacy": ^4.1.1
