@@ -1751,12 +1751,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@capacitor/ios@npm:^5.3.0":
-  version: 5.3.0
-  resolution: "@capacitor/ios@npm:5.3.0"
+"@capacitor/ios@npm:^5.4.2":
+  version: 5.4.2
+  resolution: "@capacitor/ios@npm:5.4.2"
   peerDependencies:
-    "@capacitor/core": ^5.3.0
-  checksum: 1a2eba83001358688208c8c50ba91ef21e16fadf481e4fdea4e5d744f1430318786107359e17f44b9c46c7d6bebd4ac5cbfcfac619132b4283367bfd50885057
+    "@capacitor/core": ^5.4.0
+  checksum: b1d1b0ae336c81f7ba663f8fbb8d72b2951022469c3568b1d19e4c4bc4919b1b1d2f96f74338b41719e3a18c5cd786638fe70b392ef1e454e4bd88318b08689a
   languageName: node
   linkType: hard
 
@@ -8733,7 +8733,7 @@ __metadata:
     "@capacitor/android": ^5.3.0
     "@capacitor/cli": ^5.3.0
     "@capacitor/core": ^5.3.0
-    "@capacitor/ios": ^5.3.0
+    "@capacitor/ios": ^5.4.2
     "@fontsource/roboto": ^5.0.8
     "@material/material-color-utilities": ^0.2.7
     "@material/web": ^1.0.0-pre.17
