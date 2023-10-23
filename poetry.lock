@@ -337,13 +337,13 @@ test = ["pytest (>=6)"]
 
 [[package]]
 name = "fakeredis"
-version = "2.18.0"
+version = "2.20.0"
 description = "Python implementation of redis API, can be used for testing purposes."
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "fakeredis-2.18.0-py3-none-any.whl", hash = "sha256:bc7a82e9caec80096659fd9a810b72d21f833574be26ff7b97955db626d60bac"},
-    {file = "fakeredis-2.18.0.tar.gz", hash = "sha256:f9c18d3dba81a470953cc042868b411e334109e065cde53a7a82beef6702a1de"},
+    {file = "fakeredis-2.20.0-py3-none-any.whl", hash = "sha256:c9baf3c7fd2ebf40db50db4c642c7c76b712b1eed25d91efcc175bba9bc40ca3"},
+    {file = "fakeredis-2.20.0.tar.gz", hash = "sha256:69987928d719d1ae1665ae8ebb16199d22a5ebae0b7d0d0d6586fc3a1a67428c"},
 ]
 
 [package.dependencies]
@@ -351,7 +351,8 @@ redis = ">=4"
 sortedcontainers = ">=2,<3"
 
 [package.extras]
-json = ["jsonpath-ng (>=1.5,<2.0)"]
+bf = ["pybloom-live (>=4.0,<5.0)"]
+json = ["jsonpath-ng (>=1.6,<2.0)"]
 lua = ["lupa (>=1.14,<3.0)"]
 
 [[package]]
@@ -1011,4 +1012,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<4.0"
-content-hash = "0fdec51d20755f9d2c4242e6f2806970e11f8a4306142e5b6ab365cdd3dae8e4"
+content-hash = "99f0bf6905983785f9305da02ec8c560be1c5425dddfcc25fbf775b254821443"
