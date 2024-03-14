@@ -11,12 +11,13 @@ const close = () => {
 </script>
 
 <template>
-    <div v-if="needRefresh" class="pwa-toast" role="alert">
+    <div></div>
+    <!-- <div v-if="needRefresh" class="pwa-toast" role="alert">
         <div class="message">
             <span> Доступно обновление. Нажмите для перезапуска приложения. </span>
         </div>
         <button v-if="needRefresh" @click="updateServiceWorker()">Обновить</button>
-    </div>
+    </div> -->
 </template>
 
 <style>

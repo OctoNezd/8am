@@ -9,7 +9,7 @@ const icsCache = new StaleWhileRevalidate({
     cacheName: 'ics-cache',
     plugins: [
         new ExpirationPlugin({
-            maxAgeSeconds: 60 * 60 * 24 * 7,
+            maxAgeSeconds: 60 * 60 * 24,
             maxEntries: 5
         })
     ]

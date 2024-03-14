@@ -157,7 +157,7 @@ async def get_ics(ics_type: str, source_name: str, gid: int):
     cached = await redis.hgetall(group_cache_id)
     if (
         cached == {}
-        or datetime.now() - datetime.fromisoformat(cached["when"]) > timedelta(days=1)
+        or datetime.now() - datetime.fromisoformat(cached["when"]) > timedelta(hours=1)
         or cached.get("ver", "0") != source.__version__
     ):
         logger.info("Timetable for %s is outdated. Updating.", gid)
@@ -176,6 +176,8 @@ async def get_ics(ics_type: str, source_name: str, gid: int):
             )
             if cached == {}:
                 raise HTTPException(503, "Шарага не отвечает")
+            else:
+                tt = cached["tt"]
     else:
         tt = cached["tt"]
         logger.info("Timetable for %s is fresh enough", gid)
