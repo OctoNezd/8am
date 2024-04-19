@@ -3016,6 +3016,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vue/devtools-api@npm:^6.5.1":
+  version: 6.6.1
+  resolution: "@vue/devtools-api@npm:6.6.1"
+  checksum: cf12b5ebcc7729725087072289410107b55bb82e0b86b8442e4e85516977110a8a3f4e1dec763be8b567a59173703b4e9c0ac1b0489bb2bb81363af7ea258a27
+  languageName: node
+  linkType: hard
+
 "@vue/eslint-config-prettier@npm:8.0.0":
   version: 8.0.0
   resolution: "@vue/eslint-config-prettier@npm:8.0.0"
@@ -8702,14 +8709,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-router@npm:^4.2.4":
-  version: 4.2.4
-  resolution: "vue-router@npm:4.2.4"
+"vue-router@npm:^4.3.2":
+  version: 4.3.2
+  resolution: "vue-router@npm:4.3.2"
   dependencies:
-    "@vue/devtools-api": ^6.5.0
+    "@vue/devtools-api": ^6.5.1
   peerDependencies:
     vue: ^3.2.0
-  checksum: 9fe1fc11b613c8e020aad5d0850ba5caa971033dfaa4fc117e4595349f2c5f211793a247c30e3c03b0f91c3512b87af929af96b8b20b6b7d4cdccc5af13e5e7f
+  checksum: c5093ddb5349b47814f1df032a64dd5ee70f34c792a2108fdc5324fcd544ac66f218be69c4b98e9762655f3e591c12ffa542c193897bbfb98e6e4a2b994e312a
   languageName: node
   linkType: hard
 
@@ -8769,7 +8776,7 @@ __metadata:
     vue-cookie-accept-decline: ^6.1.0
     vue-gtag: ^2.0.1
     vue-multiselect: ^2.1.7
-    vue-router: ^4.2.4
+    vue-router: ^4.3.2
     workbox-core: ^7.0.0
     workbox-expiration: ^7.0.0
     workbox-precaching: ^7.0.0
