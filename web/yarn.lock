@@ -8084,10 +8084,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:^10.2.0":
-  version: 10.2.0
-  resolution: "swiper@npm:10.2.0"
-  checksum: b81fe81c72b92d0c7d0ba0eb1ea96a7e29de6b67d059fc9d01a0c5285dcadd66f25d258f32c05f87bf54663cf8b09d26b38be5029c064c4822768782772cc025
+"swiper@npm:^11.1.3":
+  version: 11.1.3
+  resolution: "swiper@npm:11.1.3"
+  checksum: 88632d147d6511d2c54e4f7fb85686728dad41a740a73fc965cea22f9efbbeb714e56e0d7180b55f24c3fadea65a983804fd7aba5cd143fac1cc17cabc9e04da
   languageName: node
   linkType: hard
 
@@ -8760,7 +8760,7 @@ __metadata:
     pinia: ^2.1.6
     postcss: ^8.4.31
     prettier: 3.0.3
-    swiper: ^10.2.0
+    swiper: ^11.1.3
     terser: ^5.19.4
     vite: ^4.4.9
     vite-plugin-favicon: ^1.0.8
