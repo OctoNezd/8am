@@ -125,13 +125,12 @@ class MgutmParser(classes.TimetableSource):
                 begin=datetime.fromisoformat(lesson["датаНачала"] + "+03:00"),
                 end=datetime.fromisoformat(lesson["датаОкончания"] + "+03:00"),
             )
-            event.description = (
-                f'Препод: {lesson["преподаватель"]}'
-            )
+            event.description = f'Препод: {lesson["преподаватель"]}'
             if "-" in lesson["аудитория"]:
                 location_id, room = lesson["аудитория"].split("-")
                 event.extra.append(ContentLine("X-SHARAGA-ROOM", value=room))
                 if location_id in LOCATIONS:
+                    event.description = f"Каб. {room}, " + event.description
                     nearest_metro = NEAREST_METRO_STATIONS[location_id]
                     metro_info = (
                         f"{LINES[nearest_metro['line']][1]}{nearest_metro['station']}"
