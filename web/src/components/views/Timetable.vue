@@ -1,47 +1,22 @@
 <template>
-    <Header
-        :title="visibleMonth"
-        searchable
-        search-placeholder="Поиск пар..."
-        @search-query-changed="sfilter = $event"
-        @search-closed="sfilter = ''"
-    >
+    <Header :title="visibleMonth" searchable search-placeholder="Поиск пар..." @search-query-changed="sfilter = $event"
+        @search-closed="sfilter = ''">
         <button style="color: var(--md-sys-color-on-surface-variant)" @click="scrollToToday(true)">
             <mdicon name="calendar-today" sizePx="32"></mdicon>
         </button>
     </Header>
     <section id="tt" @scroll="visibilityChanged" ref="ttbox">
-        <div
-            :id="`${month}`"
-            class="month"
-            v-for="[month, days] of Object.entries(calItemsFiltered)"
-            :key="month"
-            :data-monthhdr="`${dayjs.unix(month).format('MMMM YYYY')}`"
-        >
-            <dayStart
-                v-for="[dayid, lessons] of Object.entries(days)"
-                :key="dayid"
-                :today="today.isSame(dayjs.unix(dayid))"
-                :weekday="dayjs.unix(dayid).format('dddd')"
-                :date="dayjs.unix(dayid).format('D MMMM YYYY')"
-                :id="dayid"
-            >
+        <div :id="`${month}`" class="month" v-for="[month, days] of Object.entries(calItemsFiltered)" :key="month"
+            :data-monthhdr="`${dayjs.unix(month).format('MMMM YYYY')}`">
+            <dayStart v-for="[dayid, lessons] of Object.entries(days)" :key="dayid"
+                :today="today.isSame(dayjs.unix(dayid))" :weekday="dayjs.unix(dayid).format('dddd')"
+                :date="dayjs.unix(dayid).format('D MMMM YYYY')" :id="dayid">
                 <div v-if="lessons === 'empty'" class="no-lessons">Нет пар</div>
                 <div v-else>
-                    <event
-                        v-for="lesson of lessons"
-                        :start="lesson.start"
-                        :end="lesson.end"
-                        :lesson="lesson.lesson"
-                        :description="lesson.description"
-                        :location="lesson.location"
-                        :room="lesson.room"
-                        :metro="lesson.metro"
-                        :line="lesson.line"
-                        :isoStart="lesson.isoStart"
-                        :isoEnd="lesson.isoEnd"
-                        :key="lesson.eventStart"
-                    />
+                    <event v-for="lesson of lessons" :start="lesson.start" :end="lesson.end" :lesson="lesson.lesson"
+                        :description="lesson.description" :location="lesson.location" :room="lesson.room"
+                        :metro="lesson.metro" :line="lesson.line" :isoStart="lesson.isoStart" :isoEnd="lesson.isoEnd"
+                        :key="lesson.eventStart" />
                 </div>
             </dayStart>
         </div>
@@ -181,7 +156,7 @@ function updateTt(search) {
             ['x-sharaga-metro', 'metro'],
             ['x-sharaga-metro-line', 'line'],
             ['summary', 'lesson'],
-            ['description', 'description']
+            ['x-sharaga-teacher', 'description']
         ].forEach((el) => {
             const [icsid, id] = el
             event[id] = eventICS.getFirstPropertyValue(icsid)
@@ -216,12 +191,14 @@ function updateTt(search) {
     padding-left: 5px;
     padding-right: 5px;
 }
+
 .no-lessons {
     text-align: center;
     font-weight: 500px;
     font-size: 24px;
     padding: 24px;
 }
+
 .event {
     width: 100%;
     display: flex;
@@ -233,9 +210,11 @@ function updateTt(search) {
     padding-bottom: 5px;
     border-top: 1px solid var(--md-sys-color-outline);
 }
+
 .event:first-child {
     border-top: none;
 }
+
 .timeSpans,
 .endIn {
     text-align: center;
@@ -245,9 +224,11 @@ function updateTt(search) {
     padding: 5px;
     border-radius: 8px;
 }
+
 .active .timeSpans {
     display: none;
 }
+
 .active .endIn {
     display: flex;
 }
@@ -263,20 +244,25 @@ function updateTt(search) {
     background-color: var(--md-sys-color-secondary);
     color: var(--md-sys-color-on-secondary);
 }
+
 .event.active .timeSpans hr {
     background-color: var(--md-sys-color-on-secondary);
 }
+
 .timeSpans hr {
     border: none;
     height: 1px;
     background-color: var(--md-sys-color-on-background);
 }
+
 .lessonInfo p {
     margin: 3px;
 }
+
 .lessonInfo :last-child {
     margin-bottom: 0;
 }
+
 .timeSpans p {
     margin: 3px;
 }

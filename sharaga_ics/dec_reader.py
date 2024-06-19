@@ -126,6 +126,9 @@ class MgutmParser(classes.TimetableSource):
                 end=datetime.fromisoformat(lesson["датаОкончания"] + "+03:00"),
             )
             event.description = f'Препод: {lesson["преподаватель"]}'
+            event.extra.append(
+                ContentLine("X-SHARAGA-TEACHER", value=lesson["преподаватель"])
+            )
             if "-" in lesson["аудитория"]:
                 location_id, room = lesson["аудитория"].split("-")
                 event.extra.append(ContentLine("X-SHARAGA-ROOM", value=room))
