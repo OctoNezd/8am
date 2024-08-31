@@ -24,8 +24,7 @@
                     {{ metro }},
                 </span>
                 {{ location
-                }}<b
-                    ><span v-if="room">, каб. {{ room }}</span>
+                }}<b><span v-if="room">, каб. {{ room }}</span>
                 </b>
             </a>
         </div>
@@ -71,7 +70,7 @@ if (startDJ.isSame(dayjs(), 'day') && dayjs().isBefore(endDJ)) {
             words[count % 100 > 4 && count % 100 < 20 ? 2 : cases[Math.min(count % 10, 5)]]
         )
     }
-    const interval = setInterval(function () {
+    function calcRemaining() {
         const now = dayjs()
 
         if (now.isAfter(endDJ)) {
@@ -88,10 +87,11 @@ if (startDJ.isSame(dayjs(), 'day') && dayjs().isBefore(endDJ)) {
                 remainingStr = pluralize(remaining, ['минуту', 'минуты', 'минут'])
             }
             endIn.value = remainingStr
-            instance?.proxy?.$forceUpdate()
+            // instance?.proxy?.$forceUpdate()
             console.log('updated endin', endIn)
         }
-    }, 25000)
+    }
+    const interval = setInterval(calcRemaining, 25000)
     function stopEndIn() {
         console.log(
             'destroying interval',
@@ -106,6 +106,7 @@ if (startDJ.isSame(dayjs(), 'day') && dayjs().isBefore(endDJ)) {
     onUnmounted(() => {
         stopEndIn()
     })
+    calcRemaining()
 }
 </script>
 <style>
@@ -119,6 +120,7 @@ if (startDJ.isSame(dayjs(), 'day') && dayjs().isBefore(endDJ)) {
     padding-top: 5px;
     padding-bottom: 5px;
 }
+
 .timeSpans,
 .endIn {
     text-align: center;
@@ -128,9 +130,11 @@ if (startDJ.isSame(dayjs(), 'day') && dayjs().isBefore(endDJ)) {
     padding: 5px;
     border-radius: 8px;
 }
+
 .active .timeSpans {
     display: none;
 }
+
 .active .endIn {
     display: flex;
 }
@@ -146,22 +150,26 @@ if (startDJ.isSame(dayjs(), 'day') && dayjs().isBefore(endDJ)) {
     background-color: var(--md-sys-color-secondary);
     color: var(--md-sys-color-on-secondary);
 }
+
 .event.active .timeSpans hr {
     background-color: var(--md-sys-color-on-secondary);
 }
+
 .timeSpans hr {
     border: none;
     height: 1px;
     background-color: var(--md-sys-color-on-background);
 }
+
 .lessonInfo p {
     margin: 3px;
 }
+
 .lessonInfo :last-child {
     margin-bottom: 0;
 }
+
 .timeSpans p {
     margin: 3px;
 }
 </style>
-

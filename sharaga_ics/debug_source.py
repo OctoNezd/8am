@@ -20,15 +20,18 @@ class DebugSource(classes.TimetableSource):
         today = datetime.utcnow().date()
         start = datetime(today.year, today.month, today.day)
         end = start + timedelta(1)
-        dts = [dt for dt in
-               datetime_range(start, end,
-                              timedelta(minutes=1))]
+        dts = [dt for dt in datetime_range(start, end, timedelta(hours=1))]
         ics = Calendar()
         for event_start in dts:
-            event_end = event_start + timedelta(minutes=1)
+            event_end = event_start + timedelta(hours=1)
             ics.events.add(
-                Event(name=f"{event_start} - {event_end}", begin=event_start, end=event_end))
+                Event(
+                    name=f"{event_start} - {event_end}",
+                    begin=event_start,
+                    end=event_end,
+                )
+            )
         return str(ics)
 
-    async def get_new_ics(self, gid):
+    async def get_new_ics(self, *_):
         return self.generate_ical()
