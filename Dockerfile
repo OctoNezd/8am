@@ -7,8 +7,7 @@ RUN poetry export -f requirements.txt --without-hashes >requirements.txt
 FROM node:22-bookworm AS webbuild
 RUN apt update && apt install git automake build-essential autoconf nasm -y
 WORKDIR /build/
-COPY ./web/package.json ./web/yarn.lock ./web/.yarnrc.yml ./
-COPY ./web/.yarn ./.yarn
+COPY ./web/package.json ./web/yarn.lock ./
 SHELL ["/bin/bash", "-c"]
 RUN rm .yarn/install-state.gz .yarn/unplugged -rfv && ls .yarn && yarn install --inline-builds
 COPY ./.git ./.git
