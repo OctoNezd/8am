@@ -9,7 +9,7 @@ RUN apt update && apt install git automake build-essential autoconf nasm -y
 WORKDIR /build/
 COPY ./web/package.json ./web/yarn.lock ./
 SHELL ["/bin/bash", "-c"]
-RUN rm .yarn/install-state.gz .yarn/unplugged -rfv && ls .yarn && yarn install --inline-builds
+RUN corepack enable && rm .yarn/install-state.gz .yarn/unplugged -rfv && yarn install --inline-builds
 COPY ./.git ./.git
 COPY ./web/ ./
 RUN yarn build
