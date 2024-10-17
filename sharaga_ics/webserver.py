@@ -13,9 +13,27 @@ from . import dec_reader, debug_source, classes
 from urllib.parse import urlparse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from contextlib import asynccontextmanager
 
 logger = logging.getLogger("main")
-app = FastAPI()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    console_handler = logging.StreamHandler()
+    console_formatter = logging.Formatter(
+        "[%(asctime)s] %(levelname)-5.5s: %(message)s", "%Y-%m-%d %H:%M:%S"
+    )
+    console_handler.setFormatter(console_formatter)
+    logger.addHandler(console_handler)
+    logger.setLevel(logging.DEBUG)
+    for source in SOURCES.values():
+        await source.init()
+    logger.info("Started.")
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 GROUPS = {}
 TEACHERS = {}
 GROUP_IDS = {}
@@ -48,7 +66,7 @@ app.add_middleware(
 if os.environ.get("ANALYTICS_API_KEY", False):
     from api_analytics.fastapi import Analytics
 
-    app.add_middleware(Analytics, api_key=os.environ.get("ANALYTICS_API_KEY"))
+    app.add_middleware(Analytics, api_key=os.environ["ANALYTICS_API_KEY"])
 
 
 def init_sentry():
@@ -58,7 +76,7 @@ def init_sentry():
         import sentry_sdk
 
         sentry_sdk.init(
-            dsn=sentry_dsn,
+            dsn=sentry_dsn,  # type: ignore
             # Set traces_sample_rate to 1.0 to capture 100%
             # of transactions for performance monitoring.
             # We recommend adjusting this value in production.
@@ -185,17 +203,17 @@ async def get_ics(ics_type: str, source_name: str, gid: int):
 
 
 @app.get("/groups")
-async def get_groups():
-    if len(GROUPS) == 0:
-        await populate_stores()
-    return GROUPS
+async def get_groups(search_string="", source="mgutm"):
+    if source in SOURCES:
+        return await SOURCES[source].get_groups(search_string)
+    raise HTTPException(404, "No source found")
 
 
 @app.get("/teachers")
-async def get_teachers():
-    if len(TEACHERS) == 0:
-        await populate_stores()
-    return TEACHERS
+async def get_teachers(search_string="", source="mgutm"):
+    if source in SOURCES:
+        return await SOURCES[source].get_teachers(search_string)
+    raise HTTPException(404, "No source found")
 
 
 @app.get("/sources")
@@ -215,38 +233,6 @@ async def add_my_headers(request: Request, call_next):
         response.headers["Content-Type"] = "application/javascript"
         logger.info("set text/javascript for %s", request.url)
     return response
-
-
-async def populate_stores():
-    global GROUPS, TEACHERS
-    GROUPS = {}
-    TEACHERS = {}
-    for source_name, source in SOURCES.items():
-        logger.info("Downloading group list for %s...", source_name)
-        GROUPS[source_name] = await source.get_groups()
-        TEACHERS[source_name] = await source.get_teachers()
-        GROUP_IDS[source_name] = []
-        TEACHER_IDS[source_name] = []
-        for group in GROUPS[source_name].values():
-            GROUP_IDS[source_name].append(str(group))
-        for teacher in TEACHERS[source_name].values():
-            GROUP_IDS[source_name].append(str(teacher))
-        logger.info("%s: %s groups", source_name, len(GROUPS[source_name]))
-
-
-@app.on_event("startup")
-async def startup():
-    console_handler = logging.StreamHandler()
-    console_formatter = logging.Formatter(
-        "[%(asctime)s] %(levelname)-5.5s: %(message)s", "%Y-%m-%d %H:%M:%S"
-    )
-    console_handler.setFormatter(console_formatter)
-    logger.addHandler(console_handler)
-    logger.setLevel(logging.DEBUG)
-    await populate_stores()
-    logger.info("Downloading MSTeams URLs...")
-    await dec_reader.get_teams_urls()
-    logger.info("Started.")
 
 
 if os.path.exists("web/dist"):

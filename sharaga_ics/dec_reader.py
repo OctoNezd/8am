@@ -4,10 +4,10 @@ import aiohttp
 from ics import Calendar, Event
 from ics.grammar.parse import ContentLine
 from collections import OrderedDict
-
+from logging import getLogger
 from . import classes
 
-
+LOGGER = getLogger(__name__)
 LOCATIONS = """
 1 	г. Москва, ул. Земляной Вал, д.73
 2 	г. Москва, ул. Земляной Вал, д.71
@@ -83,6 +83,7 @@ __version__ = "0.2.5p1"
 
 
 async def get_teams_urls():
+    LOGGER.info("Downloading MSTeams URLs...")
     global TEAMS_URLS
     try:
         async with aiohttp.ClientSession(
@@ -94,7 +95,14 @@ async def get_teams_urls():
         TEAMS_URLS = {}
 
 
+def string_prep(instr):
+    query = instr.lower().replace("-", "").replace(" ", "")
+    return query
+
+
 class MgutmParser(classes.TimetableSource):
+    teachers, groups = {}, {}
+
     def generate_ical(self, tt):
         print("downloaded timetable")
         cal = Calendar()
@@ -166,7 +174,7 @@ class MgutmParser(classes.TimetableSource):
             cal.events.add(event)
         return str(cal)
 
-    async def get_groups(self):
+    async def init(self):
         tmpgroups = {}
         async with aiohttp.ClientSession(
             base_url="https://dec.mgutm.ru/", raise_for_status=True
@@ -175,18 +183,33 @@ class MgutmParser(classes.TimetableSource):
                 groupdata = await resp.json()
                 for group in groupdata["data"]["groups"]:
                     tmpgroups[group["groupName"]] = str(group["groupID"])
-        return OrderedDict(sorted(tmpgroups.items(), key=lambda x: x[0]))
-
-    async def get_teachers(self):
-        teachers = {}
+        self.groups = OrderedDict(sorted(tmpgroups.items(), key=lambda x: x[0]))
+        teachers_base = {}
         async with aiohttp.ClientSession(
             base_url="https://dec.mgutm.ru/", raise_for_status=True
         ) as session:
             async with session.get("/api/raspTeacherlist") as resp:
                 teacherdata = await resp.json()
                 for teacher in teacherdata["data"]:
-                    teachers[teacher["name"]] = str(teacher["id"])
-        return OrderedDict(sorted(teachers.items(), key=lambda x: x[0]))
+                    teachers_base[teacher["name"]] = str(teacher["id"])
+        self.teachers = OrderedDict(sorted(teachers_base.items(), key=lambda x: x[0]))
+        await get_teams_urls()
+
+    async def get_groups(self, query):
+        query = string_prep(query)
+        groups = {}
+        for group, id in self.groups.items():
+            if query in string_prep(group):
+                groups[group] = id
+        return groups
+
+    async def get_teachers(self, query):
+        query = string_prep(query)
+        teachers = {}
+        for teacher, id in self.teachers.items():
+            if query in string_prep(teacher):
+                teachers[teacher] = id
+        return teachers
 
     async def get_new_ics(self, ics_type, gid):
         async with aiohttp.ClientSession(
