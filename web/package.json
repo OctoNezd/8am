@@ -31,6 +31,7 @@
     "git-describe": "^4.1.1",
     "ical.js": "^1.5.0",
     "localforage": "^1.10.0",
+    "lodash.debounce": "^4.0.8",
     "lottie-web": "^5.12.2",
     "mdi-vue": "^3.0.13",
     "pinia": "^2.1.6",

@@ -9,10 +9,16 @@
                 ">
             <DataPicker itemTitle="Источник" pageTitle="Выбор источника" dataSource="sources" v-model="currentSource"
                 icon="school" />
-            <DataPicker itemTitle="Группа" pageTitle="Выбор группы" dataSource="groups" v-model="currentttid"
-                icon="account-group" />
+            <!-- <DataPicker itemTitle="Группа" pageTitle="Выбор группы" v-model="currentttid" icon="account-group" dynamic
+                :dynamicEndpoint="`/groups?source=${currentSource}`" /> -->
+            <RouterLink style="text-decoration: none" to="othergroup?setup=yes">
+                <md-list-item headline="Выбор группы" :supporting-text="settingsStore.ttcache">
+                    <mdicon name="account-group" slot="start" class="listIcon" />
+                </md-list-item>
+            </RouterLink>
             <md-divider></md-divider>
-            <a style="text-decoration: none" :href="`webcal://${apiEndpoint}/group/${currentSource}/${currentttid}.ics`">
+            <a style="text-decoration: none"
+                :href="`webcal://${apiEndpoint}/group/${currentSource}/${currentttid}.ics`">
                 <md-list-item headline="Добавить в календарь WebCal" supporting-text="Для iOS/iPadOS/Outlook/DAVx5">
                     <mdicon name="apple-ios" slot="start" class="listIcon" />
                 </md-list-item>

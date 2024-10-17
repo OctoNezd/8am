@@ -29,6 +29,7 @@ if (import.meta.env.VITE_VERCEL_URL === undefined) {
         axios.defaults.baseURL = url.toString()
     }
 }
+window.axios = axios
 console.log('Final baseURL:', axios.defaults.baseURL)
 
 const app = createApp(App)
