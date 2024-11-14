@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "sharaga_ics"
+name = "8AM-Backend"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]

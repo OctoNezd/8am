@@ -27,10 +27,10 @@ export default defineConfig({
                 maximumFileSizeToCacheInBytes: 3000000
             },
             manifest: {
-                name: 'Ш А Р А Г А',
-                short_name: 'ШАРАГА',
+                name: '8AM',
+                short_name: '8AM',
                 lang: 'ru',
-                description: 'Веб-Приложение для просмотра расписания шараги',
+                description: 'Веб-Приложение для просмотра расписания',
                 icons: [
                     {
                         src: 'pwa-192x192.png',

@@ -9,13 +9,12 @@
         <div v-else>Идёт загрузка хранилища настроек...</div>
         <SW />
         <Custom />
-        <vue-cookie-accept-decline
-            :disableDecline="true" :showPostponeButton="false"
-            elementId="myPanel1" position="bottom" ref="myPanel1" transitionName="slideFromBottom" type="bar">
+        <vue-cookie-accept-decline :disableDecline="true" :showPostponeButton="false" elementId="myPanel1"
+            position="bottom" ref="myPanel1" transitionName="slideFromBottom" type="bar">
 
             <!-- Optional -->
             <template #message>
-                Я использую куки чтоб смотреть сколько людей пользуются Шарагой через аналитику гугла.
+                Я использую куки чтоб смотреть сколько людей пользуются 8AM через аналитику гугла.
             </template>
 
             <!-- Optional -->

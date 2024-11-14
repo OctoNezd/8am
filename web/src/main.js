@@ -73,7 +73,7 @@ if (__SENTRY_DSN__ !== undefined) {
         // Set `tracePropagationTargets` to control for which URLs distributed tracing should be enabled
         tracePropagationTargets: [
             'localhost',
-            /^http(s?):\/\/sharaga(-.*\.vercel\.app|\.octonezd\.me)\/(groups|sources|teachers|.*\.ics)/
+            /^http(s?):\/\/8am(-.*\.vercel\.app|\.octonezd\.me)\/(groups|sources|teachers|.*\.ics)/
         ],
 
         // Capture Replay for 10% of all sessions,

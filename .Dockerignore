@@ -293,8 +293,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-sharaga-bundle.js
-sharaga-bundle.js.map
+8am-bundle.js
+8am-bundle.js.map
 
 # Logs
 logs

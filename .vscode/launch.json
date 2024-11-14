@@ -28,7 +28,7 @@
             "request": "launch",
             "module": "uvicorn",
             "args": [
-                "sharaga_ics:app",
+                "api:app",
                 "--reload",
                 "--host",
                 "0.0.0.0",
@@ -37,7 +37,7 @@
                 "--reload-exclude",
                 "web"
             ],
-            "env": {"DEBUG": "true"},
+            "env": { "DEBUG": "true" },
             "jinja": true,
             "justMyCode": true
         }

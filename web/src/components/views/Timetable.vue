@@ -151,12 +151,12 @@ function updateTt(search) {
         event['isoStart'] = eventStart.toISOString()
         event['isoEnd'] = eventEnd.toISOString()
         let t = [
-            ['x-sharaga-room', 'room'],
-            ['x-sharaga-location', 'location'],
-            ['x-sharaga-metro', 'metro'],
-            ['x-sharaga-metro-line', 'line'],
+            ['x-8am-room', 'room'],
+            ['x-8am-location', 'location'],
+            ['x-8am-metro', 'metro'],
+            ['x-8am-metro-line', 'line'],
             ['summary', 'lesson'],
-            ['x-sharaga-teacher', 'description']
+            ['x-8am-teacher', 'description']
         ].forEach((el) => {
             const [icsid, id] = el
             event[id] = eventICS.getFirstPropertyValue(icsid)

@@ -1,4 +1,4 @@
-package me.octonezd.sharaga;
+package me.octonezd.8am;
 
 import com.getcapacitor.BridgeActivity;
 

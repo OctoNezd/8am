@@ -24,7 +24,7 @@
                 </md-list-item>
             </a>
             <a style="text-decoration: none"
-                :href="`https://www.google.com/calendar/render?cid=webcal://sharaga.octonezd.me/group/${currentSource}/${currentttid}.ics`">
+                :href="`https://www.google.com/calendar/render?cid=webcal://8am.octonezd.me/group/${currentSource}/${currentttid}.ics`">
                 <md-list-item headline="Добавить в Google Calendar" supporting-text="Для Android">
                     <mdicon name="android" slot="start" class="listIcon" />
                 </md-list-item>

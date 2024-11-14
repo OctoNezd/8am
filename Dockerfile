@@ -22,8 +22,8 @@ RUN pip install -r requirements.txt gunicorn uvicorn
 # Copy only requirements to cache them in docker layer
 COPY --from=webbuild /build/dist /app/web/dist
 # Creating folders, and files for a project:
-COPY sharaga_ics /app/sharaga_ics
+COPY api /app/api
 USER 33:33
 EXPOSE 80
 ENV REDIS=redis://redis:6379/0
-CMD gunicorn -b 0.0.0.0:80 --access-logfile '-' --forwarded-allow-ips '*' sharaga_ics:app --workers 4 --worker-class uvicorn.workers.UvicornWorker
+CMD gunicorn -b 0.0.0.0:80 --access-logfile '-' --forwarded-allow-ips '*' api:app --workers 4 --worker-class uvicorn.workers.UvicornWorker

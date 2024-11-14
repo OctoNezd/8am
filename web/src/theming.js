@@ -17,7 +17,7 @@ export function loadLSTheme() {
     console.log(CorePalette)
     let userThemeColor = localStorage.getItem('userTheme')
     if (userThemeColor === null) {
-        return
+        userThemeColor = "#ffd05a"
     }
     if (userThemeColor.startsWith('#')) {
         userThemeColor = argbFromHex(userThemeColor)
