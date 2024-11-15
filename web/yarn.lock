@@ -5376,10 +5376,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ical.js@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "ical.js@npm:1.5.0"
-  checksum: 51df7a01f462dc8a02b3c3c28acb288756071044c4a8b56ff5179995bb219e569e72cfedac6f4ab03dc643be34f5d88c09a7d79c4be6ba8a7623b7336eecb110
+"ical.js@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "ical.js@npm:2.1.0"
+  checksum: 266686ee40aa29f91a8c0a3810468b34f24879e6d2fc8899516e63df719975c78e9e10c5b5f505d21ebd992dcc769b4bab6b55e9aa20f04fd0a58e2fa0440b14
   languageName: node
   linkType: hard
 
@@ -8831,7 +8831,7 @@ __metadata:
     eslint: ^8.48.0
     eslint-plugin-vue: ^9.17.0
     git-describe: ^4.1.1
-    ical.js: ^1.5.0
+    ical.js: ^2.1.0
     localforage: ^1.10.0
     lodash.debounce: ^4.0.8
     lottie-web: ^5.12.2
