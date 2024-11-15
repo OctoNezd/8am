@@ -22,7 +22,7 @@
     "@radial-color-picker/vue-color-picker": "^5.0.1",
     "@sentry/vue": "^7.70.0",
     "@vercel/analytics": "^1.0.2",
-    "@vitejs/plugin-legacy": "^4.1.1",
+    "@vitejs/plugin-legacy": "^5.4.3",
     "@vue/shared": "^3.3.4",
     "axios": "^1.5.0",
     "css-prefers-color-scheme": "^9.0.0",
