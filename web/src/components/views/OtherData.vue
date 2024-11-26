@@ -46,7 +46,8 @@ import axios from 'axios'
 const loading = ref(true)
 const groups = ref([])
 const itemsName = ref('')
-const { source, ttid, ttcache } = storeToRefs(useWebAppStore())
+const store = useWebAppStore()
+const { source, ttid, ttcache } = storeToRefs(store)
 
 const search = debounce(async (query) => {
     loading.value = true
@@ -85,6 +86,7 @@ function setGroup(group, gid) {
     ttid.value = gid
     ttcache.value = group
     router.push("/settings")
+    store.save()
 }
 </script>
 <style>
