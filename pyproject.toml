@@ -6,7 +6,7 @@ authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<4.0"
-fastapi = "^0.115.2"
+fastapi = "^0.115.6"
 aiohttp = "^3.11.2"
 ics = "^0.7"
 redis = "^5.1.1"
